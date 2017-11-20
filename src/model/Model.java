@@ -7,11 +7,12 @@ import controller.Controller;
 
 public class Model {
 
-	public enum Directions {
+	public static enum Directions {
 		EAST, WEST, NORTH, SOUTH;
 	};
 
 	Random random;
+	Graph graph;
 
 	private Model() {
 	}
@@ -52,7 +53,7 @@ public class Model {
 	                case EAST: xt = x+1; yt = y ; break ;
 	                case WEST: xt = x−1; yt = y ; break ;
 	            }
-	            Vertex next = new Vertex( xt, yt, vertex.getNbr()+1);
+	            Vertex next = new Vertex( xt, yt, vertex.getNbr() + 1);
 	            graph.addVertex( next  );
 	            graph.addEdge( vertex , next );
 	            buildRandomPath( next );

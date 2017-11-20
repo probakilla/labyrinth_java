@@ -40,10 +40,7 @@ public class Vertex {
 		return 1;
 	}
 
-	public int inBorders(int width, int height) {
-		if (_x <= width && _x >= 0)
-			if (_y <= height && _y >= 0)
-				return 0;
-		return 1;
+	public boolean inBorders(int width, int height) {
+		return !((_x <= width && _x >= 0) && (_y <= height && _y >= 0));
 	}
 }
