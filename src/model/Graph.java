@@ -19,7 +19,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 		int i, j;
 		for (i = 0; i < GRID_HEIGHT; ++i)
 			for (j = 0; j < GRID_WIDTH; ++j)
-				_vertex [j][i] = new Vertex (j, i);
+				_vertex [j][i] = new Vertex (j, i, i + j);
 	}
 	
 	public void buildGraph ()
