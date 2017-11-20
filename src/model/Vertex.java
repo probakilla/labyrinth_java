@@ -17,7 +17,8 @@ public class Vertex
 		return _nbr;
 	}
 
-	public void setNbr(int nbr) {
+	public void setNbr(int nbr) 
+	{
 		_nbr = nbr;
 	}
 
@@ -41,9 +42,10 @@ public class Vertex
 		_y = y;
 	}
 	
-	public Boolean compareTo (Vertex v)
+	public int compareTo (Vertex v)
 	{
-		
-		return (v.getX() == _x && v.getY() == _y);
+		if (v.getX() == _x && v.getY() == _y && v.getNbr() == _nbr)
+			return 0;
+		return 1;
 	}
 }
