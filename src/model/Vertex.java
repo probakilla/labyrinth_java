@@ -3,23 +3,12 @@ package model;
 public class Vertex 
 {
 
-	private int _x, _y, _nbr;
+	private int _x, _y;
 
-	public Vertex (int x, int y, int nbr)
+	public Vertex (int x, int y)
 	{
 		_x = x;
 		_y = y;
-		_nbr = nbr;
-	}
-	
-	public int getNbr() 
-	{
-		return _nbr;
-	}
-
-	public void setNbr(int nbr) 
-	{
-		_nbr = nbr;
 	}
 
 	public int getX() 
@@ -44,8 +33,12 @@ public class Vertex
 	
 	public int compareTo (Vertex v)
 	{
-		if (v.getX() == _x && v.getY() == _y && v.getNbr() == _nbr)
+		if (v.getX() == _x && v.getY() == _y)
 			return 0;
 		return 1;
+	}
+	
+	public boolean inBorders(Model.Directions dir) {
+		return false;
 	}
 }
