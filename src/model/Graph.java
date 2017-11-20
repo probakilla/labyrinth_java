@@ -26,4 +26,8 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	{
 		this.addEdge(_vertex[0][0], _vertex[0][1]);
 	}
+	
+	public boolean doesntExist (Vertex v, Model.Directions dir) {
+		return false;
+	}
 }
