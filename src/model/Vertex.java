@@ -1,7 +1,6 @@
 package model;
 
-public class Vertex 
-{
+public class Vertex {
 
 	private int _x, _y;
 
@@ -11,23 +10,20 @@ public class Vertex
 		_y = y;
 	}
 	
-	public int getX() 
-	{
+	public int getX()
+        {
 		return _x;
 	}
 
-	public void setX(int x) 
-	{
+	public void setX(int x) {
 		_x = x;
 	}
 
-	public int getY() 
-	{
+	public int getY() {
 		return _y;
 	}
 
-	public void setY(int y) 
-	{
+	public void setY(int y) {
 		_y = y;
 	}
 	
@@ -36,5 +32,9 @@ public class Vertex
 		if (v.getX() == _x && v.getY() == _y)
 			return 0;
 		return 1;
+	}
+	
+	public int inBorders() {
+		
 	}
 }
