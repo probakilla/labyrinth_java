@@ -9,7 +9,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Edge [][] _edge;
+	private Edge _edge;
 	private Vertex [][] _vertex;
 	private int GRID_WIDTH = 16;
 	private int GRID_HEIGHT = 16; 
@@ -22,7 +22,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 		for (i = 0; i < GRID_HEIGHT; ++i)
 			for (j = 0; j < GRID_WIDTH; ++j)
 				_vertex [j][i] = new Vertex (j, i, i + j);
-		_edge = new Edge[GRID_WIDTH][GRID_HEIGHT];
 	}
 	
 	public int getGRIDWIDTH() {
@@ -41,8 +40,8 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 /**
  * Verifie l'existence du vertex et de la direction
  * @param v vertex à vérifier
- * @param dir direction à verifier
- * @return true si les deux éxistent sinon false
+ * @param dir direction à vérifier
+ * @return true si les deux existent sinon false
  */
 	public boolean doesntExist (Vertex v, Model.Directions dir) {
 		if (dir == Directions.EAST || dir == Directions.SOUTH || dir == Directions.SOUTH || dir == Directions.NORTH) {

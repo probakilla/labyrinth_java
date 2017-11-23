@@ -7,4 +7,4 @@ pour le graphe (dans le model)
 -étendre DefaultEdge (jgrapht)
 -Graph <Vertex, Edge>
 faire le graphe de la grille sans mur
-affichage du graphe avec graphirz (creer un fichier .dot)
+affichage du graphe avec graphviz (creer un fichier .dot)

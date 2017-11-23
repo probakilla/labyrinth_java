@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import controller.Controller;
+import model.Edge.Type;
 
 public class Model {
 
