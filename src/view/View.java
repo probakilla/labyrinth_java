@@ -41,6 +41,12 @@ public class View {
 		stage.show();
 	}
 
+	/**
+	 * Dessine la base du labyrinthe.
+	 * @param stage Fenêtre ou l'on dessine le labyrinthe
+	 * @param nbrX Taille du labyrinthe en longueur
+	 * @param nbrY Taille du labyrinthe en largeur
+	 */
 	public void drawFrame(Stage stage, int nbrX, int nbrY) {
 		scene = new Scene(pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN);
 
@@ -74,6 +80,14 @@ public class View {
 		}
 	}
 
+	/**
+	 * Dessine un entre deux point adjacent du labyrinthe
+	 * @param xs coordonnée en x du premier point
+	 * @param ys coordonnée en y du premier point
+	 * @param xt coordonnée en x du deuxième point
+	 * @param yt coordonnée en y du deuxième point
+	 * @param color couleur du mur
+	 */
 	public void drawWall(int xs, int ys, int xt, int yt, Paint color) {
 		int x = 0, y = 0, xspan = 0, yspan = 0;
 		if (ys == yt) {
