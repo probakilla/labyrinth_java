@@ -17,9 +17,9 @@ public class View {
 	public static final Paint WALL_COLOR = Color.BURLYWOOD;
 	public static final Paint SCENE_COLOR = Color.BEIGE;
 
-	Stage stage;
-	Scene scene;
-	Pane pane;
+	private Stage stage;
+	private Scene scene;
+	private Pane pane;
 
 	private View() {
 	}

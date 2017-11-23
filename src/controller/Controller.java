@@ -25,4 +25,5 @@ public class Controller {
 	public void start(Stage stage) {
 		view.start(stage);
 	}
+
 }

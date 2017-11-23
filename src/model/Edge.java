@@ -4,8 +4,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class Edge extends DefaultEdge implements Comparable<Edge>
 {
-	public enum Type
-	{
+	public enum Type {
 		OPENED_DOOR,
 		CLOSED_DOOR,
 		CORRIDOR;
@@ -13,19 +12,16 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 	
 	private Type type;
 	
-	public Edge(Type type)
-	{
+	public Edge(Type type) {
 		super();
 		this.type = type;
 	}
 	
-	public Vertex getSource() 
-	{
+	public Vertex getSource() {
 		return (Vertex) super.getSource();
 	}
 	
-	public Vertex getTarget() 
-	{
+	public Vertex getTarget() {
 		return (Vertex) super.getTarget();
 	}
 	
@@ -34,19 +30,16 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 		return type;
 	}
 	
-	public void setType(Type type) 
-	{
+	public void setType(Type type) {
 		this.type = type;
 	}
 
 	@Override
-	public int compareTo(Edge o) 
-	{
+	public int compareTo(Edge o) {
 		int source = this.getSource().compareTo((o).getSource());
 		if (source!=0)
 			return source;
-		else 
-		{
+		else {
 			return this.getTarget().compareTo((o).getTarget());
 		}
 	}

@@ -11,11 +11,10 @@ public class Model {
 		EAST, WEST, NORTH, SOUTH;
 	};
 
-	Random random;
-	Graph graph;
+	private Random random;
+	private Graph graph;
 
-	private Model() {
-	}
+	private Model() {}
 
 	private static Model INSTANCE;
 

@@ -51,8 +51,7 @@ public class Vertex {
 	 * @return false si on va en dehors du labyrinthe sinon true
 	 */
 	public boolean inBorders(Directions dir, int width, int height) {
-		switch(dir)
-		{
+		switch(dir) {
 		case NORTH: return (!((_x <= width && _x >= 0) && (_y - 1 <= height && _y - 1>= 0)));
 		case SOUTH: return (!((_x <= width && _x >= 0) && (_y + 1<= height && _y + 1>= 0)));
 		case EAST:  return (!((_x + 1<= width && _x + 1>= 0) && (_y <= height && _y >= 0)));
