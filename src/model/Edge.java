@@ -16,7 +16,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 	public Edge(Type type)
 	{
 		super();
-		this.type = Type.CORRIDOR;
+		this.type = type;
 	}
 	
 	public Vertex getSource() 
@@ -38,7 +38,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 	{
 		this.type = type;
 	}
-	
+
 	@Override
 	public int compareTo(Edge o) 
 	{
@@ -50,4 +50,6 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 			return this.getTarget().compareTo((o).getTarget());
 		}
 	}
+	
+
 }

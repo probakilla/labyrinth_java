@@ -4,14 +4,14 @@ import org.jgrapht.graph.SimpleGraph;
 
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-	// On ne sait pas ce que c'est
 	private static final long serialVersionUID = 1L;
 	
 	private Edge _edge;
 	private Vertex [][] _vertex;
-	private static int GRID_WIDTH = 16;
-	private static int GRID_HEIGHT = 16; 
+	private int GRID_WIDTH = 16;
+	private int GRID_HEIGHT = 16; 
 
+	
 	public Graph () 
 	{
 		super (Edge.class);
@@ -20,6 +20,16 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 		for (i = 0; i < GRID_HEIGHT; ++i)
 			for (j = 0; j < GRID_WIDTH; ++j)
 				_vertex [j][i] = new Vertex (j, i, i + j);
+	}
+	
+	public int getGRIDWIDTH() 
+	{
+		return GRID_WIDTH;
+	}
+
+	public int getGRIDHEIGHT() 
+	{
+		return GRID_HEIGHT;
 	}
 	
 	public void buildGraph ()

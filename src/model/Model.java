@@ -43,15 +43,15 @@ public class Model {
 	    // pour chacune de ces directions, on avance en profondeur d’abord
 	    for (int i=0;i<4;++i){
 	        Directions dir=directions[i];
-	        if(vertex.inBorders(dir) && graph.doesntExist(vertex, dir)){
+	        if(vertex.inBorders(dir, graph.getGRIDWIDTH(), graph.getGRIDHEIGHT()) && graph.doesntExist(vertex, dir)){
 	            int x=vertex.getX();
 	            int y =vertex.getY();
 	            int xt=0, yt=0;
 	            switch(dir){
-	                case NORTH: xt = x ; yt = y−1; break ;
+	                case NORTH: xt = x ; yt = y-1; break ;
 	                case SOUTH: xt = x ; yt = y+1; break ;
 	                case EAST: xt = x+1; yt = y ; break ;
-	                case WEST: xt = x−1; yt = y ; break ;
+	                case WEST: xt = x-1; yt = y ; break ;
 	            }
 	            Vertex next = new Vertex( xt, yt, vertex.getNbr() + 1);
 	            graph.addVertex( next  );

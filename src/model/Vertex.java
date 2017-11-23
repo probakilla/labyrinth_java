@@ -1,5 +1,7 @@
 package model;
 
+import model.Model.Directions;
+
 public class Vertex {
 
 	private int _x, _y, _nbr;
@@ -40,7 +42,16 @@ public class Vertex {
 		return 1;
 	}
 
-	public boolean inBorders(int width, int height) {
-		return !((_x <= width && _x >= 0) && (_y <= height && _y >= 0));
+
+	public boolean inBorders(Directions dir, int width, int height) {
+		switch(dir)
+		{
+		case NORTH: return (!((_x <= width && _x >= 0) && (_y - 1 <= height && _y - 1>= 0)));
+		case SOUTH: return (!((_x <= width && _x >= 0) && (_y + 1<= height && _y + 1>= 0)));
+		case EAST:  return (!((_x + 1<= width && _x + 1>= 0) && (_y <= height && _y >= 0)));
+		case WEST:  return (!((_x - 1 <= width && _x - 1>= 0) && (_y <= height && _y >= 0)));
+		}
+		return false;
 	}
+
 }
