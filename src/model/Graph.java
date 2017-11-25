@@ -1,15 +1,16 @@
 package model;
 
+import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.SimpleGraph;
 
 import model.Edge.Type;
 import model.Model.Directions;
 
-public class Graph extends SimpleGraph<Vertex, Edge>
+public class Graph extends SimpleGraph<Vertex, Edge> 
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Edge _edge;
+	private Edge [][]_edge;
 	private Vertex [][] _vertex;
 	private int GRID_WIDTH = 16;
 	private int GRID_HEIGHT = 16; 
@@ -44,14 +45,20 @@ public class Graph extends SimpleGraph<Vertex, Edge>
  * @return true si les deux existent sinon false
  */
 	public boolean doesntExist (Vertex v, Model.Directions dir) {
-		if (dir == Directions.EAST || dir == Directions.SOUTH || dir == Directions.SOUTH || dir == Directions.NORTH) {
-			int i, j;
-			for (i = 0; i < GRID_HEIGHT; ++i)
-				for (j = 0; j < GRID_WIDTH; ++j)
-					if (v.compareTo(_vertex[j][i]) == 0)
-						return true;
-			return false;
+		int xt = 0, yt = 0;
+		int x=v.getX();
+        int y =v.getY();
+		switch(dir){
+        case NORTH: xt = x ; yt = y-1; break ;
+        case SOUTH: xt = x ; yt = y+1; break ;
+        case EAST: xt = x+1; yt = y ; break ;
+        case WEST: xt = x-1; yt = y ; break ;
 		}
-		return false;
+		return !this.containsVertex(new Vertex (xt, yt, v.getNbr() + 1));
+	}
+	
+	public Vertex getVertex(int i, int j) {
+		// TODO Auto-generated method stub
+		return _vertex[i][j];
 	}
 }

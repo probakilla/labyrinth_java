@@ -23,6 +23,7 @@ public class Controller {
 	}
 
 	public void start(Stage stage) {
+		model.GraphToDot();
 		view.start(stage);
 	}
 
