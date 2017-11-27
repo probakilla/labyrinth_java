@@ -37,15 +37,24 @@ public class Controller
             INSTANCE = new Controller();
         return INSTANCE;
     }
+    
+    /**
+     * Return the model used in the Controller.
+     * @return model
+     */
+    public Model getModel(){
+    	return _model;
+    }
 
     /**
      * Start the Controller.
      *
-     * @param stage Stage where the dispaly will be managed.
-     */
+     * @param stage Stage where the display will be managed.
+     */    
     public void start(Stage stage)
     {
-        _model.GraphToDot();
+        _model.buildRandomPath(new Vertex(0, 0, 0));
+    	//_model.GraphToDot();
         _view.start(stage);
     }
 }

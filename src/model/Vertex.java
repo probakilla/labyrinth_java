@@ -37,10 +37,10 @@ public class Vertex
     {
         _y = y;
     }
-    
+
     /**
      * Create a Vertex with specific coordinates and a number.
-     * 
+     *
      * @param x Abscissa of the Vertex.
      * @param y Ordinate of the Vertex.
      * @param nbr Number of the Vertex.
@@ -60,6 +60,11 @@ public class Vertex
     public int getNbr()
     {
         return _nbr;
+    }
+
+    public void setNbr(int nbr)
+    {
+        _nbr = nbr;
     }
 
     /**
