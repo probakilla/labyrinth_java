@@ -72,11 +72,11 @@ public class Vertex {
 
 
 	/**
-	 * Vérifie que l'on reste bien dans les limites du labyrinthe si on se déplace
-	 * @param dir direction du déplacement
-	 * @param width largeur du labyrinthe
-	 * @param height longueur du labyrinthe
-	 * @return false si on va en dehors du labyrinthe sinon true
+	 * Check if we stay in the limits of the graph when we move.
+	 * @param dir direction of the movement.
+	 * @param width Width of the labyrinth.
+	 * @param height height of the labyrinth.
+	 * @return false if we go off the labyrinth.
 	 */
 	public boolean inBorders(Directions dir, int width, int height) {
 		switch(dir) {

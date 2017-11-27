@@ -1,22 +1,22 @@
 package model;
 
-import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.SimpleGraph;
-
-import model.Edge.Type;
-import model.Model.Directions;
 
 public class Graph extends SimpleGraph<Vertex, Edge> 
 {
+	
+	// TODO : Changer c'te bite
 	private static final long serialVersionUID = 1L;
 	
-	private Edge [][]_edge;
+	private Edge _edge;
 	private Vertex [][] _vertex;
-	private int GRID_WIDTH = 16;
-	private int GRID_HEIGHT = 16; 
+	
+	private static int GRID_WIDTH = 16;
+	private static int GRID_HEIGHT = 16; 
 
 	
-	public Graph () {
+	public Graph () 
+	{
 		super (Edge.class);
 		_vertex = new Vertex [GRID_WIDTH][GRID_HEIGHT];
 		int i, j;
@@ -25,26 +25,30 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 				_vertex [j][i] = new Vertex (j, i, i + j);
 	}
 	
-	public int getGRIDWIDTH() {
+	public int getGRIDWIDTH() 
+	{
 		return GRID_WIDTH;
 	}
 
-	public int getGRIDHEIGHT() {
+	public int getGRIDHEIGHT() 
+	{
 		return GRID_HEIGHT;
 	}
 	
-	public void buildGraph () {
+	public void buildGraph () 
+	{
 		this.addEdge(_vertex[0][0], _vertex[0][1]);
 	}
 	
 	
 /**
- * Verifie l'existence du vertex et de la direction
- * @param v vertex à vérifier
- * @param dir direction à vérifier
- * @return true si les deux existent sinon false
+ * Check if the vertex exists and it's direction.
+ * @param v vertex to check.
+ * @param dir direction to check.
+ * @return true if both exists.
  */
-	public boolean doesntExist (Vertex v, Model.Directions dir) {
+	public boolean doesntExist (Vertex v, Model.Directions dir) 
+	{
 		int xt = 0, yt = 0;
 		int x=v.getX();
         int y =v.getY();
@@ -57,8 +61,8 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 		return !this.containsVertex(new Vertex (xt, yt, v.getNbr() + 1));
 	}
 	
-	public Vertex getVertex(int i, int j) {
-		// TODO Auto-generated method stub
+	public Vertex getVertex(int i, int j) 
+	{
 		return _vertex[i][j];
 	}
 }

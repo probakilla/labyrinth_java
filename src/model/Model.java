@@ -11,24 +11,29 @@ import java.util.Vector;
 import controller.Controller;
 import model.Edge.Type;
 
-public class Model {
+public class Model 
+{
 
-	public static enum Directions {
+	public static enum Directions 
+	{
 		EAST, WEST, NORTH, SOUTH;
 	};
 
-	private int iteration;
-	private Random random;
-	private Graph graph;
+	private int _iteration;
+	private Random _random;
+	private Graph _graph;
 
-	private Model() {
-		iteration = 0;
+	private Model() 
+	{
+		_iteration = 0;
 	}
 
 	private static Model INSTANCE;
 
-	public static Model getInstance() {
-		if (INSTANCE == null) {
+	public static Model getInstance() 
+	{
+		if (INSTANCE == null) 
+		{
 			INSTANCE = new Model();
 		}
 		return INSTANCE;
@@ -38,7 +43,8 @@ public class Model {
 	 * Create randomly a graph of a perfect labyrinth
 	 * @param vertex the beginning of the graph
 	 */
-	public void buildRandomPath( Vertex vertex ){
+	public void buildRandomPath( Vertex vertex )
+	{
 	    //une liste aleatoire des 4 directions	
 	   Vector<Directions> v = new Vector<Directions>();
 	    for (int i=0;i<4;++i)
@@ -47,15 +53,18 @@ public class Model {
 	    Directions directions[]=new Directions[4];
 	    int index;
 	    Random random = new Random ();
-	    for(int i=0;i<directions.length;++i){
+	    for(int i=0;i<directions.length;++i)
+	    {
 	        index=random.nextInt(v.size());  
 	        directions[i]=v.get(index);       
 	        v.remove(index);      
 	    }
 	    // pour chacune de ces directions, on avance en profondeur d’abord
-	    for (int i=0;i<4;++i){
+	    for (int i=0;i<4;++i)
+	    {
 	        Directions dir=directions[i];
-	        if(vertex.inBorders(dir, graph.getGRIDWIDTH(), graph.getGRIDHEIGHT()) && graph.doesntExist(vertex, dir)) {
+	        if(vertex.inBorders(dir, _graph.getGRIDWIDTH(), _graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir)) 
+	        	{
 	            int x=vertex.getX();
 	            int y =vertex.getY();
 	            int xt=0, yt=0;
@@ -65,9 +74,9 @@ public class Model {
 	            case EAST: xt = x+1; yt = y ; break ;
 	            case WEST: xt = x-1; yt = y ; break ;
 	            }
-	            Vertex next = new Vertex( xt, yt, iteration++);
-	            graph.addVertex( next  );
-	            graph.addEdge( vertex , next, new Edge (Type.CORRIDOR));
+	            Vertex next = new Vertex( xt, yt, _iteration++);
+	            _graph.addVertex( next  );
+	            _graph.addEdge( vertex , next, new Edge (Type.CORRIDOR));
 	            buildRandomPath(next);
 	        }
 	    }
@@ -76,16 +85,18 @@ public class Model {
 	/**
 	 * Write the graph in a .dot file.
 	 */
-	public void GraphToDot () {
-		Vertex v = new Vertex (0, 0, iteration++);
-		graph = new Graph ();
-		graph.addVertex(v);
+	public void GraphToDot () 
+	{
+		Vertex v = new Vertex (0, 0, _iteration++);
+		_graph = new Graph ();
+		_graph.addVertex(v);
 		buildRandomPath( v );
 		PrintWriter writer;
-		try {
+		try 
+		{
 			writer = new PrintWriter("graph.dot");
 			writer.println("graph path {");
-			Set<Vertex> v1 = graph.vertexSet();
+			Set<Vertex> v1 = _graph.vertexSet();
 			int i = 0;
 			int j;
 			for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
@@ -100,7 +111,7 @@ public class Model {
 						++j;
 						to = it1.next();
 					}
-					if (graph.containsEdge(from, to))
+					if (_graph.containsEdge(from, to))
 					{
 						writer.print(from.getNbr());
 						writer.print(" -- ");
@@ -111,10 +122,10 @@ public class Model {
 			}
 			writer.println("}");
 			writer.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (FileNotFoundException e) 
+		{
 			e.printStackTrace();
 		}	
 	}
-
 }
