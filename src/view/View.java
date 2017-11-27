@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 /**
  * This class manage the display of the project.
  *
- * @author Java Project
+ * @author Java Group
  */
 public class View
 {
@@ -25,12 +25,17 @@ public class View
     private Scene _scene;
     private Pane _pane;
 
-    private View()
-    {
-    }
+    private View() {}
 
     private static View INSTANCE;
 
+    /**
+     * Retrives an instance of View.
+     * 
+     * Retrives the instance of the View, there can be only one instance
+     * of the View at once thanks to the singleton design pattern.
+     * @return Instance of View.
+     */
     public static View getInstance()
     {
         if (INSTANCE == null)
@@ -40,6 +45,11 @@ public class View
         return INSTANCE;
     }
 
+    /**
+     * Start the View.
+     * 
+     * @param stage Stage used for the graphical interface.
+     */
     public void start(Stage stage)
     {
         _stage = stage;
@@ -53,6 +63,7 @@ public class View
     /**
      * Draw the labyrinth basis.
      *
+     * Draw the main structure of the labyrinth (e.g borders of the labyrinth).
      * @param stage Window where we draw the labyrinth.
      * @param nbrX Height of the labyrinth.
      * @param nbrY Width of the labyrinth.
@@ -95,7 +106,11 @@ public class View
 
     /**
      * Draw a line between two points.
-     *
+     * 
+     * This method is used to build walls in the labyrinth. Draw a line
+     * between two points given in parameters (with their coordinates). Color
+     * of the wall is also set by this method.
+     * 
      * @param xs abscissa of the first point.
      * @param ys Ordinate of the first point.
      * @param xt Abscissa of the second point.

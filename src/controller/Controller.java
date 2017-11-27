@@ -41,7 +41,7 @@ public class Controller
     }
 
     /**
-     * Start the application.
+     * Start the Controller.
      *
      * @param stage Stage where the dispaly will be managed.
      */

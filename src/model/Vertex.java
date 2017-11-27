@@ -2,21 +2,23 @@ package model;
 
 import model.Model.Directions;
 
+/**
+ * An implementation of vertices in a {@link model.Graph Graph}
+ * 
+ * @author Java Group
+ */
+
 public class Vertex
 {
+    private final int _x, _y, _nbr;
 
-    private int _x, _y, _nbr;
-
-    public int getNbr()
-    {
-        return _nbr;
-    }
-
-    public void setNbr(int nbr)
-    {
-        _nbr = nbr;
-    }
-
+    /**
+     * Create a Vertex with specific coordinates and a number.
+     * 
+     * @param x Abscissa of the Vertex.
+     * @param y Ordinate of the Vertex.
+     * @param nbr Number of the Vertex.
+     */
     public Vertex(int x, int y, int nbr)
     {
         _x = x;
@@ -24,31 +26,41 @@ public class Vertex
         _nbr = nbr;
     }
 
+    /**
+     * Retrives the number of the Vertex.
+     * 
+     * @return The number of the Vertex.
+     */
+    public int getNbr()
+    {
+        return _nbr;
+    }
+    
+    /**
+     * Retrives the Abscissa of the Vertex.
+     * 
+     * @return The Abscissa of the Vertex.
+     */
     public int getX()
     {
         return _x;
-    }
+    } 
 
-    public void setX(int x)
-    {
-        _x = x;
-    }
-
+    /**
+     * Retrives the Ordinate of the Vertex.
+     * 
+     * @return The Ordinate of the Vertex.
+     */
     public int getY()
     {
         return _y;
     }
 
-    public void setY(int y)
-    {
-        _y = y;
-    }
-
     /**
-     * Compare two vertices according to their x, y and nbr
+     * Compare two vertices according to their x, y and nbr.
      *
-     * @param v The vertex to compare
-     * @return 0 if they are equals else 1
+     * @param v The vertex to compare.
+     * @return 0 if they are equals, 1 in the other case.
      */
     public int compareTo(Vertex v)
     {
@@ -60,9 +72,11 @@ public class Vertex
     }
 
     /**
-     * @return True if two vertices have the same x and y else false
+     * Compare two Vertices coordinates.
+     * 
+     * @return True if two vertices have the same x and y, false in the other
+     * case.
      */
-    //Pour pouvoir utiliser containsVertex qui utilise cette méthode
     @Override
     public boolean equals(Object obj)
     {
@@ -82,7 +96,6 @@ public class Vertex
         return v.getX() == _x && v.getY() == _y;
     }
 
-    //Pour pouvoir utiliser equals sans problème
     @Override
     public int hashCode()
     {
@@ -95,7 +108,7 @@ public class Vertex
      * @param dir direction of the movement.
      * @param width Width of the labyrinth.
      * @param height height of the labyrinth.
-     * @return false if we go off the labyrinth.
+     * @return false if we go off the labyrinth, true in the other case.
      */
     public boolean inBorders(Directions dir, int width, int height)
     {
@@ -112,5 +125,4 @@ public class Vertex
         }
         return true;
     }
-
 }

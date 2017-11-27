@@ -11,12 +11,16 @@ import java.util.Vector;
 import controller.Controller;
 import model.Edge.Type;
 
+/**
+ * Class used to do operation on {@link model.Graph Graphs}.
+ * 
+ * @author Java Group
+ */
 public class Model
 {
 
     public static enum Directions
     {
-
         EAST, WEST, NORTH, SOUTH;
     };
 
@@ -31,6 +35,13 @@ public class Model
 
     private static Model INSTANCE;
 
+    /**
+     * Retrives an instance of the Model.
+     * 
+     * Retrives the instance of the Model, there can be only one instance
+     * of the Model at once thanks to the singleton design pattern.
+     * @return An unique instance of Model.
+     */
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -41,9 +52,9 @@ public class Model
     }
 
     /**
-     * Create randomly a graph of a perfect labyrinth
+     * Randomly create a {@link model.Graph Graphs}.
      *
-     * @param vertex the beginning of the graph
+     * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
     public void buildRandomPath(Vertex vertex)
     {
@@ -101,6 +112,9 @@ public class Model
 
     /**
      * Write the graph in a .dot file.
+     * 
+     * This method writes the {@link model.Graph Graph} in a .dot file in order 
+     * to display it with graphviz.
      */
     public void GraphToDot()
     {
