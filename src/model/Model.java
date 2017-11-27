@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import controller.Controller;
 import model.Edge.Type;
 
 /**
@@ -45,9 +44,7 @@ public class Model
     public static Model getInstance()
     {
         if (INSTANCE == null)
-        {
             INSTANCE = new Model();
-        }
         return INSTANCE;
     }
 

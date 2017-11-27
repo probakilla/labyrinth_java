@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import org.jgrapht.graph.SimpleGraph;
 
 /**
@@ -11,16 +12,19 @@ import org.jgrapht.graph.SimpleGraph;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-    private static final long serialVersionUID = 1L;
 
-    private Edge _edge;
-    private final Vertex[][] _vertex;
+    private static final long serialVersionUID = 1L;
 
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
+    private final static int MAX_OBSERVERS = 10;
+
+    private Edge _edge;
+    private final Vertex[][] _vertex;
+    private ArrayList _observers;
 
     /**
-     * Create a Graph base structure with {@link model.Vertex Vertices} and 
+     * Create a Graph base structure with {@link model.Vertex Vertices} and
      * {@link model.Edge Edges}.
      */
     public Graph()
@@ -35,28 +39,29 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                 _vertex[j][i] = new Vertex(j, i, i + j);
             }
         }
+        _observers = new ArrayList();
     }
-    
+
     /**
      * Retrives the width of the labyrinth.
-     * 
+     *
      * @return The width of the labyrinth.
      */
     public int getGRIDWIDTH()
     {
         return GRID_WIDTH;
     }
-    
+
     /**
      * Retrives the height of the labyrinth.
-     * 
+     *
      * @return The height of the labyrinth.
      */
     public int getGRIDHEIGHT()
     {
         return GRID_HEIGHT;
     }
-    
+
     /**
      * Check if the vertex exists in the Graph.
      *
@@ -93,7 +98,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 
     /**
      * Retrives a {@link model.Vertex Vertex} locate in specific coordinates.
-     * 
+     *
      * @param i Abcsissa of the wanted {@link model.Vertex Vertex}.
      * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
      * @return The {@link model.Vertex Vertex} locate in i, j coordinates.

@@ -39,9 +39,7 @@ public class View
     public static View getInstance()
     {
         if (INSTANCE == null)
-        {
             INSTANCE = new View();
-        }
         return INSTANCE;
     }
 

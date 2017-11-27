@@ -4,14 +4,40 @@ import model.Model.Directions;
 
 /**
  * An implementation of vertices in a {@link model.Graph Graph}
- * 
+ *
  * @author Java Group
  */
-
 public class Vertex
 {
-    private final int _x, _y, _nbr;
 
+    private int _x, _y, _nbr;
+
+    /**
+     * Create a Vertex with specific coordinates and a fixed number.
+     *
+     * Create a Vertex with x in abscissa and y in ordinate and set the number
+     * of the Vertex to -1.
+     *
+     * @param x
+     * @param y
+     */
+    public Vertex(int x, int y)
+    {
+        _x = x;
+        _y = y;
+        _nbr = -1;
+    }
+
+    public void setX(int x)
+    {
+        _x = x;
+    }
+
+    public void setY(int y)
+    {
+        _y = y;
+    }
+    
     /**
      * Create a Vertex with specific coordinates and a number.
      * 
@@ -28,27 +54,27 @@ public class Vertex
 
     /**
      * Retrives the number of the Vertex.
-     * 
+     *
      * @return The number of the Vertex.
      */
     public int getNbr()
     {
         return _nbr;
     }
-    
+
     /**
      * Retrives the Abscissa of the Vertex.
-     * 
+     *
      * @return The Abscissa of the Vertex.
      */
     public int getX()
     {
         return _x;
-    } 
+    }
 
     /**
      * Retrives the Ordinate of the Vertex.
-     * 
+     *
      * @return The Ordinate of the Vertex.
      */
     public int getY()
@@ -73,7 +99,7 @@ public class Vertex
 
     /**
      * Compare two Vertices coordinates.
-     * 
+     *
      * @return True if two vertices have the same x and y, false in the other
      * case.
      */

@@ -34,9 +34,7 @@ public class Controller
     public static Controller getInstance()
     {
         if (INSTANCE == null)
-        {
             INSTANCE = new Controller();
-        }
         return INSTANCE;
     }
 
