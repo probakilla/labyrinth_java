@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Iterator;
@@ -27,7 +26,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 
     private Edge _edge;
     private final Vertex[][] _vertex;
-    private ArrayList _observers;
 
     /**
      * Create a Graph base structure with {@link model.Vertex Vertices} and
@@ -47,7 +45,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                 nbr++;
             }
         }
-        _observers = new ArrayList();
     }
 
     /**

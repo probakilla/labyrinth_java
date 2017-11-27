@@ -11,16 +11,14 @@ import javafx.scene.image.ImageView;
 public class AbstractCharacter
 {
 
-    /**
-     * Default image.
-     */
-    protected ImageView _imageView;
+    protected Image _imageFile;
+    protected ImageView _image;
     protected Vertex _position;
 
     public AbstractCharacter()
     {
         _position = new Vertex(0, 0);
-        _imageView = new ImageView();     
+        _image = new ImageView();
     }
 
     public void setPosition(int x, int y)

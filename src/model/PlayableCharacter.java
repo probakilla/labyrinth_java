@@ -14,7 +14,9 @@ public class PlayableCharacter extends AbstractCharacter
     
     private PlayableCharacter()
     {
-        _position = new Vertex (0, 0);
+        super ();
+        _imageFile = new Image ("../../player.png");
+        _image.setImage(_imageFile);
     }
 
     public static PlayableCharacter getInstance()
