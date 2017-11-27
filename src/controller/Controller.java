@@ -47,7 +47,8 @@ public class Controller
      */
     public void start(Stage stage)
     {
-        _model.GraphToDot();
+        _model.buildRandomPath(new Vertex(0, 0, 0));
+    	//_model.GraphToDot();
         _view.start(stage);
     }
 }

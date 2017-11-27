@@ -1,5 +1,10 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.jgrapht.graph.SimpleGraph;
 
 /**
@@ -13,8 +18,8 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 {
     private static final long serialVersionUID = 1L;
 
-    private Edge _edge;
-    private final Vertex[][] _vertex;
+    private Edge []_edge;
+    private Vertex[][] _vertex;
 
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
@@ -101,5 +106,54 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];
+    }
+    
+    /**
+     * Write the graph in a .dot file.
+     * 
+     * This method writes the {@link model.Graph Graph} in a .dot file in order 
+     * to display it with graphviz.
+     */
+    public void GraphToDot()
+    {
+        Vertex v = new Vertex(0, 0, 0);
+        //_graph = new Graph();
+        this.addVertex(v);
+        //buildRandomPath(v);
+        PrintWriter writer;
+        try
+        {
+            writer = new PrintWriter("graph.dot");
+            writer.println("graph path {");
+            Set<Vertex> v1 = this.vertexSet();
+            int i = 0;
+            int j;
+            for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
+            {
+                Vertex from = it.next();
+                j = 0;
+                for (Iterator<Vertex> it1 = v1.iterator(); it1.hasNext(); j++)
+                {
+                    Vertex to = it1.next();
+                    while (j < i)
+                    {
+                        ++j;
+                        to = it1.next();
+                    }
+                    if (this.containsEdge(from, to))
+                    {
+                        writer.print(from.getNbr());
+                        writer.print(" -- ");
+                        writer.println(to.getNbr());
+                    }
+
+                }
+            }
+            writer.println("}");
+            writer.close();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
