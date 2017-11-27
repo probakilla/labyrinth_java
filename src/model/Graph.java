@@ -42,7 +42,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * 
      * @return The width of the labyrinth.
      */
-    public int getGRIDWIDTH()
+    public static int getGRIDWIDTH()
     {
         return GRID_WIDTH;
     }
@@ -52,7 +52,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * 
      * @return The height of the labyrinth.
      */
-    public int getGRIDHEIGHT()
+    public static int getGRIDHEIGHT()
     {
         return GRID_HEIGHT;
     }

@@ -115,13 +115,13 @@ public class Vertex
         switch (dir)
         {
             case NORTH:
-                return ((_y - 1 >= 0));
+                return _y - 1 >= 0;
             case SOUTH:
-                return ((_y + 1 < height));
+                return _y + 1 < height;
             case EAST:
-                return ((_x + 1 < width));
+                return _x + 1 < width;
             case WEST:
-                return ((_x - 1 >= 0));
+                return _x - 1 >= 0;
         }
         return true;
     }

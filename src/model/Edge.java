@@ -15,7 +15,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
      */
     private static final long serialVersionUID = 1L;
 
-    public enum Type
+    public static enum Type
     {
 
         OPENED_DOOR,

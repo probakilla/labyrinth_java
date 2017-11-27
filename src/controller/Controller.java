@@ -34,9 +34,7 @@ public class Controller
     public static Controller getInstance()
     {
         if (INSTANCE == null)
-        {
             INSTANCE = new Controller();
-        }
         return INSTANCE;
     }
 
@@ -48,6 +46,7 @@ public class Controller
     public void start(Stage stage)
     {
         _model.GraphToDot();
-        _view.start(stage);
+        _view.start(stage, _model.getGraph());
+        
     }
 }

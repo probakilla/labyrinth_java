@@ -5,10 +5,8 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.Vector;
 
-import controller.Controller;
 import model.Edge.Type;
 
 /**
@@ -25,7 +23,6 @@ public class Model
     };
 
     private int _iteration;
-    private Random _random;
     private Graph _graph;
 
     private Model()
@@ -49,6 +46,10 @@ public class Model
             INSTANCE = new Model();
         }
         return INSTANCE;
+    }
+    
+    public Graph getGraph() {
+    	return _graph;
     }
 
     /**
@@ -78,7 +79,7 @@ public class Model
         for (int i = 0; i < 4; ++i)
         {
             Directions dir = directions[i];
-            if (vertex.inBorders(dir, _graph.getGRIDWIDTH(), _graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir))
+            if (vertex.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir))
             {
                 int x = vertex.getX();
                 int y = vertex.getY();
