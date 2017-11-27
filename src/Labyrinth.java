@@ -18,11 +18,22 @@ public class Labyrinth extends Application
 
     static Controller _controller;
 
-    public static void main(String[] args)
+    /**
+     * Main function which launch the application.
+     * 
+     * @param args is unused.
+     */
+    public static void main(String args[])
     {
         launch();
     }
 
+    /**
+     * Function called at the start of the application which set the {@link 
+     * controller.Controller Controller}.
+     * 
+     * @param primaryStage Stage used for the graphical interface.
+     */
     @Override
     public void start(Stage primaryStage)
     {
@@ -36,6 +47,9 @@ public class Labyrinth extends Application
         }
     }
 
+    /**
+     * Stops the application.
+     */
     @Override
     public void stop()
     {

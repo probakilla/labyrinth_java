@@ -7,30 +7,44 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import controller.Controller;
 import model.Edge.Type;
 
+/**
+ * Class used to do operation on {@link model.Graph Graphs}.
+ * 
+ * @author Java Group
+ */
 public class Model
 {
 
     public static enum Directions
     {
-
         EAST, WEST, NORTH, SOUTH;
     };
 
-    private int _iteration;
+    private AtomicInteger  _iteration;
     private Random _random;
     private Graph _graph;
 
     private Model()
     {
-        _iteration = 0;
+        _iteration = new AtomicInteger(1);
+        _graph = new Graph ();
+        _random = new Random ();
     }
 
     private static Model INSTANCE;
 
+    /**
+     * Retrives an instance of the Model.
+     * 
+     * Retrives the instance of the Model, there can be only one instance
+     * of the Model at once thanks to the singleton design pattern.
+     * @return An unique instance of Model.
+     */
     public static Model getInstance()
     {
         if (INSTANCE == null)
@@ -41,12 +55,13 @@ public class Model
     }
 
     /**
-     * Create randomly a graph of a perfect labyrinth
+     * Randomly create a {@link model.Graph Graphs}.
      *
-     * @param vertex the beginning of the graph
+     * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
     public void buildRandomPath(Vertex vertex)
     {
+    	_graph.addVertex(vertex);
         //une liste aleatoire des 4 directions	
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
@@ -56,10 +71,9 @@ public class Model
 
         Directions directions[] = new Directions[4];
         int index;
-        Random random = new Random();
         for (int i = 0; i < directions.length; ++i)
         {
-            index = random.nextInt(v.size());
+            index = _random.nextInt(v.size());
             directions[i] = v.get(index);
             v.remove(index);
         }
@@ -91,7 +105,8 @@ public class Model
                         yt = y;
                         break;
                 }
-                Vertex next = new Vertex(xt, yt, _iteration++);
+                
+                Vertex next = new Vertex(xt, yt, _iteration.incrementAndGet());
                 _graph.addVertex(next);
                 _graph.addEdge(vertex, next, new Edge(Type.CORRIDOR));
                 buildRandomPath(next);
@@ -105,51 +120,5 @@ public class Model
     public Graph getGraph()
     {
     	return _graph;
-    }
-    
-    /**
-     * Write the graph in a .dot file.
-     */
-    public void GraphToDot()
-    {
-        Vertex v = new Vertex(0, 0, _iteration++);
-        _graph = new Graph();
-        _graph.addVertex(v);
-        buildRandomPath(v);
-        PrintWriter writer;
-        try
-        {
-            writer = new PrintWriter("graph.dot");
-            writer.println("graph path {");
-            Set<Vertex> v1 = _graph.vertexSet();
-            int i = 0;
-            int j;
-            for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
-            {
-                Vertex from = it.next();
-                j = 0;
-                for (Iterator<Vertex> it1 = v1.iterator(); it1.hasNext(); j++)
-                {
-                    Vertex to = it1.next();
-                    while (j < i)
-                    {
-                        ++j;
-                        to = it1.next();
-                    }
-                    if (_graph.containsEdge(from, to))
-                    {
-                        writer.print(from.getNbr());
-                        writer.print(" -- ");
-                        writer.println(to.getNbr());
-                    }
-
-                }
-            }
-            writer.println("}");
-            writer.close();
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
     }
 }

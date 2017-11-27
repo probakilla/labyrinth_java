@@ -1,5 +1,10 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.jgrapht.graph.SimpleGraph;
 
 import model.Model.Directions;
@@ -13,16 +18,18 @@ import model.Model.Directions;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-
-    // TODO : Changer c'te bite
     private static final long serialVersionUID = 1L;
 
-    private Edge _edge;
+    private Edge []_edge;
     private Vertex[][] _vertex;
 
-    private static int GRID_WIDTH = 16;
-    private static int GRID_HEIGHT = 16;
+    private final static int GRID_WIDTH = 16;
+    private final static int GRID_HEIGHT = 16;
 
+    /**
+     * Create a Graph base structure with {@link model.Vertex Vertices} and 
+     * {@link model.Edge Edges}.
+     */
     public Graph()
     {
         super(Edge.class);
@@ -38,28 +45,33 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
-
+    
+    /**
+     * Retrives the width of the labyrinth.
+     * 
+     * @return The width of the labyrinth.
+     */
     public int getGRIDWIDTH()
     {
         return GRID_WIDTH;
     }
-
+    
+    /**
+     * Retrives the height of the labyrinth.
+     * 
+     * @return The height of the labyrinth.
+     */
     public int getGRIDHEIGHT()
     {
         return GRID_HEIGHT;
     }
-
-    public void buildGraph()
-    {
-        this.addEdge(_vertex[0][0], _vertex[0][1]);
-    }
-
+    
     /**
-     * Check if the vertex exists and it's direction.
+     * Check if the vertex exists in the Graph.
      *
      * @param v vertex to check.
      * @param dir direction to check.
-     * @return true if both exists.
+     * @return true if both exists, false in the other case.
      */
     public boolean doesntExist(Vertex v, Model.Directions dir)
     {
@@ -88,12 +100,18 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         return !this.containsVertex(new Vertex(xt, yt, v.getNbr() + 1));
     }
 
+    /**
+     * Retrives a {@link model.Vertex Vertex} locate in specific coordinates.
+     * 
+     * @param i Abcsissa of the wanted {@link model.Vertex Vertex}.
+     * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
+     * @return The {@link model.Vertex Vertex} locate in i, j coordinates.
+     */
     public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];
     }
-    
-
+  
 
 	public Vertex getVertexByDir(Vertex actual, Directions dir) {
 		// TODO Auto-generated method stub
@@ -125,4 +143,52 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 		return null;
 	}
 
+    /**
+     * Write the graph in a .dot file.
+     * 
+     * This method writes the {@link model.Graph Graph} in a .dot file in order 
+     * to display it with graphviz.
+     */
+    public void GraphToDot()
+    {
+        Vertex v = new Vertex(0, 0, 0);
+        //_graph = new Graph();
+        this.addVertex(v);
+        //buildRandomPath(v);
+        PrintWriter writer;
+        try
+        {
+            writer = new PrintWriter("graph.dot");
+            writer.println("graph path {");
+            Set<Vertex> v1 = this.vertexSet();
+            int i = 0;
+            int j;
+            for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
+            {
+                Vertex from = it.next();
+                j = 0;
+                for (Iterator<Vertex> it1 = v1.iterator(); it1.hasNext(); j++)
+                {
+                    Vertex to = it1.next();
+                    while (j < i)
+                    {
+                        ++j;
+                        to = it1.next();
+                    }
+                    if (this.containsEdge(from, to))
+                    {
+                        writer.print(from.getNbr());
+                        writer.print(" -- ");
+                        writer.println(to.getNbr());
+                    }
+
+                }
+            }
+            writer.println("}");
+            writer.close();
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

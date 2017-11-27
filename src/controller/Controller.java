@@ -49,13 +49,14 @@ public class Controller
     }
 
     /**
-     * Start the application.
+     * Start the Controller.
      *
      * @param stage Stage where the display will be managed.
      */    
     public void start(Stage stage)
     {
-        _model.GraphToDot();
-        _view.start(stage);  
+        _model.buildRandomPath(new Vertex(0, 0, 0));
+    	//_model.GraphToDot();
+        _view.start(stage);
     }
 }
