@@ -46,7 +46,8 @@ public class View
         _pane = new Pane();
 
         drawFrame(stage, 16, 16);
-        drawWall(1, 1, 2, 1, Color.CHOCOLATE);
+
+        drawWall(1, 1, 2, 1, WALL_COLOR);
         stage.show();
     }
 

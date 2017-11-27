@@ -2,6 +2,8 @@ package model;
 
 import org.jgrapht.graph.SimpleGraph;
 
+import model.Model.Directions;
+
 /**
  * Graph used to display the labyrinth.
  *
@@ -25,12 +27,14 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     {
         super(Edge.class);
         _vertex = new Vertex[GRID_WIDTH][GRID_HEIGHT];
-        int i, j;
+        int i, j, nbr;
+        nbr = 0;
         for (i = 0; i < GRID_HEIGHT; ++i)
         {
             for (j = 0; j < GRID_WIDTH; ++j)
             {
-                _vertex[j][i] = new Vertex(j, i, i + j);
+                _vertex[j][i] = new Vertex(j, i, nbr);
+                nbr++;
             }
         }
     }
@@ -88,4 +92,37 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     {
         return _vertex[i][j];
     }
+    
+
+
+	public Vertex getVertexByDir(Vertex actual, Directions dir) {
+		// TODO Auto-generated method stub
+		if (!this.doesntExist(actual, dir)) {
+			int xt = 0, yt = 0;
+	        int x = actual.getX();
+	        int y = actual.getY();
+	        switch (dir)
+	        {
+	            case NORTH:
+	                xt = x;
+	                yt = y - 1;
+	                break;
+	            case SOUTH:
+	                xt = x;
+	                yt = y + 1;
+	                break;
+	            case EAST:
+	                xt = x + 1;
+	                yt = y;
+	                break;
+	            case WEST:
+	                xt = x - 1;
+	                yt = y;
+	                break;
+	        }
+	        return getVertex(xt, yt);
+		}
+		return null;
+	}
+
 }

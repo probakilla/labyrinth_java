@@ -98,7 +98,15 @@ public class Model
             }
         }
     }
-
+    /**
+     * Return the graph used in Model.
+     * @return graph
+     */
+    public Graph getGraph()
+    {
+    	return _graph;
+    }
+    
     /**
      * Write the graph in a .dot file.
      */
