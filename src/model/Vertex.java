@@ -18,22 +18,22 @@ public class Vertex
      * Create a Vertex with x in abscissa and y in ordinate and set the number
      * of the Vertex to -1.
      *
-     * @param x
-     * @param y
+     * @param x Abscissa of the Vertex.
+     * @param y Ordinate of the Vertex.
      */
-    public Vertex(int x, int y)
+    public Vertex (int x, int y)
     {
         _x = x;
         _y = y;
         _nbr = -1;
     }
 
-    public void setX(int x)
+    public void setX (int x)
     {
         _x = x;
     }
 
-    public void setY(int y)
+    public void setY (int y)
     {
         _y = y;
     }
@@ -45,7 +45,7 @@ public class Vertex
      * @param y Ordinate of the Vertex.
      * @param nbr Number of the Vertex.
      */
-    public Vertex(int x, int y, int nbr)
+    public Vertex (int x, int y, int nbr)
     {
         _x = x;
         _y = y;
@@ -57,32 +57,32 @@ public class Vertex
      *
      * @return The number of the Vertex.
      */
-    public int getNbr()
+    public int getNbr ()
     {
         return _nbr;
     }
 
-    public void setNbr(int nbr)
+    public void setNbr (int nbr)
     {
         _nbr = nbr;
     }
 
     /**
-     * Retrives the Abscissa of the Vertex.
+     * Retrieves the Abscissa of the Vertex.
      *
      * @return The Abscissa of the Vertex.
      */
-    public int getX()
+    public int getX ()
     {
         return _x;
     }
 
     /**
-     * Retrives the Ordinate of the Vertex.
+     * Retrieves the Ordinate of the Vertex.
      *
      * @return The Ordinate of the Vertex.
      */
-    public int getY()
+    public int getY ()
     {
         return _y;
     }
@@ -93,7 +93,7 @@ public class Vertex
      * @param v The vertex to compare.
      * @return 0 if they are equals, 1 in the other case.
      */
-    public int compareTo(Vertex v)
+    public int compareTo (Vertex v)
     {
         if (v.getX() == _x && v.getY() == _y && _nbr == v.getNbr())
         {
@@ -109,7 +109,7 @@ public class Vertex
      * case.
      */
     @Override
-    public boolean equals(Object obj)
+    public boolean equals (Object obj)
     {
         if (obj == this)
         {
@@ -128,7 +128,7 @@ public class Vertex
     }
 
     @Override
-    public int hashCode()
+    public int hashCode ()
     {
         return _x - _y;
     }
@@ -141,7 +141,7 @@ public class Vertex
      * @param height height of the labyrinth.
      * @return false if we go off the labyrinth, true in the other case.
      */
-    public boolean inBorders(Directions dir, int width, int height)
+    public boolean inBorders (Directions dir, int width, int height)
     {
         switch (dir)
         {

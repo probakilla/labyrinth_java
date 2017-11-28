@@ -1,6 +1,7 @@
 package view;
 
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -8,14 +9,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Edge;
 import model.Graph;
-import model.Model.Directions;
+import model.PlayableCharacter;
 
 /**
  * This class manage the display of the project.
  *
  * @author Java Group
- */	
-
+ */
 public class View
 {
 
@@ -28,49 +28,60 @@ public class View
     private Stage _stage;
     private Scene _scene;
     private Pane _pane;
+    private PlayableCharacter _player;
 
-    private View() {}
+    private View ()
+    {
+    }
 
     private static View INSTANCE;
 
     /**
-     * Retrives an instance of View.
-     * 
-     * Retrives the instance of the View, there can be only one instance
-     * of the View at once thanks to the singleton design pattern.
+     * Retrieves an instance of View.
+     *
+     * Retrieves the instance of the View, there can be only one instance of the
+     * View at once thanks to the singleton design pattern.
+     *
      * @return Instance of View.
      */
-    public static View getInstance()
+    public static View getInstance ()
     {
         if (INSTANCE == null)
+        {
             INSTANCE = new View();
+        }
         return INSTANCE;
     }
 
     /**
-	 * Start the View.
-	 * 
-	 * @param stage
-	 *            Stage used for the graphical interface.
-	 */
-	public void start(Stage stage, Graph g) {
-		_stage = stage;
-		_pane = new Pane();
+     * Start the View.
+     *
+     * @param stage Stage used for the graphical interface.
+     * @param g the {@link model.Graph Graph} to display.
+     */
+    public void start (Stage stage, Graph g)
+    {
+        _stage = stage;
+        _pane = new Pane();
+        _player = PlayableCharacter.getInstance();
+        _player.randomizePosition();
+        
+        drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
+        drawGraph(g);
 
-		drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
-		drawGraph(g);
-		stage.show();
-	}	
+        stage.show();
+    }
 
     /**
      * Draw the labyrinth basis.
      *
      * Draw the main structure of the labyrinth (e.g borders of the labyrinth).
+     *
      * @param stage Window where we draw the labyrinth.
      * @param nbrX Height of the labyrinth.
      * @param nbrY Width of the labyrinth.
      */
-    public void drawFrame(Stage stage, int nbrX, int nbrY)
+    public void drawFrame (Stage stage, int nbrX, int nbrY)
     {
         _scene = new Scene(_pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN);
 
@@ -108,18 +119,18 @@ public class View
 
     /**
      * Draw a line between two points.
-     * 
-     * This method is used to build walls in the labyrinth. Draw a line
-     * between two points given in parameters (with their coordinates). Color
-     * of the wall is also set by this method.
-     * 
+     *
+     * This method is used to build walls in the labyrinth. Draw a line between
+     * two points given in parameters (with their coordinates). Color of the
+     * wall is also set by this method.
+     *
      * @param xs abscissa of the first point.
      * @param ys Ordinate of the first point.
      * @param xt Abscissa of the second point.
      * @param yt Ordinate of the second point.
      * @param color Color of the wall.
      */
-    public void drawWall(int xs, int ys, int xt, int yt, Paint color)
+    public void drawWall (int xs, int ys, int xt, int yt, Paint color)
     {
         int x = 0, y = 0, xspan = 0, yspan = 0;
         if (ys == yt)
@@ -131,7 +142,8 @@ public class View
             Rectangle square = new Rectangle(x, y, xspan, yspan);
             square.setFill(color);
             _pane.getChildren().add(square);
-        } else if (xs == xt)
+        }
+        else if (xs == xt)
         {
             x = (WALL + xs * (WALL + CELL)) * SPAN;
             y = ((WALL + CELL) + (WALL + CELL) * ((int) (ys + yt) / 2)) * SPAN;
@@ -142,23 +154,32 @@ public class View
             _pane.getChildren().add(square);
         }
     }
-    
-    public void drawGraph(Graph g) {
-		Edge e;
-		for (int x = 0; x < Graph.getGRIDWIDTH(); x++) {
-			for (int y = 0; y < Graph.getGRIDHEIGHT(); y++) {
-				if (x + 1 < Graph.getGRIDWIDTH()) {
-					e = g.getEdge(g.getVertex(x, y), g.getVertex(x + 1, y));
-					if (e == null || (e.getType() != Edge.Type.CORRIDOR))
-						drawWall(x, y, x + 1, y, Color.CHOCOLATE);
-				}
 
-				if (y + 1 < Graph.getGRIDHEIGHT()) {
-					e = g.getEdge(g.getVertex(x, y), g.getVertex(x, y + 1));
-					if (e == null || (e.getType() != Edge.Type.CORRIDOR))
-						drawWall(x, y, x, y + 1, Color.CHOCOLATE);
-				}
-			}
-		}
-	}
+    public void drawGraph (Graph g)
+    {
+        Edge e;
+        for (int x = 0; x < Graph.getGRIDWIDTH(); x++)
+        {
+            for (int y = 0; y < Graph.getGRIDHEIGHT(); y++)
+            {
+                if (x + 1 < Graph.getGRIDWIDTH())
+                {
+                    e = g.getEdge(g.getVertex(x, y), g.getVertex(x + 1, y));
+                    if (e == null || (e.getType() != Edge.Type.CORRIDOR))
+                    {
+                        drawWall(x, y, x + 1, y, Color.CHOCOLATE);
+                    }
+                }
+
+                if (y + 1 < Graph.getGRIDHEIGHT())
+                {
+                    e = g.getEdge(g.getVertex(x, y), g.getVertex(x, y + 1));
+                    if (e == null || (e.getType() != Edge.Type.CORRIDOR))
+                    {
+                        drawWall(x, y, x, y + 1, Color.CHOCOLATE);
+                    }
+                }
+            }
+        }
+    }
 }

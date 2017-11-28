@@ -31,7 +31,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * Create a Graph base structure with {@link model.Vertex Vertices} and
      * {@link model.Edge Edges}.
      */
-    public Graph()
+    public Graph ()
     {
         super(Edge.class);
         _vertex = new Vertex[GRID_WIDTH][GRID_HEIGHT];
@@ -48,21 +48,21 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     }
 
     /**
-     * Retrives the width of the labyrinth.
+     * Retrieves the width of the labyrinth.
      *
      * @return The width of the labyrinth.
      */
-    public static int getGRIDWIDTH()
+    public static int getGRIDWIDTH ()
     {
         return GRID_WIDTH;
     }
 
     /**
-     * Retrives the height of the labyrinth.
+     * Retrieves the height of the labyrinth.
      *
      * @return The height of the labyrinth.
      */
-    public static int getGRIDHEIGHT()
+    public static int getGRIDHEIGHT ()
     {
         return GRID_HEIGHT;
     }
@@ -74,7 +74,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @param dir direction to check.
      * @return true if both exists, false in the other case.
      */
-    public boolean doesntExist(Vertex v, Model.Directions dir)
+    public boolean doesntExist (Vertex v, Model.Directions dir)
     {
         int xt = 0, yt = 0;
         int x = v.getX();
@@ -102,18 +102,18 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     }
 
     /**
-     * Retrives a {@link model.Vertex Vertex} locate in specific coordinates.
+     * Retrieves a {@link model.Vertex Vertex} locate in specific coordinates.
      *
-     * @param i Abcsissa of the wanted {@link model.Vertex Vertex}.
+     * @param i Abscissa of the wanted {@link model.Vertex Vertex}.
      * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
      * @return The {@link model.Vertex Vertex} locate in i, j coordinates.
      */
-    public Vertex getVertex(int i, int j)
+    public Vertex getVertex (int i, int j)
     {
         return _vertex[i][j];
     }
 
-    public Vertex getVertexByDir(Vertex actual, Directions dir)
+    public Vertex getVertexByDir (Vertex actual, Directions dir)
     {
         // TODO Auto-generated method stub
         if (!this.doesntExist(actual, dir))
@@ -151,7 +151,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * This method writes the {@link model.Graph Graph} in a .dot file in order
      * to display it with graphviz.
      */
-    public void GraphToDot()
+    public void GraphToDot ()
     {
         Vertex v = new Vertex(0, 0, 0);
         //_graph = new Graph();
@@ -188,7 +188,8 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
             writer.println("}");
             writer.close();
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }

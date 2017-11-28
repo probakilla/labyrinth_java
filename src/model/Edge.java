@@ -25,7 +25,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
 
     private Type _type;
 
-    public Edge(Type type)
+    public Edge (Type type)
     {
         super();
         _type = type;
@@ -37,7 +37,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
      * @return source of this edge.
      */
     @Override
-    public Vertex getSource()
+    public Vertex getSource ()
     {
         return (Vertex) super.getSource();
     }
@@ -48,7 +48,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
      * @return target of this edge
      */
     @Override
-    public Vertex getTarget()
+    public Vertex getTarget ()
     {
         return (Vertex) super.getTarget();
     }
@@ -58,7 +58,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
      *
      * @return type of the edge.
      */
-    public Type getType()
+    public Type getType ()
     {
         return _type;
     }
@@ -68,19 +68,20 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
      *
      * @param type type of the edge
      */
-    public void setType(Type type)
+    public void setType (Type type)
     {
         _type = type;
     }
 
     @Override
-    public int compareTo(Edge o)
+    public int compareTo (Edge o)
     {
         int source = this.getSource().compareTo((o).getSource());
         if (source != 0)
         {
             return source;
-        } else
+        }
+        else
         {
             return this.getTarget().compareTo((o).getTarget());
         }

@@ -12,7 +12,7 @@ import model.Edge.Type;
 
 /**
  * Class used to do operation on {@link model.Graph Graphs}.
- * 
+ *
  * @author Java Group
  */
 public class Model
@@ -23,42 +23,44 @@ public class Model
         EAST, WEST, NORTH, SOUTH;
     };
 
-    private AtomicInteger  _iteration;
+    private AtomicInteger _iteration;
     private Random _random;
     private Graph _graph;
 
-    private Model()
+    private Model ()
     {
         _iteration = new AtomicInteger(1);
-        _graph = new Graph ();
-        _random = new Random ();
+        _graph = new Graph();
+        _random = new Random();
     }
 
     private static Model INSTANCE;
 
     /**
-     * Retrives an instance of the Model.
-     * 
-     * Retrives the instance of the Model, there can be only one instance
-     * of the Model at once thanks to the singleton design pattern.
+     * Retrieves an instance of the Model.
+     *
+     * Retrieves the instance of the Model, there can be only one instance of the
+     * Model at once thanks to the singleton design pattern.
+     *
      * @return An unique instance of Model.
      */
-    public static Model getInstance()
+    public static Model getInstance ()
     {
         if (INSTANCE == null)
+        {
             INSTANCE = new Model();
+        }
         return INSTANCE;
     }
-    
 
     /**
      * Randomly create a {@link model.Graph Graphs}.
      *
      * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
-    public void buildRandomPath(Vertex vertex)
+    public void buildRandomPath (Vertex vertex)
     {
-    	_graph.addVertex(vertex);
+        _graph.addVertex(vertex);
         //une liste aleatoire des 4 directions	
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
@@ -102,7 +104,7 @@ public class Model
                         yt = y;
                         break;
                 }
-                
+
                 Vertex next = new Vertex(xt, yt, _iteration.incrementAndGet());
                 _graph.addVertex(next);
                 _graph.addEdge(vertex, next, new Edge(Type.CORRIDOR));
@@ -110,12 +112,14 @@ public class Model
             }
         }
     }
+
     /**
      * Return the graph used in Model.
+     *
      * @return graph
      */
-    public Graph getGraph()
+    public Graph getGraph ()
     {
-    	return _graph;
+        return _graph;
     }
 }
