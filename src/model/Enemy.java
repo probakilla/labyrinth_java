@@ -12,8 +12,9 @@ public class Enemy extends AbstractCharacter
 
     /**
      * Constructor of Enemy.
-     * 
+     *
      * Retrieves an instance of Enemy with specific coordinates.
+     *
      * @param x Abscissa in the labyrinth of the Enemy.
      * @param y Ordinate in the labyrinth of the Enemy.
      */

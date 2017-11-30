@@ -47,10 +47,11 @@ public class AbstractCharacter
         {
             outOfBounds(newPos);
             _position.setY(newPos);
+            System.out.println(_position.toString());
         }
         catch (WrongMoveException e)
         {
-            System.err.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -67,10 +68,11 @@ public class AbstractCharacter
         {
             outOfBounds(newPos);
             _position.setY(newPos);
+            System.out.println(_position.toString());
         }
         catch (WrongMoveException e)
         {
-            System.err.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -87,10 +89,11 @@ public class AbstractCharacter
         {
             outOfBounds(newPos);
             _position.setX(newPos);
+            System.out.println(_position.toString());
         }
         catch (WrongMoveException e)
         {
-            System.err.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -107,10 +110,11 @@ public class AbstractCharacter
         {
             outOfBounds(newPos);
             _position.setX(newPos);
+            System.out.println(_position.toString());
         }
         catch (WrongMoveException e)
         {
-            System.err.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -131,7 +135,7 @@ public class AbstractCharacter
      */
     public void randomizePosition ()
     {
-        Random rand = new Random ();
+        Random rand = new Random();
         int min = 0;
         int maxWidth = Graph.getGRIDWIDTH() - 1;
         int maxHeight = Graph.getGRIDHEIGHT() - 1;

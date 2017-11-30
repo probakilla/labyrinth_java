@@ -21,9 +21,10 @@ public class PlayableCharacter extends AbstractCharacter
 
     /**
      * Retrieves an instance of PlayableCharacter.
-     * 
-     * Retrieves an instance of PlayableCharacter. There can be only one 
+     *
+     * Retrieves an instance of PlayableCharacter. There can be only one
      * PlayableCharacter at once thanks to the singleton design pattern.
+     *
      * @return The unique instance of PlayableCharacter.
      */
     public static PlayableCharacter getInstance ()

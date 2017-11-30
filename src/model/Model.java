@@ -1,10 +1,6 @@
 package model;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,9 +19,9 @@ public class Model
         EAST, WEST, NORTH, SOUTH;
     };
 
-    private AtomicInteger _iteration;
-    private Random _random;
-    private Graph _graph;
+    private final AtomicInteger _iteration;
+    private final Random _random;
+    private final Graph _graph;
 
     private Model ()
     {
@@ -39,8 +35,8 @@ public class Model
     /**
      * Retrieves an instance of the Model.
      *
-     * Retrieves the instance of the Model, there can be only one instance of the
-     * Model at once thanks to the singleton design pattern.
+     * Retrieves the instance of the Model, there can be only one instance of
+     * the Model at once thanks to the singleton design pattern.
      *
      * @return An unique instance of Model.
      */

@@ -11,15 +11,14 @@ public class WrongMoveException extends Exception
     {
         super(str);
     }
-    
+
     /**
      * Override of the super getMessage function.
-     * 
-     * @return Return a message in case of wrong movement.
+     *
+     * Print a message when the player tries to do an invalid movement.
      */
-    @Override
-    public String getMessage ()
+    public void printMessage ()
     {
-        return "Je ne peux pas aller par là";
+        System.err.println("Je ne peux pas aller par là");
     }
 }

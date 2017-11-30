@@ -1,7 +1,6 @@
 package view;
 
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -65,7 +64,7 @@ public class View
         _pane = new Pane();
         _player = PlayableCharacter.getInstance();
         _player.randomizePosition();
-        
+
         drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
         drawGraph(g);
 

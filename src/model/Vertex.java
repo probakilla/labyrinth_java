@@ -105,6 +105,7 @@ public class Vertex
     /**
      * Compare two Vertices coordinates.
      *
+     * @param obj The object to compare with.
      * @return True if two vertices have the same x and y, false in the other
      * case.
      */
@@ -155,5 +156,20 @@ public class Vertex
                 return _x - 1 >= 0;
         }
         return true;
+    }
+
+    /**
+     * Retrieves a String with coordinates.
+     * 
+     * Retrieves a String with the coordinates of the Vertex with the format
+     * [x-y].
+     * @return The String with the coordinates of the Vertex.
+     */
+    @Override
+    public String toString ()
+    {
+        StringBuilder str = new StringBuilder("[");
+        str.append(_x).append("-").append(_y).append("]");
+        return str.toString();
     }
 }
