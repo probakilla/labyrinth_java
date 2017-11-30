@@ -95,6 +95,14 @@ public class Controller
                                 case RIGHT:
                                     _player.right();
                                     break;
+                                case Q:
+                                    System.out.println("Vous quittez le jeu.");
+                                    System.exit(0);
+                                    break;
+                                case ESCAPE:
+                                    System.out.println("Vous quittez le jeu.");
+                                    System.exit(0);
+                                    break;
                                 default:
                                     break;
                             }
