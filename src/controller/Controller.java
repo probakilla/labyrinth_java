@@ -24,16 +24,19 @@ public class Controller
     private final PlayableCharacter _player;
     private final Enemy[] _enemies;
 
-    private Controller()
+    private Controller ()
     {
         _model = Model.getInstance();
         _view = View.getInstance();
         _player = PlayableCharacter.getInstance();
         _enemies = new Enemy[NB_ENEMIES];
-        
+
         int i;
         for (i = 0; i < NB_ENEMIES; i++)
-            _enemies [i] = new Enemy ();
+        {
+            _enemies[i] = new Enemy();
+            _enemies[i].randomizePosition();
+        }
     }
 
     /**
@@ -44,10 +47,12 @@ public class Controller
      *
      * @return Instance of the Controller
      */
-    public static Controller getInstance()
+    public static Controller getInstance ()
     {
         if (INSTANCE == null)
+        {
             INSTANCE = new Controller();
+        }
         return INSTANCE;
     }
 
@@ -56,7 +61,7 @@ public class Controller
      *
      * @return model
      */
-    public Model getModel()
+    public Model getModel ()
     {
         return _model;
     }
@@ -66,23 +71,25 @@ public class Controller
      *
      * @param stage Stage where the display will be managed.
      */
-    public void start(Stage stage)
+    public void start (Stage stage)
     {
         _model.buildRandomPath(new Vertex(0, 0, 0));
         // _model.GraphToDot();
         _view.start(stage, _model.getGraph());
         _view.printRules();
-        
+
         int i;
         for (i = 0; i < NB_ENEMIES; i++)
+        {
             _enemies[i].start();
+        }
 
         // Gestion du mouvement du joueur.
         EventHandler handler;
         handler = (EventHandler) new EventHandler()
         {
             @Override
-            public void handle(Event event)
+            public void handle (Event event)
             {
                 if (event.getClass() == KeyEvent.class)
                 {
@@ -117,7 +124,9 @@ public class Controller
                                 case S:
                                     System.out.println("Vous arrêtez les ennemis");
                                     for (int i = 0; i < NB_ENEMIES; i++)
+                                    {
                                         _enemies[i].stopRunning();
+                                    }
                                     break;
                                 default:
                                     break;

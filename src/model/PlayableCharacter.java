@@ -1,25 +1,30 @@
 package model;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Class used to define the playable character.
  *
- * TYPE is the "id" of the class and it's used to manage collisions.
- * When an enemy and a player collide, the addition of their type should be 0.
- * If this is a candy, it will be something else, but positive.
+ * TYPE is the "id" of the class and it's used to manage collisions. When an
+ * enemy and a player collide, the addition of their type should be 0. If this
+ * is a candy, for a collision with a {@link model.Candy Candy}, it can be
+ * any positive integer.
+ *
  * @author Java Group
  */
 public class PlayableCharacter extends AbstractCharacter
 {
-    private final static int TYPE = 1;
     private static PlayableCharacter INSTANCE;
+    private int _score;
 
     private PlayableCharacter ()
     {
-        super();
+        super(0, 0);
         _imageFile = new Image("file:../../utils/player.png");
-        _image.setImage(_imageFile);
+        _imageDisp = new ImageView (_imageFile);
+        _type = 1;
+        _score = 0;
     }
 
     /**
@@ -38,9 +43,21 @@ public class PlayableCharacter extends AbstractCharacter
         }
         return INSTANCE;
     }
-  
-    public int type ()
+
+    /**
+     * Increase the score of the player in function of the 
+     * {@link model.Candy Candy} he get.
+     *
+     * @param c The {@link model.Candy Candy} that the player gather.
+     */
+    public void increaseScore (Candy c)
     {
-        return TYPE;
+        _score += c.getType();
     }
+
+    public void printScore ()
+    {
+        System.out.println("Vous avez gagné " + _score + " points.");
+    }
+
 }

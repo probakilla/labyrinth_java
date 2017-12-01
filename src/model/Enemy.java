@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Class used to define an enemy.
@@ -17,22 +18,23 @@ import javafx.scene.image.Image;
  */
 public class Enemy extends AbstractCharacter implements Runnable
 {
-    private static final int TYPE = -1;
     private int _running;
-
+    
     /**
      * Constructor of Enemy.
-     *
-     * Retrieves and instance of Enemy with randomized coordinates.
+     * 
+     * The coordinates of the Enemy are set to [0,0]. The call of this 
+     * constructor should be followed by randomizePosition().
      */
-    public Enemy()
+    public Enemy ()
     {
-        this.randomizePosition();
+        super (0, 0);
         _imageFile = new Image("file:../../bad.png");
-        _image.setImage(_imageFile);
+        _imageDisp = new ImageView (_imageFile);
+        _type = -1;
         _running = 0;
     }
-
+    
     /**
      * Constructor of Enemy.
      *
@@ -41,33 +43,27 @@ public class Enemy extends AbstractCharacter implements Runnable
      * @param x Abscissa in the labyrinth of the Enemy.
      * @param y Ordinate in the labyrinth of the Enemy.
      */
-    public Enemy(int x, int y)
+    public Enemy (int x, int y)
     {
-        super();
-        _position.setX(x);
-        _position.setY(y);
-        _imageFile = new Image("../../bad.png");
-        _image.setImage(_imageFile);
+        super(x, y);
+        _imageFile = new Image("file:../../bad.png");
+        _imageDisp = new ImageView (_imageFile);
+        _type = -1;
         _running = 0;
     }
 
-    public int type()
-    {
-        return TYPE;
-    }
-
-    public void stopRunning()
+    public void stopRunning ()
     {
         _running = 0;
     }
-
 
     // Pour l'instant le perso bouge au pif, mais on pourra changer ça.
     @Override
-    public void run()
+    public void run ()
     {
         _running = 1;
         Random rand = new Random();
+        randomizePosition();
         int max, min, rd;
         max = 3;
         min = 0;

@@ -1,16 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package model;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 /**
+ * Cherry implement the interface {@link model.Candy Candy} and has a type
+ * equals to 10.
  *
- * @author julpilleux
+ * @author Java Group
  */
-public class Cherry implements Candy
+public class Cherry extends AbstractCandy
 {
-    
+    /**
+     * Create an instance of PinkCandy with specific coordinates.
+     *
+     * @param x The Abscissa of the {@link model.Candy Candy}.
+     * @param y The Ordinate of the {@link model.Candy Candy}.
+     */
+    public Cherry (int x, int y)
+    {
+        super(x, y);
+        _imageFile = new Image("file:../../candy-3.png");
+        _imageDisp = new ImageView(_imageFile);
+        _type = 10;
+    }
+
 }

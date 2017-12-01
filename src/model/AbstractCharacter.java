@@ -1,31 +1,64 @@
 package model;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import exceptions.WrongMoveException;
 import java.util.Random;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Pattern used for all Characters and objects in the labyrinth.
  *
  * @author Java Group
  */
-public class AbstractCharacter extends Thread
+public abstract class AbstractCharacter extends Thread
 {
-
-    protected Image _imageFile;
-    protected ImageView _image;
+    protected int _type;
     protected Vertex _position;
+    protected Image _imageFile;
+    protected ImageView _imageDisp;
 
     /**
      * Constructor of AbstractCharacter.
+     * 
+     * Set the position of the AbstractCharacter with specific coordinates.
+     * @param x Abscissa in the labyrinth of the character.
+     * @param y Ordinate in the labyrinth of the character.
      */
-    public AbstractCharacter()
+    public AbstractCharacter(int x, int y)
     {
-        _position = new Vertex(0, 0);
-        _image = new ImageView();
+        _position = new Vertex(x, y);
     }
-
+    
+    /**
+     * Retrieves the type of the Character.
+     * 
+     * Retrieves the type of the character : 
+     * -1 is for the {@link model.Enemy Enemy}
+     * 1 is for the {@link model.PlayableCharacter}.
+     * @return The type.
+     */
+    public int getType ()
+    {
+        return _type;
+    }
+    
+    public ImageView getImage ()
+    {
+        return _imageDisp;
+    }
+    
+    /**
+     * Change the position of the character to specific location.
+     *
+     * @param x The target location abscissa.
+     * @param y The target location ordinate.
+     */
+    public void setPosition(int x, int y)
+    {
+        _position.setX(x);
+        _position.setY(y);
+    }
+    
     private void outOfBounds(int newPos) throws WrongMoveException
     {
         if (newPos < 0 || newPos > Graph.getGRIDHEIGHT())
@@ -115,18 +148,6 @@ public class AbstractCharacter extends Thread
     }
 
     /**
-     * Change the position of the character to specific location.
-     *
-     * @param x The target location abscissa.
-     * @param y The target location ordinate.
-     */
-    public void setPosition(int x, int y)
-    {
-        _position.setX(x);
-        _position.setY(y);
-    }
-
-    /**
      * Generate and set a random position for the character.
      */
     public void randomizePosition()
@@ -141,13 +162,4 @@ public class AbstractCharacter extends Thread
         _position.setY(rand.nextInt(maxHeight - min + 1) + min);
     }
 
-    /**
-     * Retrieves the ImageView in order to display it.
-     *
-     * @return Retrieves the ImageView member.
-     */
-    public ImageView getImage()
-    {
-        return _image;
-    }
 }
