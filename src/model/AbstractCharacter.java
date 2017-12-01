@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author Java Group
  */
-public class AbstractCharacter
+public class AbstractCharacter extends Thread
 {
 
     protected Image _imageFile;
@@ -20,13 +20,13 @@ public class AbstractCharacter
     /**
      * Constructor of AbstractCharacter.
      */
-    public AbstractCharacter ()
+    public AbstractCharacter()
     {
         _position = new Vertex(0, 0);
         _image = new ImageView();
     }
 
-    private void outOfBounds (int newPos) throws WrongMoveException
+    private void outOfBounds(int newPos) throws WrongMoveException
     {
         if (newPos < 0 || newPos > Graph.getGRIDHEIGHT())
         {
@@ -40,16 +40,15 @@ public class AbstractCharacter
      * @throws exceptions.WrongMoveException in case of collision with a wall or
      * a movement out of the labyrinth.
      */
-    public void up () throws WrongMoveException
+    public void up() throws WrongMoveException
     {
         int newPos = _position.getY() + 1;
         try
         {
             outOfBounds(newPos);
             _position.setY(newPos);
-            System.out.println(_position.toString());
-        }
-        catch (WrongMoveException e)
+            System.out.println("Je vais en haut, nouvelle prosition : " + _position.toString());
+        } catch (WrongMoveException e)
         {
             throw e;
         }
@@ -61,16 +60,15 @@ public class AbstractCharacter
      * @throws exceptions.WrongMoveException in case of collision with a wall or
      * a movement out of the labyrinth.
      */
-    public void down () throws WrongMoveException
+    public void down() throws WrongMoveException
     {
         int newPos = _position.getY() - 1;
         try
         {
             outOfBounds(newPos);
             _position.setY(newPos);
-            System.out.println(_position.toString());
-        }
-        catch (WrongMoveException e)
+            System.out.println("Je vais en bas, nouvelle prosition : " + _position.toString());
+        } catch (WrongMoveException e)
         {
             throw e;
         }
@@ -82,16 +80,15 @@ public class AbstractCharacter
      * @throws exceptions.WrongMoveException in case of collision with a wall or
      * a movement out of the labyrinth.
      */
-    public void left () throws WrongMoveException
+    public void left() throws WrongMoveException
     {
         int newPos = _position.getX() - 1;
         try
         {
             outOfBounds(newPos);
             _position.setX(newPos);
-            System.out.println(_position.toString());
-        }
-        catch (WrongMoveException e)
+            System.out.println("Je vais à gauche, nouvelle prosition : " + _position.toString());
+        } catch (WrongMoveException e)
         {
             throw e;
         }
@@ -103,16 +100,15 @@ public class AbstractCharacter
      * @throws exceptions.WrongMoveException in case of collision with a wall or
      * a movement out of the labyrinth.
      */
-    public void right () throws WrongMoveException
+    public void right() throws WrongMoveException
     {
         int newPos = _position.getX() + 1;
         try
         {
             outOfBounds(newPos);
             _position.setX(newPos);
-            System.out.println(_position.toString());
-        }
-        catch (WrongMoveException e)
+            System.out.println("Je vais à droite, nouvelle prosition : " + _position.toString());
+        } catch (WrongMoveException e)
         {
             throw e;
         }
@@ -124,7 +120,7 @@ public class AbstractCharacter
      * @param x The target location abscissa.
      * @param y The target location ordinate.
      */
-    public void setPosition (int x, int y)
+    public void setPosition(int x, int y)
     {
         _position.setX(x);
         _position.setY(y);
@@ -133,7 +129,7 @@ public class AbstractCharacter
     /**
      * Generate and set a random position for the character.
      */
-    public void randomizePosition ()
+    public void randomizePosition()
     {
         Random rand = new Random();
         int min = 0;
@@ -150,7 +146,7 @@ public class AbstractCharacter
      *
      * @return Retrieves the ImageView member.
      */
-    public ImageView getImage ()
+    public ImageView getImage()
     {
         return _image;
     }

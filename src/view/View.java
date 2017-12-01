@@ -181,4 +181,15 @@ public class View
             }
         }
     }
+    
+    /**
+     * Print rules in consol.
+     */
+    public void printRules ()
+    {
+        System.out.println("Voici les commandes disponibles :");
+        System.out.println("    - Touches directionnelles : Déplacer le personnage.");
+        System.out.println("    - Q ou ESCP : Quitter le jeu.");
+        System.out.println("");
+    }
 }

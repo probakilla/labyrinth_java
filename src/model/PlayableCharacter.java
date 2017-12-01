@@ -5,11 +5,14 @@ import javafx.scene.image.Image;
 /**
  * Class used to define the playable character.
  *
+ * TYPE is the "id" of the class and it's used to manage collisions.
+ * When an enemy and a player collide, the addition of their type should be 0.
+ * If this is a candy, it will be something else, but positive.
  * @author Java Group
  */
 public class PlayableCharacter extends AbstractCharacter
 {
-
+    private final static int TYPE = 1;
     private static PlayableCharacter INSTANCE;
 
     private PlayableCharacter ()
@@ -34,5 +37,10 @@ public class PlayableCharacter extends AbstractCharacter
             INSTANCE = new PlayableCharacter();
         }
         return INSTANCE;
+    }
+  
+    public int type ()
+    {
+        return TYPE;
     }
 }
