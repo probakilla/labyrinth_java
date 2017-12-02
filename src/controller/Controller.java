@@ -74,7 +74,8 @@ public class Controller
     public void start (Stage stage)
     {
         _model.buildRandomPath(new Vertex(0, 0, 0));
-        // _model.GraphToDot();
+        _model.getGraph().GraphToDot();
+        _model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
         _view.start(stage, _model.getGraph());
         _view.printRules();
 
@@ -83,7 +84,6 @@ public class Controller
         {
             _enemies[i].start();
         }
-
         // Gestion du mouvement du joueur.
         EventHandler handler;
         handler = (EventHandler) new EventHandler()
