@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import model.Edge.Type;
+import model.Model.Directions;
 
 /**
  * Class used to do operation on {@link model.Graph Graphs}.
@@ -101,7 +104,8 @@ public class Model
                         break;
                 }
 
-                Vertex next = new Vertex(xt, yt, _iteration.incrementAndGet());
+                Vertex next = _graph.getVertex(xt, yt);
+                next.setNbr(_iteration.incrementAndGet());
                 _graph.addVertex(next);
                 _graph.addEdge(vertex, next, new Edge(Type.CORRIDOR));
                 buildRandomPath(next);
@@ -109,6 +113,48 @@ public class Model
         }
     }
 
+    private void calculateManhattanDistance (Vertex source, Vertex target)
+    {
+        Queue<Vertex> fifo = new ArrayDeque<Vertex>();
+        target.setNbr(1);
+        fifo.add(target);
+        while (!fifo.isEmpty())
+        {
+            Vertex actual = fifo.remove();
+            for (Directions dir : Directions.values())
+            {
+                if (this.isOpened(actual, dir))
+                {
+                    Vertex next = _graph.getVertexByDir(actual, dir);
+                    if (next.getNbr() == 0)
+                    {
+                        next.setNbr(actual.getNbr() + 1);
+                        if (next != source)
+                        {
+                            fifo.add(next);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isOpened (Vertex actual, Directions dir)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    public void launchManhattan (Vertex source, Vertex target)
+    {
+        for (Vertex vertex : _graph.vertexSet())
+        {
+            vertex.setNbr(0);
+        }
+        System.out.println(_graph.getVertex(15, 15).getNbr());
+        calculateManhattanDistance(source, target);
+    }
+    
     /**
      * Return the graph used in Model.
      *
