@@ -169,7 +169,7 @@ public class Vertex
     public String toString ()
     {
         StringBuilder str = new StringBuilder("[");
-        str.append(_x).append(",").append(_y).append("]");
+        str.append(_x).append(",").append(_y).append("]").append(" nb ").append(_nbr);
         return str.toString();
     }
 }
