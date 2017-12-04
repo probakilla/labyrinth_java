@@ -27,7 +27,7 @@ public class View
     private Stage _stage;
     private Scene _scene;
     private Pane _pane;
-    private PlayableCharacter _player;
+    //private PlayableCharacter _player;
 
     private View ()
     {
@@ -62,8 +62,6 @@ public class View
     {
         _stage = stage;
         _pane = new Pane();
-        _player = PlayableCharacter.getInstance();
-        _player.randomizePosition();
 
         drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
         drawGraph(g);

@@ -24,7 +24,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
-    private final static int MAX_OBSERVERS = 10;
 
     private Vertex[][] _vertex;
 
@@ -239,6 +238,18 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
     }
 
+    /**
+     * Check if there is a wall between the vertex v and the vertex in the directions dir.
+     * 
+     * @param v source vertex.
+     * @param dir direction to find the target vertex.
+     * @return true if there is a wall.
+     */
+    public boolean isWall(Vertex v, Directions dir)
+    {
+    	return (this.getEdge(v, dir) == null);
+    }
+    
     /**
      * Return an edge connecting the source vertex to a vertex in the direction dir. 
      *

@@ -155,7 +155,7 @@ public class Vertex
             case WEST:
                 return _x - 1 >= 0;
         }
-        return true;
+        return false;
     }
 
     /**
