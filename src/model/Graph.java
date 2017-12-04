@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 import org.jgrapht.graph.SimpleGraph;
 
+import model.Edge.Type;
 import model.Model.Directions;
 
 /**
@@ -248,15 +249,15 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     }
 
     /**
-     * Check if there is a wall between the vertex v and the vertex in the directions dir.
+     * Check if there is a wall between the actual vertex and the vertex in the directions dir.
      * 
-     * @param v source vertex.
+     * @param actual actual vertex.
      * @param dir direction to find the target vertex.
      * @return true if there is a wall.
      */
-    public boolean isWall(Vertex v, Directions dir)
+    public boolean isWall(Vertex actual, Directions dir)
     {
-    	return (this.getEdge(v, dir) == null);
+    	return (this.getEdge(actual, dir) == null);
     }
     
     /**
@@ -272,4 +273,29 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 			return null;
 		return this.getEdge(source, target);
 	}
+
+	/**
+	 * Check if the Edge ,in directions dir, is an opened door.
+	 * @param actual actual vertex.
+	 * @param dir directions to check.
+	 * @return true if the edge is an opened door.
+	 */
+	public boolean isOpenedDoor(Vertex actual, Directions dir)
+	{
+		Edge edge = this.getEdge(actual, dir);
+		return (edge != null && edge.getType() == Type.OPENED_DOOR);
+	}
+	
+	/**
+	 * Check if the Edge, in directions dir, is a closed door.
+	 * @param actual actual vertex.
+	 * @param dir directions to check.
+	 * @return true if the edge is a closed door or if the edge doesn't exist.
+	 */
+	public boolean isClosedDoor(Vertex actual, Directions dir)
+	{
+		Edge edge = this.getEdge(actual, dir);
+		return (edge != null && edge.getType() == Type.CLOSED_DOOR);
+	}
+
 }

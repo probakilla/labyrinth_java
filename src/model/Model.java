@@ -16,7 +16,6 @@ import model.Model.Directions;
  */
 public class Model
 {
-
     public static enum Directions
     {
         EAST, WEST, NORTH, SOUTH;
@@ -123,7 +122,7 @@ public class Model
             Vertex actual = fifo.remove();
             for (Directions dir : Directions.values())
             {
-                if (this.isOpened(actual, dir))
+                if (_graph.isOpened(actual, dir))
                 {
                     Vertex next = _graph.getVertexByDir(actual, dir);
                     if (next.getNbr() == 0)
@@ -139,11 +138,6 @@ public class Model
         }
     }
 
-    private boolean isOpened (Vertex actual, Directions dir)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
 
     public void launchManhattan (Vertex source, Vertex target)
     {
