@@ -10,7 +10,7 @@ import model.Model.Directions;
 public class Vertex
 {
 
-    private int _x, _y, _nbr;
+    private int _x=0, _y=0, _nbr;
 
     /**
      * Create a Vertex with specific coordinates and a fixed number.

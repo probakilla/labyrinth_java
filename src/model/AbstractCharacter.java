@@ -2,6 +2,8 @@ package model;
 
 import exceptions.WrongMoveException;
 import java.util.Random;
+
+import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -16,6 +18,7 @@ public abstract class AbstractCharacter extends Thread
     protected Vertex _position;
     protected Image _imageFile;
     protected ImageView _imageDisp;
+    protected OnChangeListener onChangeListener;
 
     /**
      * Constructor of AbstractCharacter.
@@ -47,6 +50,10 @@ public abstract class AbstractCharacter extends Thread
         return _imageDisp;
     }
     
+    public Vertex getVertex() {
+    	return _position;
+    }
+    
     /**
      * Change the position of the character to specific location.
      *
@@ -57,6 +64,7 @@ public abstract class AbstractCharacter extends Thread
     {
         _position.setX(x);
         _position.setY(y);
+        //Controller.getInstance().refreshAbstractCharacter(_position.getX(), _position.getY());
     }
     
     private void outOfBounds(int newPos) throws WrongMoveException
@@ -85,6 +93,8 @@ public abstract class AbstractCharacter extends Thread
         {
             throw e;
         }
+        if(onChangeListener != null)
+        onChangeListener.changed(_position.getX(), _position.getY());
     }
 
     /**
@@ -105,6 +115,8 @@ public abstract class AbstractCharacter extends Thread
         {
             throw e;
         }
+        if(onChangeListener != null)
+        onChangeListener.changed(_position.getX(), _position.getY());
     }
 
     /**
@@ -125,6 +137,8 @@ public abstract class AbstractCharacter extends Thread
         {
             throw e;
         }
+        if(onChangeListener != null)
+        onChangeListener.changed(_position.getX(), _position.getY());
     }
 
     /**
@@ -145,6 +159,8 @@ public abstract class AbstractCharacter extends Thread
         {
             throw e;
         }
+        if(onChangeListener != null)
+        onChangeListener.changed(_position.getX(), _position.getY());
     }
 
     /**
@@ -158,8 +174,19 @@ public abstract class AbstractCharacter extends Thread
         int maxHeight = Graph.getGRIDHEIGHT() - 1;
         // Formule trouvée sur internet pour générer des nombres entre min et
         // max inclus.
-        _position.setX(rand.nextInt(maxWidth - min + 1) + min);
-        _position.setY(rand.nextInt(maxHeight - min + 1) + min);
+        setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
+        /*_position.setX(rand.nextInt(maxWidth - min + 1) + min);
+        _position.setY(rand.nextInt(maxHeight - min + 1) + min);*/
+    }
+    
+    
+    
+    public void setOnChangeListener(OnChangeListener onChangeListener) {
+    	this.onChangeListener = onChangeListener;
+    }
+    
+    public interface OnChangeListener{
+    	void changed(int x, int y);
     }
 
 }
