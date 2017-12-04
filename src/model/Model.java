@@ -29,7 +29,7 @@ public class Model
     private Model ()
     {
         _iteration = new AtomicInteger(1);
-        _graph = new Graph();
+        _graph = Graph.getInstance();
         _random = new Random();
     }
 

@@ -19,9 +19,10 @@ import model.Model.Directions;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-
+	
     private static final long serialVersionUID = 1L;
-
+    
+    private static Graph INSTANCE;
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
 
@@ -31,7 +32,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * Create a Graph base structure with {@link model.Vertex Vertices} and
      * {@link model.Edge Edges}.
      */
-    public Graph ()
+    private Graph ()
     {
         super(Edge.class);
         _vertex = new Vertex[GRID_WIDTH][GRID_HEIGHT];
@@ -45,6 +46,15 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                 nbr++;
             }
         }
+    }
+    
+    public static Graph getInstance()
+    {
+    	if (INSTANCE == null)
+        {
+            INSTANCE = new Graph();
+        }
+        return INSTANCE;
     }
 
     /**
@@ -226,7 +236,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                         writer.print(" -- ");
                         writer.println(to.getNbr());
                     }
-
                 }
             }
             writer.println("}");
