@@ -1,6 +1,10 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -27,10 +31,15 @@ public class View
     private Stage _stage;
     private Scene _scene;
     private Pane _pane;
-    //private PlayableCharacter _player;
+    private PlayableCharacter _player;
+    private ArrayList<ImageView> _iv_enemies;
 
     private View ()
     {
+        _pane = new Pane();
+        _player = PlayableCharacter.getInstance();
+        _player.randomizePosition();
+        _iv_enemies = new ArrayList<ImageView>();
     }
 
     private static View INSTANCE;
@@ -61,7 +70,6 @@ public class View
     public void start (Stage stage, Graph g)
     {
         _stage = stage;
-        _pane = new Pane();
 
         drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
         drawGraph(g);
@@ -185,8 +193,25 @@ public class View
                 		
                 }
             }
-        }
+        }        
     }
+    
+    public void createEnnemies(int x, int y) {
+    	//Image image = new Image(this.getClass().getResource("file:../../bad.png").toExternalForm());
+    	Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
+        
+        ImageView iv = new ImageView(image);
+        _pane.getChildren().add(iv);
+        iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
+        iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
+        _iv_enemies.add(iv);
+    }
+    
+    public void updateCharacterPosition(int i, int x, int y) {
+    	_iv_enemies.get(i).setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
+    	_iv_enemies.get(i).setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
+    }
+    
     
     /**
      * Print rules in consol.

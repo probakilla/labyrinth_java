@@ -17,7 +17,7 @@ public class Controller
 {
 
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 3;
+    private final int NB_ENEMIES = 50;
 
     private final Model _model;
     private final View _view;
@@ -36,6 +36,7 @@ public class Controller
         {
             _enemies[i] = new Enemy();
             _enemies[i].randomizePosition();
+            _view.createEnnemies(_enemies[i].getVertex().getX(), _enemies[i].getVertex().getY());
         }
     }
 
@@ -85,7 +86,15 @@ public class Controller
         for (i = 0; i < NB_ENEMIES; i++)
         {
             _enemies[i].start();
+            final int idx = i;
+            _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener() {
+				@Override
+				public void changed(int x, int y) {
+					_view.updateCharacterPosition(idx, x, y);
+				}
+			});
         }
+        
         // Gestion du mouvement du joueur.
         EventHandler handler;
         handler = (EventHandler) new EventHandler()
