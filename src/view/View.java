@@ -167,16 +167,24 @@ public class View
                     if (e == null || (e.getType() != Edge.Type.CORRIDOR))
                     {
                         drawWall(x, y, x + 1, y, Color.CHOCOLATE);
+                        if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
+	                		drawWall(x, y, x+ 1, y, Color.BLUE);
+	                	}
                     }
                 }
 
                 if (y + 1 < Graph.getGRIDHEIGHT())
-                {
+                {	
                     e = g.getEdge(g.getVertex(x, y), g.getVertex(x, y + 1));
                     if (e == null || (e.getType() != Edge.Type.CORRIDOR))
                     {
-                        drawWall(x, y, x, y + 1, Color.CHOCOLATE);
+	            		drawWall(x, y, x, y + 1, Color.CHOCOLATE);
+	                	if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
+	                		drawWall(x, y, x, y + 1, Color.BLUE);
+	                	}
                     }
+
+                		
                 }
             }
         }

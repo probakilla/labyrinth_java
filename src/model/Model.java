@@ -25,6 +25,7 @@ public class Model
     private final AtomicInteger _iteration;
     private final Random _random;
     private final Graph _graph;
+    private int _cycle;
 
     private Model ()
     {
@@ -59,7 +60,11 @@ public class Model
      */
     public void buildRandomPath (Vertex vertex)
     {
-        _graph.addVertex(vertex);
+    	
+    	Vertex vertex1 = null;
+    	_cycle = 0;
+    	
+    	_graph.addVertex(vertex);
         //une liste aleatoire des 4 directions	
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
@@ -78,7 +83,7 @@ public class Model
         // pour chacune de ces directions, on avance en profondeur d’abord
         for (int i = 0; i < 4; ++i)
         {
-            Directions dir = directions[i];
+        	Directions dir = directions[i];
             if (vertex.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir))
             {
                 int x = vertex.getX();
@@ -164,4 +169,35 @@ public class Model
     {
         return _graph;
     }
+
+	public void buildCycleV(int nbCycle) {
+		Random rand = new Random();
+		int xsimple = rand.nextInt(15-1)+1;
+		int ysimple = rand.nextInt(14-1)+1;
+
+		for (int i=0; i<nbCycle; i++) {
+			_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple, ysimple+1), new Edge(Type.OPENED_DOOR));
+			xsimple = rand.nextInt(15-1)+1;
+			ysimple = rand.nextInt(14-1)+1;
+			System.out.println(_graph.getVertex(xsimple, ysimple).toString());
+		}
+	}
+		
+	public void buildCycleH(int nbCycle) {
+		Random rand = new Random();
+		int xsimple = rand.nextInt(14-1)+1;
+		int ysimple = rand.nextInt(15-1)+1;
+		
+
+		for (int i=0; i<nbCycle; i++) {
+			_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple+1, ysimple), new Edge(Type.OPENED_DOOR));
+			xsimple = rand.nextInt(14-1)+1;
+			ysimple = rand.nextInt(15-1)+1;
+			System.out.println(_graph.getVertex(xsimple, ysimple).toString());
+
+		}
+		
+
+    	
+	}
 }
