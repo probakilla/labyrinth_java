@@ -69,7 +69,7 @@ public class View
      */
     public void start (Stage stage, Graph g)
     {
-    	_stage = stage;
+        _stage = stage;
 
         drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
         drawGraph(g);
@@ -189,7 +189,8 @@ public class View
     }
     
     public void createEnnemies(int x, int y) {
-    	Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm());       
+    	//Image image = new Image(this.getClass().getResource("file:../../bad.png").toExternalForm());
+    	Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
         
         ImageView iv = new ImageView(image);
         _pane.getChildren().add(iv);

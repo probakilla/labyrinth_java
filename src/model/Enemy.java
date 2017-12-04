@@ -19,22 +19,22 @@ import javafx.scene.image.ImageView;
 public class Enemy extends AbstractCharacter implements Runnable
 {
     private int _running;
-    
+
     /**
      * Constructor of Enemy.
-     * 
-     * The coordinates of the Enemy are set to [0,0]. The call of this 
+     *
+     * The coordinates of the Enemy are set to [0,0]. The call of this
      * constructor should be followed by randomizePosition().
      */
-    public Enemy ()
+    public Enemy()
     {
-        super (0, 0);
+        super(0, 0);
         _imageFile = new Image("file:../../bad.png");
-        _imageDisp = new ImageView (_imageFile);
+        _imageDisp = new ImageView(_imageFile);
         _type = -1;
         _running = 0;
     }
-    
+
     /**
      * Constructor of Enemy.
      *
@@ -43,23 +43,23 @@ public class Enemy extends AbstractCharacter implements Runnable
      * @param x Abscissa in the labyrinth of the Enemy.
      * @param y Ordinate in the labyrinth of the Enemy.
      */
-    public Enemy (int x, int y)
+    public Enemy(int x, int y)
     {
         super(x, y);
         _imageFile = new Image("file:../../bad.png");
-        _imageDisp = new ImageView (_imageFile);
+        _imageDisp = new ImageView(_imageFile);
         _type = -1;
         _running = 0;
     }
 
-    public void stopRunning ()
+    public void stopRunning()
     {
         _running = 0;
     }
 
     // Pour l'instant le perso bouge au pif, mais on pourra changer ça.
     @Override
-    public void run ()
+    public void run()
     {
         _running = 1;
         Random rand = new Random();
@@ -91,12 +91,12 @@ public class Enemy extends AbstractCharacter implements Runnable
                     default:
                         break;
                 }
+
             }
             catch (WrongMoveException exception)
             {
                 exception.printMessage();
             }
-
             try
             {
                 Enemy.sleep(1000);
@@ -105,7 +105,6 @@ public class Enemy extends AbstractCharacter implements Runnable
             {
                 Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
     }
 }

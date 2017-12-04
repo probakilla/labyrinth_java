@@ -6,6 +6,7 @@ import java.util.Random;
 import controller.Controller;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Model.Directions;
 
 /**
  * Pattern used for all Characters and objects in the labyrinth.
@@ -67,12 +68,14 @@ public abstract class AbstractCharacter extends Thread
         //Controller.getInstance().refreshAbstractCharacter(_position.getX(), _position.getY());
     }
     
-    private void outOfBounds(int newPos) throws WrongMoveException
+    private void outOfBounds(Vertex v, Directions dir) throws WrongMoveException
     {
-        if (newPos < 0 || newPos > Graph.getGRIDHEIGHT())
-        {
-            throw new WrongMoveException("Wrong move");
-        }
+        if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
+            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
+        else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
+            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
+        if (Graph.getInstance().isWall (v, dir))
+            throw new  WrongMoveException ("Il y a un mur par ici.");
     }
 
     /**
@@ -83,12 +86,14 @@ public abstract class AbstractCharacter extends Thread
      */
     public void up() throws WrongMoveException
     {
-        int newPos = _position.getY() + 1;
+        Vertex newPos = new Vertex (0, 0);
+        _position.copy(newPos);
+        newPos.setY(_position.getY() - 1);
         try
         {
-            outOfBounds(newPos);
-            _position.setY(newPos);
-            System.out.println("Je vais en haut, nouvelle prosition : " + _position.toString());
+            outOfBounds(newPos, Directions.NORTH);
+            newPos.copy(_position);
+            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
         } catch (WrongMoveException e)
         {
             throw e;
@@ -105,12 +110,14 @@ public abstract class AbstractCharacter extends Thread
      */
     public void down() throws WrongMoveException
     {
-        int newPos = _position.getY() - 1;
+        Vertex newPos = new Vertex (0, 0);
+        _position.copy(newPos);
+        newPos.setY(_position.getY() + 1);
         try
         {
-            outOfBounds(newPos);
-            _position.setY(newPos);
-            System.out.println("Je vais en bas, nouvelle prosition : " + _position.toString());
+            outOfBounds(newPos, Directions.SOUTH);
+            newPos.copy(_position);
+            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
         } catch (WrongMoveException e)
         {
             throw e;
@@ -127,12 +134,14 @@ public abstract class AbstractCharacter extends Thread
      */
     public void left() throws WrongMoveException
     {
-        int newPos = _position.getX() - 1;
+        Vertex newPos = new Vertex (0, 0);
+        _position.copy(newPos);
+        newPos.setX(_position.getX() - 1);
         try
         {
-            outOfBounds(newPos);
-            _position.setX(newPos);
-            System.out.println("Je vais à gauche, nouvelle prosition : " + _position.toString());
+            outOfBounds(newPos, Directions.WEST);
+            newPos.copy(_position);
+            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
         } catch (WrongMoveException e)
         {
             throw e;
@@ -149,12 +158,13 @@ public abstract class AbstractCharacter extends Thread
      */
     public void right() throws WrongMoveException
     {
-        int newPos = _position.getX() + 1;
+        Vertex newPos = _position;
+        newPos.setX(_position.getX() + 1);
         try
         {
-            outOfBounds(newPos);
-            _position.setX(newPos);
-            System.out.println("Je vais à droite, nouvelle prosition : " + _position.toString());
+            outOfBounds(newPos, Directions.EAST);
+            newPos.copy(_position);
+            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
         } catch (WrongMoveException e)
         {
             throw e;
