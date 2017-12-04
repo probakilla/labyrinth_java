@@ -1,6 +1,5 @@
 package controller;
 
-import exceptions.WrongMoveException;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -17,14 +16,14 @@ public class Controller
 {
 
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 50;
+    private final int NB_ENEMIES = 1;
 
     private final Model _model;
     private final View _view;
     private final PlayableCharacter _player;
     private final Enemy[] _enemies;
 
-    private Controller()
+    private Controller ()
     {
         _model = Model.getInstance();
         _view = View.getInstance();
@@ -48,7 +47,7 @@ public class Controller
      *
      * @return Instance of the Controller
      */
-    public static Controller getInstance()
+    public static Controller getInstance ()
     {
         if (INSTANCE == null)
         {
@@ -62,7 +61,7 @@ public class Controller
      *
      * @return model
      */
-    public Model getModel()
+    public Model getModel ()
     {
         return _model;
     }
@@ -72,8 +71,8 @@ public class Controller
      *
      * @param stage Stage where the display will be managed.
      */
-    public void start(Stage stage)
-    {
+    public void start (Stage stage)
+    {      
         _model.buildRandomPath(new Vertex(0, 0, 0));
         _model.buildCycleV(2);
         _model.buildCycleH(1);
@@ -87,67 +86,62 @@ public class Controller
         {
             _enemies[i].start();
             final int idx = i;
-            _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener() {
-				@Override
-				public void changed(int x, int y) {
-					_view.updateCharacterPosition(idx, x, y);
-				}
-			});
+            _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener()
+            {
+                @Override
+                public void changed (int x, int y)
+                {
+                    _view.updateCharacterPosition(idx, x, y);
+                }
+            });
         }
-        
+
         // Gestion du mouvement du joueur.
         EventHandler handler;
         handler = (EventHandler) new EventHandler()
         {
             @Override
-            public void handle(Event event)
+            public void handle (Event event)
             {
                 if (event.getClass() == KeyEvent.class)
                 {
                     KeyEvent e = (KeyEvent) event;
                     if (null != e.getCode())
                     {
-                        try
+                        switch (e.getCode())
                         {
-                            switch (e.getCode())
-                            {
-                                case UP:
-                                    _player.up();
-                                    break;
-                                case DOWN:
-                                    _player.down();
-                                    break;
-                                case LEFT:
-                                    _player.left();
-                                    break;
-                                case RIGHT:
-                                    _player.right();
-                                    break;
-                                case Q:
-                                    System.out.println("Vous quittez le jeu.");
-                                    System.exit(0);
-                                    break;
-                                case ESCAPE:
-                                    System.out.println("Vous quittez le jeu.");
-                                    System.exit(0);
-                                    break;
-                                // Touches de test.
-                                case S:
-                                    System.out.println("Vous arrêtez les ennemis");
-                                    for (int i = 0; i < NB_ENEMIES; i++)
-                                    {
-                                        _enemies[i].stopRunning();
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                            case UP:
+                                _player.up();
+                                break;
+                            case DOWN:
+                                _player.down();
+                                break;
+                            case LEFT:
+                                _player.left();
+                                break;
+                            case RIGHT:
+                                _player.right();
+                                break;
+                            case Q:
+                                System.out.println("Vous quittez le jeu.");
+                                System.exit(0);
+                                break;
+                            case ESCAPE:
+                                System.out.println("Vous quittez le jeu.");
+                                System.exit(0);
+                                break;
+                            // Touches de test.
+                            case S:
+                                System.out.println("Vous arrêtez les ennemis");
+                                for (int i = 0; i < NB_ENEMIES; i++)
+                                {
+                                    _enemies[i].stopRunning();
+                                }
+                                break;
+                            default:
+                                break;
+                        }
 
-                        }
-                        catch (WrongMoveException exception)
-                        {
-                            exception.printMessage();
-                        }
                     }
                 }
 

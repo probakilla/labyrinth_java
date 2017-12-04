@@ -10,8 +10,18 @@ import model.Model.Directions;
 public class Vertex
 {
 
-    private int _x=0, _y=0, _nbr;
+    private int _x, _y, _nbr;
 
+    /**
+     * Create a Vertex with null coordinates.
+     */
+    public Vertex ()
+    {
+        _x = 0;
+        _y = 0;
+        _nbr = -1;
+    }
+    
     /**
      * Create a Vertex with specific coordinates and a fixed number.
      *
@@ -53,7 +63,7 @@ public class Vertex
     }
 
     /**
-     * Retrives the number of the Vertex.
+     * Retrieves the number of the Vertex.
      *
      * @return The number of the Vertex.
      */
@@ -173,9 +183,13 @@ public class Vertex
         return str.toString();
     }
    
-    public void copy (Vertex v)
+    
+    public void copy (Object o)
     {
-        v.setX(_x);
-        v.setY(_y);
+        if (o instanceof Vertex)
+        {
+            _x = ((Vertex) o).getX();
+            _y = ((Vertex) o).getY();
+        }
     }
 }

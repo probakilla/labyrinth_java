@@ -1,11 +1,7 @@
 package model;
 
-import exceptions.WrongMoveException;
 import java.util.Random;
 
-import controller.Controller;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import model.Model.Directions;
 
 /**
@@ -17,166 +13,157 @@ public abstract class AbstractCharacter extends Thread
 {
     protected int _type;
     protected Vertex _position;
-    protected Image _imageFile;
-    protected ImageView _imageDisp;
     protected OnChangeListener onChangeListener;
 
     /**
      * Constructor of AbstractCharacter.
-     * 
+     *
      * Set the position of the AbstractCharacter with specific coordinates.
+     *
      * @param x Abscissa in the labyrinth of the character.
      * @param y Ordinate in the labyrinth of the character.
      */
-    public AbstractCharacter(int x, int y)
+    public AbstractCharacter (int x, int y)
     {
         _position = new Vertex(x, y);
     }
-    
+
     /**
      * Retrieves the type of the Character.
-     * 
-     * Retrieves the type of the character : 
-     * -1 is for the {@link model.Enemy Enemy}
-     * 1 is for the {@link model.PlayableCharacter}.
+     *
+     * Retrieves the type of the character : -1 is for the
+     * {@link model.Enemy Enemy} 1 is for the {@link model.PlayableCharacter}.
+     *
      * @return The type.
      */
     public int getType ()
     {
         return _type;
     }
-    
-    public ImageView getImage ()
+
+    public Vertex getVertex ()
     {
-        return _imageDisp;
+        return _position;
     }
-    
-    public Vertex getVertex() {
-    	return _position;
-    }
-    
+
     /**
      * Change the position of the character to specific location.
      *
      * @param x The target location abscissa.
      * @param y The target location ordinate.
      */
-    public void setPosition(int x, int y)
+    public void setPosition (int x, int y)
     {
         _position.setX(x);
         _position.setY(y);
         //Controller.getInstance().refreshAbstractCharacter(_position.getX(), _position.getY());
     }
-    
-    private void outOfBounds(Vertex v, Directions dir) throws WrongMoveException
+
+    private boolean validMove (Vertex v, Directions dir)
     {
+//        if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
+//            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
+//        else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
+//            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
+//        if (Graph.getInstance().isWall (v, dir))
+//            throw new  WrongMoveException ("Il y a un mur par ici.");
+
+        // C'est un plusieur lignes pour éviter un return qui fait 69 mètres.
         if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
-            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
+        {
+            return false;
+        }
         else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
-            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
-        if (Graph.getInstance().isWall (v, dir))
-            throw new  WrongMoveException ("Il y a un mur par ici.");
+        {
+            return false;
+        }
+        else if (Graph.getInstance().isWall(v, dir))
+        {
+            return false;
+        }
+        return true;
     }
 
     /**
      * Increment the ordinate of the character.
-     *
-     * @throws exceptions.WrongMoveException in case of collision with a wall or
-     * a movement out of the labyrinth.
      */
-    public void up() throws WrongMoveException
+    public void up ()
     {
-        Vertex newPos = new Vertex (0, 0);
-        _position.copy(newPos);
-        newPos.setY(_position.getY() - 1);
-        try
+        Vertex newPos = new Vertex();
+        newPos.copy(_position);
+
+        if (validMove(newPos, Directions.NORTH))
         {
-            outOfBounds(newPos, Directions.NORTH);
-            newPos.copy(_position);
-            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
-        } catch (WrongMoveException e)
-        {
-            throw e;
+            _position.copy(newPos);
+            System.out.println("HAUT   -> " + _position.toString());
         }
-        if(onChangeListener != null)
-        onChangeListener.changed(_position.getX(), _position.getY());
+        else if (!validMove(newPos, Directions.NORTH))
+        {
+            System.out.println("NOPE" + _position.toString());
+        }
     }
 
     /**
      * Decrement the ordinate of the character.
-     *
-     * @throws exceptions.WrongMoveException in case of collision with a wall or
-     * a movement out of the labyrinth.
      */
-    public void down() throws WrongMoveException
+    public void down ()
     {
-        Vertex newPos = new Vertex (0, 0);
-        _position.copy(newPos);
-        newPos.setY(_position.getY() + 1);
-        try
+        Vertex newPos = new Vertex();
+        newPos.copy(_position);
+
+        if (validMove(newPos, Directions.SOUTH))
         {
-            outOfBounds(newPos, Directions.SOUTH);
-            newPos.copy(_position);
-            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
-        } catch (WrongMoveException e)
-        {
-            throw e;
+            _position.copy(newPos);
+            System.out.println("BAS    -> " + _position.toString());
         }
-        if(onChangeListener != null)
-        onChangeListener.changed(_position.getX(), _position.getY());
+        else if (!validMove(newPos, Directions.NORTH))
+        {
+            System.out.println("NOPE");
+        }
     }
 
     /**
      * Decrement the abscissa of the character.
-     *
-     * @throws exceptions.WrongMoveException in case of collision with a wall or
-     * a movement out of the labyrinth.
      */
-    public void left() throws WrongMoveException
+    public void left ()
     {
-        Vertex newPos = new Vertex (0, 0);
-        _position.copy(newPos);
-        newPos.setX(_position.getX() - 1);
-        try
+        Vertex newPos = new Vertex();
+        newPos.copy(_position);
+
+        if (validMove(newPos, Directions.WEST))
         {
-            outOfBounds(newPos, Directions.WEST);
-            newPos.copy(_position);
-            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
-        } catch (WrongMoveException e)
-        {
-            throw e;
+            _position.copy(newPos);
+            System.out.println("GAUCHE -> " + _position.toString());
         }
-        if(onChangeListener != null)
-        onChangeListener.changed(_position.getX(), _position.getY());
+        else if (!validMove(newPos, Directions.NORTH))
+        {
+            System.out.println("NOPE");
+        }
     }
 
     /**
      * Increment the abscissa of the character.
-     *
-     * @throws exceptions.WrongMoveException in case of collision with a wall or
-     * a movement out of the labyrinth.
      */
-    public void right() throws WrongMoveException
+    public void right ()
     {
-        Vertex newPos = _position;
-        newPos.setX(_position.getX() + 1);
-        try
+        Vertex newPos = new Vertex();
+        newPos.copy(_position);
+
+        if (validMove(newPos, Directions.NORTH))
         {
-            outOfBounds(newPos, Directions.EAST);
-            newPos.copy(_position);
-            System.out.println("Je vais en haut, nouvelle position : " + _position.toString());
-        } catch (WrongMoveException e)
-        {
-            throw e;
+            _position.copy(newPos);
+            System.out.println("DROIT  -> " + _position.toString());
         }
-        if(onChangeListener != null)
-        onChangeListener.changed(_position.getX(), _position.getY());
+        else if (!validMove(newPos, Directions.NORTH))
+        {
+            System.out.println("NOPE");
+        }
     }
 
     /**
      * Generate and set a random position for the character.
      */
-    public void randomizePosition()
+    public void randomizePosition ()
     {
         Random rand = new Random();
         int min = 0;
@@ -188,15 +175,15 @@ public abstract class AbstractCharacter extends Thread
         /*_position.setX(rand.nextInt(maxWidth - min + 1) + min);
         _position.setY(rand.nextInt(maxHeight - min + 1) + min);*/
     }
-    
-    
-    
-    public void setOnChangeListener(OnChangeListener onChangeListener) {
-    	this.onChangeListener = onChangeListener;
+
+    public void setOnChangeListener (OnChangeListener onChangeListener)
+    {
+        this.onChangeListener = onChangeListener;
     }
-    
-    public interface OnChangeListener{
-    	void changed(int x, int y);
+
+    public interface OnChangeListener
+    {
+        void changed (int x, int y);
     }
 
 }

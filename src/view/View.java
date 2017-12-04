@@ -11,6 +11,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Edge;
+import model.Enemy;
 import model.Graph;
 import model.PlayableCharacter;
 
@@ -173,46 +174,49 @@ public class View
                     if (e == null || (e.getType() != Edge.Type.CORRIDOR))
                     {
                         drawWall(x, y, x + 1, y, Color.CHOCOLATE);
-                        if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
-	                		drawWall(x, y, x+ 1, y, Color.BLUE);
-	                	}
+                        if (e != null && (e.getType() == Edge.Type.OPENED_DOOR))
+                        {
+                            drawWall(x, y, x + 1, y, Color.BLUE);
+                        }
                     }
                 }
 
                 if (y + 1 < Graph.getGRIDHEIGHT())
-                {	
+                {
                     e = g.getEdge(g.getVertex(x, y), g.getVertex(x, y + 1));
                     if (e == null || (e.getType() != Edge.Type.CORRIDOR))
                     {
-	            		drawWall(x, y, x, y + 1, Color.CHOCOLATE);
-	                	if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
-	                		drawWall(x, y, x, y + 1, Color.BLUE);
-	                	}
+                        drawWall(x, y, x, y + 1, Color.CHOCOLATE);
+                        if (e != null && (e.getType() == Edge.Type.OPENED_DOOR))
+                        {
+                            drawWall(x, y, x, y + 1, Color.BLUE);
+                        }
                     }
 
-                		
                 }
             }
-        }        
+        }
     }
-    
-    public void createEnnemies(int x, int y) {
-    	//Image image = new Image(this.getClass().getResource("file:../../bad.png").toExternalForm());
-    	Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
-        
-        ImageView iv = new ImageView(image);
+
+    public void createEnnemies (int x, int y)
+    {
+        //Image image = new Image(this.getClass().getResource("file:./../../bad.png").toExternalForm());
+//        Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
+//
+//        ImageView iv = new ImageView(image);
+        ImageView iv = Enemy.getImage();
         _pane.getChildren().add(iv);
         iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
         _iv_enemies.add(iv);
     }
-    
-    public void updateCharacterPosition(int i, int x, int y) {
-    	_iv_enemies.get(i).setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
-    	_iv_enemies.get(i).setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
+
+    public void updateCharacterPosition (int i, int x, int y)
+    {
+        _iv_enemies.get(i).setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
+        _iv_enemies.get(i).setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
     }
-    
-    
+
     /**
      * Print rules in consol.
      */

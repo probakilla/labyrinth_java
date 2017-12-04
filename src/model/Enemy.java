@@ -1,6 +1,5 @@
 package model;
 
-import exceptions.WrongMoveException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +18,8 @@ import javafx.scene.image.ImageView;
 public class Enemy extends AbstractCharacter implements Runnable
 {
     private int _running;
+    private final Image _imageFile;
+    private static ImageView _imageDisp;
 
     /**
      * Constructor of Enemy.
@@ -26,7 +27,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      * The coordinates of the Enemy are set to [0,0]. The call of this
      * constructor should be followed by randomizePosition().
      */
-    public Enemy()
+    public Enemy ()
     {
         super(0, 0);
         _imageFile = new Image("file:../../bad.png");
@@ -43,7 +44,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      * @param x Abscissa in the labyrinth of the Enemy.
      * @param y Ordinate in the labyrinth of the Enemy.
      */
-    public Enemy(int x, int y)
+    public Enemy (int x, int y)
     {
         super(x, y);
         _imageFile = new Image("file:../../bad.png");
@@ -51,15 +52,20 @@ public class Enemy extends AbstractCharacter implements Runnable
         _type = -1;
         _running = 0;
     }
+    
+    public static ImageView getImage ()
+    {
+        return _imageDisp;
+    }
 
-    public void stopRunning()
+    public void stopRunning ()
     {
         _running = 0;
     }
 
     // Pour l'instant le perso bouge au pif, mais on pourra changer ça.
     @Override
-    public void run()
+    public void run ()
     {
         _running = 1;
         Random rand = new Random();
@@ -72,31 +78,25 @@ public class Enemy extends AbstractCharacter implements Runnable
             // Formule trouvée sur internet pour générer des nombres entre min et
             // max inclus.
             rd = rand.nextInt(max - min + 1) + min;
-            try
-            {
-                switch (rd)
-                {
-                    case 0:
-                        this.up();
-                        break;
-                    case 1:
-                        this.down();
-                        break;
-                    case 2:
-                        this.left();
-                        break;
-                    case 3:
-                        this.right();
-                        break;
-                    default:
-                        break;
-                }
 
-            }
-            catch (WrongMoveException exception)
+            switch (rd)
             {
-                exception.printMessage();
+                case 0:
+                    this.up();
+                    break;
+                case 1:
+                    this.down();
+                    break;
+                case 2:
+                    this.left();
+                    break;
+                case 3:
+                    this.right();
+                    break;
+                default:
+                    break;
             }
+
             try
             {
                 Enemy.sleep(1000);

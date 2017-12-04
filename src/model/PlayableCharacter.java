@@ -8,8 +8,8 @@ import javafx.scene.image.ImageView;
  *
  * TYPE is the "id" of the class and it's used to manage collisions. When an
  * enemy and a player collide, the addition of their type should be 0. If this
- * is a candy, for a collision with a {@link model.Candy Candy}, it can be
- * any positive integer.
+ * is a candy, for a collision with a {@link model.Candy Candy}, it can be any
+ * positive integer.
  *
  * @author Java Group
  */
@@ -17,12 +17,14 @@ public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
+    private final Image _imageFile;
+    private static ImageView _imageDisp;
 
     private PlayableCharacter ()
     {
         super(0, 0);
         _imageFile = new Image("file:../../utils/player.png");
-        _imageDisp = new ImageView (_imageFile);
+        _imageDisp = new ImageView(_imageFile);
         _type = 1;
         _score = 0;
     }
@@ -44,8 +46,13 @@ public class PlayableCharacter extends AbstractCharacter
         return INSTANCE;
     }
 
+    public static ImageView getImage ()
+    {
+        return _imageDisp;
+    }
+
     /**
-     * Increase the score of the player in function of the 
+     * Increase the score of the player in function of the
      * {@link model.Candy Candy} he get.
      *
      * @param c The {@link model.Candy Candy} that the player gather.
