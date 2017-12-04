@@ -24,7 +24,7 @@ public class Controller
     private final PlayableCharacter _player;
     private final Enemy[] _enemies;
 
-    private Controller ()
+    private Controller()
     {
         _model = Model.getInstance();
         _view = View.getInstance();
@@ -47,7 +47,7 @@ public class Controller
      *
      * @return Instance of the Controller
      */
-    public static Controller getInstance ()
+    public static Controller getInstance()
     {
         if (INSTANCE == null)
         {
@@ -61,7 +61,7 @@ public class Controller
      *
      * @return model
      */
-    public Model getModel ()
+    public Model getModel()
     {
         return _model;
     }
@@ -71,7 +71,7 @@ public class Controller
      *
      * @param stage Stage where the display will be managed.
      */
-    public void start (Stage stage)
+    public void start(Stage stage)
     {
         _model.buildRandomPath(new Vertex(0, 0, 0));
         _model.getGraph().GraphToDot();
@@ -89,14 +89,14 @@ public class Controller
         handler = (EventHandler) new EventHandler()
         {
             @Override
-            public void handle (Event event)
+            public void handle(Event event)
             {
                 if (event.getClass() == KeyEvent.class)
                 {
                     KeyEvent e = (KeyEvent) event;
-                    try
+                    if (null != e.getCode())
                     {
-                        if (null != e.getCode())
+                        try
                         {
                             switch (e.getCode())
                             {
@@ -131,11 +131,12 @@ public class Controller
                                 default:
                                     break;
                             }
+
                         }
-                    }
-                    catch (WrongMoveException exception)
-                    {
-                        exception.printMessage();
+                        catch (WrongMoveException exception)
+                        {
+                            exception.printMessage();
+                        }
                     }
                 }
 

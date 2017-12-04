@@ -172,4 +172,10 @@ public class Vertex
         str.append(_x).append(",").append(_y).append("]");
         return str.toString();
     }
+   
+    public void copy (Vertex v)
+    {
+        v.setX(_x);
+        v.setY(_y);
+    }
 }
