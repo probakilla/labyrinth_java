@@ -127,7 +127,7 @@ public class Model
             Vertex actual = fifo.remove();
             for (Directions dir : Directions.values())
             {
-                if (_graph.isOpened(actual, dir))
+                if (_graph.isOpenedDoor(actual, dir))
                 {
                     Vertex next = _graph.getVertexByDir(actual, dir);
                     if (next.getNbr() == 0)
