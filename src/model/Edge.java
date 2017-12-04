@@ -2,6 +2,7 @@ package model;
 
 import org.jgrapht.graph.DefaultEdge;
 
+
 /**
  * An implementation of edges in a {@link model.Graph Graph}
  *
@@ -73,6 +74,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
         _type = type;
     }
 
+    
     @Override
     public int compareTo (Edge o)
     {

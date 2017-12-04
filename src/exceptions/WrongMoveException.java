@@ -19,6 +19,6 @@ public class WrongMoveException extends Exception
      */
     public void printMessage ()
     {
-        System.err.println("Je ne peux pas aller par là");
+        System.err.println(getMessage());
     }
 }

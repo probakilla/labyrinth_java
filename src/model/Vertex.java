@@ -155,7 +155,7 @@ public class Vertex
             case WEST:
                 return _x - 1 >= 0;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -171,5 +171,11 @@ public class Vertex
         StringBuilder str = new StringBuilder("[");
         str.append(_x).append(",").append(_y).append("]").append(" nb ").append(_nbr);
         return str.toString();
+    }
+   
+    public void copy (Vertex v)
+    {
+        v.setX(_x);
+        v.setY(_y);
     }
 }
