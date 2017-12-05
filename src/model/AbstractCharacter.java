@@ -2,6 +2,7 @@ package model;
 
 import java.util.Random;
 
+import controller.Controller;
 import model.Model.Directions;
 
 /**
@@ -61,24 +62,8 @@ public abstract class AbstractCharacter extends Thread
 
     private boolean validMove (Vertex v, Directions dir)
     {
-//        if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
-//            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
-//        else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
-//            throw new  WrongMoveException ("Je ne peux pas sortir du labyrinth.");
-//        if (Graph.getInstance().isWall (v, dir))
-//            throw new  WrongMoveException ("Il y a un mur par ici.");
-
-        // C'est un plusieur lignes pour éviter un return qui fait 69 mètres.
     	if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()))
     		return false;
-        /*if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
-        {
-            return false;
-        }
-        else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
-        {
-            return false;
-        }*/
         else if (Graph.getInstance().isWall(v, dir))
         {
             return false;
@@ -178,8 +163,6 @@ public abstract class AbstractCharacter extends Thread
         // Formule trouvée sur internet pour générer des nombres entre min et
         // max inclus.
         setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
-        /*_position.setX(rand.nextInt(maxWidth - min + 1) + min);
-        _position.setY(rand.nextInt(maxHeight - min + 1) + min);*/
     }
 
     public void setOnChangeListener (OnChangeListener onChangeListener)

@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.sound.sampled.BooleanControl;
+
 import model.Edge.Type;
 import model.Model.Directions;
 
@@ -19,7 +21,9 @@ public class Model
     public static enum Directions
     {
         EAST, WEST, NORTH, SOUTH;
-    };
+    }
+
+	private static final boolean Boolean = false;;
 
     private final AtomicInteger _iteration;
     private final Random _random;
@@ -164,16 +168,21 @@ public class Model
         return _graph;
     }
 
-	public void buildCycleV(int nbCycle) {
+	public void buildCycleV(int nbCycle) 
+	{
 		Random rand = new Random();
 		int xsimple = rand.nextInt(15-1)+1;
 		int ysimple = rand.nextInt(14-1)+1;
-
 		for (int i=0; i<nbCycle; i++) {
-			_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple, ysimple+1), new Edge(Type.OPENED_DOOR));
+			
+			while(!_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple, ysimple+1), new Edge(Type.OPENED_DOOR)))
+			{
+				xsimple = rand.nextInt(15-1)+1;
+				ysimple = rand.nextInt(14-1)+1;		
+			}
 			xsimple = rand.nextInt(15-1)+1;
 			ysimple = rand.nextInt(14-1)+1;
-			System.out.println(_graph.getVertex(xsimple, ysimple).toString());
+			//System.out.println(_graph.getVertex(xsimple, ysimple).toString());
 		}
 	}
 		
@@ -182,16 +191,19 @@ public class Model
 		int xsimple = rand.nextInt(14-1)+1;
 		int ysimple = rand.nextInt(15-1)+1;
 		
-
-		for (int i=0; i<nbCycle; i++) {
-			_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple+1, ysimple), new Edge(Type.OPENED_DOOR));
+		for (int i=0; i<nbCycle; i++) 
+		{
+			//Si il n'a pas put rajouter l'arrête on retente avec d'autre coordonnées jusqu'a ce qu'il y arrive.
+			while(!_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple+1, ysimple), new Edge(Type.OPENED_DOOR)))
+			{
+				xsimple = rand.nextInt(14-1)+1;
+				ysimple = rand.nextInt(15-1)+1;
+			
+			}
 			xsimple = rand.nextInt(14-1)+1;
 			ysimple = rand.nextInt(15-1)+1;
 			System.out.println(_graph.getVertex(xsimple, ysimple).toString());
 
-		}
-		
-
-    	
+		}  	
 	}
 }

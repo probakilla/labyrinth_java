@@ -200,11 +200,11 @@ public class View
 
     public void createEnnemies (int x, int y)
     {
-        //Image image = new Image(this.getClass().getResource("file:./../../bad.png").toExternalForm());
-//        Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
-//
-//        ImageView iv = new ImageView(image);
-        ImageView iv = Enemy.getImage();
+       //Image image = new Image(this.getClass().getResource("file:./../../bad.png").toExternalForm());
+    	//Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
+
+    	//ImageView iv = new ImageView(image);
+    	ImageView iv = Enemy.getImage();
         _pane.getChildren().add(iv);
         iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));

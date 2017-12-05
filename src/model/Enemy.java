@@ -30,7 +30,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy ()
     {
         super(0, 0);
-        _imageFile = new Image("file:../../bad.png");
+        _imageFile = new Image("file:/net/cremi/gchupin/espaces/travail/M1/ApprocheObjet/labyrinthe/utils/bad.png");
         _imageDisp = new ImageView(_imageFile);
         _type = -1;
         _running = 0;
@@ -47,7 +47,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy (int x, int y)
     {
         super(x, y);
-        _imageFile = new Image("file:../../bad.png");
+        _imageFile = new Image("file:/net/cremi/gchupin/espaces/travail/M1/ApprocheObjet/labyrinthe/utils/bad.png");
         _imageDisp = new ImageView(_imageFile);
         _type = -1;
         _running = 0;

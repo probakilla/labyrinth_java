@@ -75,8 +75,8 @@ public class Controller
     public void start (Stage stage)
     {      
         _model.buildRandomPath(new Vertex(0, 0, 0));
-        _model.buildCycleV(2);
-        _model.buildCycleH(1);
+        _model.buildCycleV(5);
+        _model.buildCycleH(4);
         _model.getGraph().GraphToDot();
         _model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
         _view.start(stage, _model.getGraph());
