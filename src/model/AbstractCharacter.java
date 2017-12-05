@@ -41,7 +41,7 @@ public abstract class AbstractCharacter extends Thread
         return _type;
     }
 
-    public Vertex getVertex ()
+    public Vertex getPosition ()
     {
         return _position;
     }
@@ -69,14 +69,16 @@ public abstract class AbstractCharacter extends Thread
 //            throw new  WrongMoveException ("Il y a un mur par ici.");
 
         // C'est un plusieur lignes pour éviter un return qui fait 69 mètres.
-        if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
+    	if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()))
+    		return false;
+        /*if (v.getY() < 0 || v.getY() > Graph.getGRIDHEIGHT())
         {
             return false;
         }
         else if (v.getX() < 0 || v.getX() > Graph.getGRIDWIDTH())
         {
             return false;
-        }
+        }*/
         else if (Graph.getInstance().isWall(v, dir))
         {
             return false;
@@ -94,6 +96,7 @@ public abstract class AbstractCharacter extends Thread
 
         if (validMove(newPos, Directions.NORTH))
         {
+        	newPos.setY(newPos.getY() - 1);
             _position.copy(newPos);
             System.out.println("HAUT   -> " + _position.toString());
         }
@@ -113,12 +116,13 @@ public abstract class AbstractCharacter extends Thread
 
         if (validMove(newPos, Directions.SOUTH))
         {
+        	newPos.setY(newPos.getY() + 1);
             _position.copy(newPos);
             System.out.println("BAS    -> " + _position.toString());
         }
-        else if (!validMove(newPos, Directions.NORTH))
+        else if (!validMove(newPos, Directions.SOUTH))
         {
-            System.out.println("NOPE");
+            System.out.println("NOPE" + _position.toString());
         }
     }
 
@@ -132,12 +136,13 @@ public abstract class AbstractCharacter extends Thread
 
         if (validMove(newPos, Directions.WEST))
         {
+        	newPos.setX(newPos.getX() - 1);
             _position.copy(newPos);
             System.out.println("GAUCHE -> " + _position.toString());
         }
-        else if (!validMove(newPos, Directions.NORTH))
+        else if (!validMove(newPos, Directions.WEST))
         {
-            System.out.println("NOPE");
+            System.out.println("NOPE" + _position.toString());
         }
     }
 
@@ -149,14 +154,15 @@ public abstract class AbstractCharacter extends Thread
         Vertex newPos = new Vertex();
         newPos.copy(_position);
 
-        if (validMove(newPos, Directions.NORTH))
+        if (validMove(newPos, Directions.EAST))
         {
+        	newPos.setX(newPos.getX() + 1);
             _position.copy(newPos);
             System.out.println("DROIT  -> " + _position.toString());
         }
-        else if (!validMove(newPos, Directions.NORTH))
+        else if (!validMove(newPos, Directions.EAST))
         {
-            System.out.println("NOPE");
+            System.out.println("NOPE" + _position.toString());
         }
     }
 

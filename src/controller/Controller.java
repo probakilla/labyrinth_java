@@ -28,6 +28,7 @@ public class Controller
         _model = Model.getInstance();
         _view = View.getInstance();
         _player = PlayableCharacter.getInstance();
+        _player.setPosition(0, 0);
         _enemies = new Enemy[NB_ENEMIES];
 
         int i;
@@ -35,7 +36,7 @@ public class Controller
         {
             _enemies[i] = new Enemy();
             _enemies[i].randomizePosition();
-            _view.createEnnemies(_enemies[i].getVertex().getX(), _enemies[i].getVertex().getY());
+            _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
         }
     }
 

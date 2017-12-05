@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-/Labyrinth.class
 /controller/
-/exceptions/
-=======
->>>>>>> 25f9cb44918ff8bb18edb3267c33371d22901287
 /model/
-/view/
+/controller/Controller.class
+/model/Model.class
+/view/View.class
