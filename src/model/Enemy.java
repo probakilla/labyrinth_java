@@ -156,16 +156,7 @@ public class Enemy extends AbstractCharacter implements Runnable
                 default:
                     break;
             }
-        	
-
-            try
-            {
-                Enemy.sleep(1000);
-            }
-            catch (InterruptedException ex)
-            {
-                Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
+        	
 }

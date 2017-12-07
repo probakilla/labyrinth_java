@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 import exceptions.WrongCandyException;
 
 /**
@@ -26,10 +28,16 @@ public class CandyFactory
      * @param y The ordinate of the {@link model.Candy Candy}.
      * @return A {@link model.Candy Candy} with specific coordinates.
      */
-    public Candy getCandy (int candyType, int x, int y)
+    public static Candy getCandy (int candyType, int x, int y)
     {
         try
         {
+        	Random rd = new Random();
+        	int[] candies = new int[] {2, 3, 5, 10};
+        	candyType = candies[rd.nextInt(4)];
+        	x = 1 + rd.nextInt(15);
+        	y = 1 + rd.nextInt(15);
+        	System.out.println("my candy " + candyType);
             switch (candyType)
             {
                 case 2:

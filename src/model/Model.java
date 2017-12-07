@@ -28,13 +28,14 @@ public class Model
     private final AtomicInteger _iteration;
     private final Random _random;
     private final Graph _graph;
-    private int _cycle;
+    private int _cycle, _score;
 
     private Model ()
     {
         _iteration = new AtomicInteger(1);
         _graph = Graph.getInstance();
         _random = new Random();
+        _score = 0;
     }
 
     private static Model INSTANCE;
@@ -54,6 +55,15 @@ public class Model
             INSTANCE = new Model();
         }
         return INSTANCE;
+    }
+    
+    public int addPoint(int nb) {
+    	_score += nb;
+    	return _score;
+    }
+    
+    public int getScore() {
+    	return _score;
     }
 
     /**
