@@ -170,7 +170,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public Vertex getEndPath ()
     {	
-    	Vertex v = this.getVertex(0, 0);
+    	Vertex v = this.getVertex(1, 1);
     	Queue<Vertex> fifo = new ArrayDeque<Vertex>();
     	Set<Vertex> ListVertex = this.vertexSet();
     	Vertex vertex;

@@ -16,7 +16,7 @@ public class Controller
 {
 
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 2;
+    private final int NB_ENEMIES = 1;
 
     private final Model _model;
     private final View _view;
@@ -31,6 +31,10 @@ public class Controller
         _player.setPosition(0, 0);
         _enemies = new Enemy[NB_ENEMIES];
 
+        _view.createPlayable();
+        
+        
+        
         int i;
         for (i = 0; i < NB_ENEMIES; i++)
         {
@@ -38,6 +42,7 @@ public class Controller
             _enemies[i].randomizePosition();
             _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
         }
+        
     }
 
     /**
@@ -75,6 +80,11 @@ public class Controller
     public void start (Stage stage)
     {      
         _model.buildRandomPath(new Vertex(0, 0, 0));
+        
+        Vertex v = _model.getGraph().getEndPath();
+        System.out.println(_model.getGraph().getGRIDHEIGHT());
+        _view.createDoor(v.getX(), v.getY());
+        
         _model.buildCycleV(5);
         _model.buildCycleH(4);
         _model.getGraph().GraphToDot();
@@ -96,6 +106,14 @@ public class Controller
                 }
             });
         }
+        
+        _player.setOnChangeListener(new AbstractCharacter.OnChangeListener() {
+			
+			@Override
+			public void changed(int x, int y) {
+				_view.updatePlayable(x,  y);
+			}
+		});
 
         // Gestion du mouvement du joueur.
         EventHandler handler;
@@ -144,8 +162,7 @@ public class Controller
                         }
 
                     }
-                }
-
+                }            		
                 event.consume();
             }
         };

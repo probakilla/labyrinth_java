@@ -65,7 +65,6 @@ public abstract class AbstractCharacter extends Thread
     {
         _position.setX(x);
         _position.setY(y);
-        //Controller.getInstance().refreshAbstractCharacter(_position.getX(), _position.getY());
     }
 
     private boolean validMove(Vertex v, Directions dir)
@@ -94,6 +93,7 @@ public abstract class AbstractCharacter extends Thread
             newPos.setY(newPos.getY() - 1);
             _position.copy(newPos);
             System.out.println("HAUT   -> " + _position.toString());
+            onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.NORTH))
         {
@@ -114,6 +114,7 @@ public abstract class AbstractCharacter extends Thread
             newPos.setY(newPos.getY() + 1);
             _position.copy(newPos);
             System.out.println("BAS    -> " + _position.toString());
+            onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.SOUTH))
         {
@@ -134,6 +135,7 @@ public abstract class AbstractCharacter extends Thread
             newPos.setX(newPos.getX() - 1);
             _position.copy(newPos);
             System.out.println("GAUCHE -> " + _position.toString());
+            onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.WEST))
         {
@@ -154,6 +156,7 @@ public abstract class AbstractCharacter extends Thread
             newPos.setX(newPos.getX() + 1);
             _position.copy(newPos);
             System.out.println("DROIT  -> " + _position.toString());
+            onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.EAST))
         {

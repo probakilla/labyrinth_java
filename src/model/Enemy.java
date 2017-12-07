@@ -66,7 +66,6 @@ public class Enemy extends AbstractCharacter implements Runnable
             // Formule trouvée sur internet pour générer des nombres entre min et
             // max inclus.
             rd = rand.nextInt(max - min + 1) + min;
-
             switch (rd)
             {
                 case 0:

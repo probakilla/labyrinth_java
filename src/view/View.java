@@ -31,14 +31,20 @@ public class View
     private Stage _stage;
     private Scene _scene;
     private final Pane _pane;
-    private final PlayableCharacter _player;
+    
+    private final ImageView _player,_door;
     private final ArrayList<ImageView> _iv_enemies;
 
     private View()
     {
         _pane = new Pane();
-        _player = PlayableCharacter.getInstance();
         _iv_enemies = new ArrayList<ImageView>();
+        
+        Image imD = new Image("file:" + System.getProperty("user.dir") + "/utils/door_open.png");
+        _door = new ImageView(imD);
+        
+        Image imP = new Image("file:" + System.getProperty("user.dir") + "/utils/player.png");
+        _player = new ImageView(imP);
     }
 
     private static View INSTANCE;
@@ -198,15 +204,25 @@ public class View
 
     public void createEnnemies(int x, int y)
     {
-        //Image image = new Image(this.getClass().getResource().toExternalForm());     
-        //Image image = new Image(this.getClass().getResourceAsStream(Enemy.getImgPath())); 
-        Image image = new Image("file:turbo_fdp");
-        ImageView iv = new ImageView(image);
+    	Image im = new Image("file:" + System.getProperty("user.dir") + "/utils/bad.png"); 
+        ImageView iv = new ImageView(im);
 
         _pane.getChildren().add(iv);
         iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
         _iv_enemies.add(iv);
+    }
+    
+    public void createPlayable() {
+        _pane.getChildren().add(_player);
+        _player.setX((int) ((WALL * (WALL + CELL)) * SPAN));
+        _player.setY((int) ((WALL * (WALL + CELL)) * SPAN));
+    }
+    
+    public void createDoor(int x, int y) {
+        _pane.getChildren().add(_door);
+        _door.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
+        _door.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
     }
 
     public void updateCharacterPosition(int i, int x, int y)
@@ -214,9 +230,14 @@ public class View
         _iv_enemies.get(i).setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         _iv_enemies.get(i).setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
     }
+    
+    public void updatePlayable(int x, int y) {
+    	_player.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
+    	_player.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
+    }
 
     /**
-     * Print rules in consol.
+     * Print rules in console.
      */
     public void printRules()
     {
