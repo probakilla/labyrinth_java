@@ -16,7 +16,7 @@ import view.*;
 public class Controller {
 
 	private static Controller INSTANCE;
-	private final int NB_ENEMIES = 10, NB_CANDIES = 10;
+	private final int NB_ENEMIES = 2, NB_CANDIES = 10;
 
 	private final Model _model;
 	private final View _view;
@@ -45,8 +45,8 @@ public class Controller {
 					}
 				}
 				for (int i = 0; i < NB_ENEMIES; i++) {
-					_enemies[i].set_target(_model.getGraph().getVertex(x, y));
-					System.out.println(_enemies[i].get_target());
+					_enemies[i].set_targetX(_player.getPosition().getX());
+					_enemies[i].set_targetY(_player.getPosition().getY());
 					if (_player.collision(_enemies[i].getPosition())) {
 						// System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
 						// System.exit(0);
@@ -126,11 +126,15 @@ public class Controller {
 		door_position = _model.getGraph().getEndPath();
 		_view.createDoor(door_position.getX(), door_position.getY());
 		_view.createPlayable();
-
+		for (int i = 0; i < NB_ENEMIES; i++) {
+			_enemies[i].set_targetX(_player.getPosition().getX());
+			_enemies[i].set_targetY(_player.getPosition().getY());
+			System.out.println("ZZZZZZZZZZ"+_enemies[i].get_targetX()+" "+_enemies[i].get_targetY());
+		}
 		_model.buildCycleV(5);
 		_model.buildCycleH(4);
 		_model.getGraph().GraphToDot();
-		_model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
+		//_model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
 
 		_view.start(stage, _model.getGraph());
 		_view.printRules();

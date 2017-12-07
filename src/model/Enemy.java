@@ -18,14 +18,23 @@ import model.Model.Directions;
 public class Enemy extends AbstractCharacter implements Runnable
 {
     private int _running;
-    private Vertex _target;
+    private int _targetX;
+    private int _targetY;
     
-    public Vertex get_target() {
-		return _target;
+    public int get_targetX() {
+		return _targetX;
 	}
 
-	public void set_target(Vertex _target) {
-		this._target = _target;
+	public void set_targetX(int _target) {
+		this._targetX = _target;
+	}
+	
+    public int get_targetY() {
+		return _targetY;
+	}
+
+	public void set_targetY(int _target) {
+		this._targetY = _target;
 	}
 
 	/**
@@ -68,12 +77,13 @@ public class Enemy extends AbstractCharacter implements Runnable
 		int y = 0;
 		int xt = 0;
 		int yt = 0;
-    	int nb = 2;
+    	int nb = 1000;
     	int idx = 0;
     	System.out.println("on est au "+this.getPosition());
     	//System.out.println(Model.getInstance().getGraph().getVertex(this.getPosition().getX(), this.getPosition().getY()).getNbr()+" vers "+nb);
         	 for (int i = 0; i < 4; ++i)
              {
+
                  switch (i)
                  {
                      case 0:
@@ -93,11 +103,12 @@ public class Enemy extends AbstractCharacter implements Runnable
                          y = 0;
                          break;
                  }
-                 System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
+                 //System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
                  if ((this.getPosition().getX()+x >=0 && this.getPosition().getX()+x < Model.getInstance().getGraph().getGRIDWIDTH() 
                 		 && this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT()) 
                 		 && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)) 
-                		 && nb <= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr())
+                		 && nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
+                		 && Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)))
              		{
                      //System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
              			xt = x;
@@ -138,7 +149,8 @@ public class Enemy extends AbstractCharacter implements Runnable
                 default:
                     break;
             }*/
-        	Model.getInstance().launchManhattan(this.getPosition(), this.get_target());
+        	System.out.println(this.get_targetX()+" "+this.get_targetY());
+        	Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
         	switch (this.getNextStep())
             {
                 case 0:
@@ -148,14 +160,22 @@ public class Enemy extends AbstractCharacter implements Runnable
                     this.down();
                     break;
                 case 2:
-                    this.left();
+                    this.right();
                     break;
                 case 3:
-                    this.right();
+                    this.left();
                     break;
                 default:
                     break;
             }
+        	 try
+             {
+                 Enemy.sleep(1000);
+             }
+             catch (InterruptedException ex)
+             {
+                 Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+             }
         }
     }
         	
