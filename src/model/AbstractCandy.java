@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /**
  * Abstract Class of {@link model.Candy Candy}.
  * 
@@ -12,8 +9,7 @@ public abstract class  AbstractCandy implements Candy
 {
     protected int _type;
     protected final Vertex _position;
-    protected Image _imageFile;
-    protected ImageView _imageDisp;
+    protected String _imgPath;
     
     /**
      * Constructor of AbstractCandy.
@@ -39,15 +35,12 @@ public abstract class  AbstractCandy implements Candy
     {
        return _position;
     }
-        
+    
     /**
-     * Retrieves the image of the {@link model.Candy Candy}.
-     * 
-     * @return The {@link javafx.scene.image.ImageView ImageView} of the 
-     * {@link model.Candy Candy}.
+     * @return the _imgPath
      */
-    public ImageView getImage ()
+    public String getImgPath()
     {
-        return _imageDisp;
+        return _imgPath;
     }
 }

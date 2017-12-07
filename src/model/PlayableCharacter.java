@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /**
  * Class used to define the playable character.
  *
@@ -17,14 +14,12 @@ public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
-    private final Image _imageFile;
-    private static ImageView _imageDisp;
 
-    private PlayableCharacter ()
+
+    private PlayableCharacter()
     {
         super(0, 0);
-        _imageFile = new Image("file:../../utils/player.png");
-        _imageDisp = new ImageView(_imageFile);
+        _imgPath = "player.png";
         _type = 1;
         _score = 0;
     }
@@ -37,7 +32,7 @@ public class PlayableCharacter extends AbstractCharacter
      *
      * @return The unique instance of PlayableCharacter.
      */
-    public static PlayableCharacter getInstance ()
+    public static PlayableCharacter getInstance()
     {
         if (INSTANCE == null)
         {
@@ -45,24 +40,19 @@ public class PlayableCharacter extends AbstractCharacter
         }
         return INSTANCE;
     }
-
-    public static ImageView getImage ()
-    {
-        return _imageDisp;
-    }
-
+    
     /**
      * Increase the score of the player in function of the
      * {@link model.Candy Candy} he get.
      *
      * @param c The {@link model.Candy Candy} that the player gather.
      */
-    public void increaseScore (Candy c)
+    public void increaseScore(Candy c)
     {
         _score += c.getType();
     }
 
-    public void printScore ()
+    public void printScore()
     {
         System.out.println("Vous avez gagné " + _score + " points.");
     }

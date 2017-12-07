@@ -16,7 +16,7 @@ public class Controller
 {
 
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 1;
+    private final int NB_ENEMIES = 2;
 
     private final Model _model;
     private final View _view;

@@ -1,7 +1,6 @@
 package view;
 
 import java.util.ArrayList;
-
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,15 +30,14 @@ public class View
 
     private Stage _stage;
     private Scene _scene;
-    private Pane _pane;
-    private PlayableCharacter _player;
-    private ArrayList<ImageView> _iv_enemies;
+    private final Pane _pane;
+    private final PlayableCharacter _player;
+    private final ArrayList<ImageView> _iv_enemies;
 
-    private View ()
+    private View()
     {
         _pane = new Pane();
         _player = PlayableCharacter.getInstance();
-        _player.randomizePosition();
         _iv_enemies = new ArrayList<ImageView>();
     }
 
@@ -53,7 +51,7 @@ public class View
      *
      * @return Instance of View.
      */
-    public static View getInstance ()
+    public static View getInstance()
     {
         if (INSTANCE == null)
         {
@@ -68,7 +66,7 @@ public class View
      * @param stage Stage used for the graphical interface.
      * @param g the {@link model.Graph Graph} to display.
      */
-    public void start (Stage stage, Graph g)
+    public void start(Stage stage, Graph g)
     {
         _stage = stage;
 
@@ -87,7 +85,7 @@ public class View
      * @param nbrX Height of the labyrinth.
      * @param nbrY Width of the labyrinth.
      */
-    public void drawFrame (Stage stage, int nbrX, int nbrY)
+    public void drawFrame(Stage stage, int nbrX, int nbrY)
     {
         _scene = new Scene(_pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN);
 
@@ -136,7 +134,7 @@ public class View
      * @param yt Ordinate of the second point.
      * @param color Color of the wall.
      */
-    public void drawWall (int xs, int ys, int xt, int yt, Paint color)
+    public void drawWall(int xs, int ys, int xt, int yt, Paint color)
     {
         int x = 0, y = 0, xspan = 0, yspan = 0;
         if (ys == yt)
@@ -161,7 +159,7 @@ public class View
         }
     }
 
-    public void drawGraph (Graph g)
+    public void drawGraph(Graph g)
     {
         Edge e;
         for (int x = 0; x < Graph.getGRIDWIDTH(); x++)
@@ -198,20 +196,20 @@ public class View
         }
     }
 
-    public void createEnnemies (int x, int y)
+    public void createEnnemies(int x, int y)
     {
-       //Image image = new Image(this.getClass().getResource("file:./../../bad.png").toExternalForm());
-    	//Image image = new Image(this.getClass().getResource("/bad.png").toExternalForm()); 
+        //Image image = new Image(this.getClass().getResource().toExternalForm());     
+        //Image image = new Image(this.getClass().getResourceAsStream(Enemy.getImgPath())); 
+        Image image = new Image("file:turbo_fdp");
+        ImageView iv = new ImageView(image);
 
-    	//ImageView iv = new ImageView(image);
-    	ImageView iv = Enemy.getImage();
         _pane.getChildren().add(iv);
         iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
         _iv_enemies.add(iv);
     }
 
-    public void updateCharacterPosition (int i, int x, int y)
+    public void updateCharacterPosition(int i, int x, int y)
     {
         _iv_enemies.get(i).setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         _iv_enemies.get(i).setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
@@ -220,7 +218,7 @@ public class View
     /**
      * Print rules in consol.
      */
-    public void printRules ()
+    public void printRules()
     {
         System.out.println("Voici les commandes disponibles :");
         System.out.println("    - Touches directionnelles : Déplacer le personnage.");

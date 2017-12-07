@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /**
  * Cherry implement the interface {@link model.Candy Candy} and has a type
  * equals to 10.
@@ -11,6 +8,7 @@ import javafx.scene.image.ImageView;
  */
 public class Cherry extends AbstractCandy
 {
+    
     /**
      * Create an instance of PinkCandy with specific coordinates.
      *
@@ -20,8 +18,7 @@ public class Cherry extends AbstractCandy
     public Cherry (int x, int y)
     {
         super(x, y);
-        _imageFile = new Image("file:../../candy-3.png");
-        _imageDisp = new ImageView(_imageFile);
+        _imgPath = "candy-3.png";
         _type = 10;
     }
 

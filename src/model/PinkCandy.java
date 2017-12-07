@@ -1,8 +1,5 @@
 package model;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 /**
  * PinkCandy implement the interface {@link model.Candy Candy} and has a type
  * equals to 3.
@@ -20,8 +17,7 @@ public class PinkCandy extends AbstractCandy
     public PinkCandy (int x, int y)
     {
         super(x, y);
-        _imageFile = new Image("file:../../candy-2.png");
-        _imageDisp = new ImageView(_imageFile);
+        _imgPath = "candy-2.png";
         _type = 3;
     }
 

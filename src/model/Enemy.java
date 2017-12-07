@@ -3,8 +3,6 @@ package model;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * Class used to define an enemy.
@@ -18,9 +16,6 @@ import javafx.scene.image.ImageView;
 public class Enemy extends AbstractCharacter implements Runnable
 {
     private int _running;
-    private final Image _imageFile;
-    private static ImageView _imageDisp;
-
     /**
      * Constructor of Enemy.
      *
@@ -30,8 +25,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy ()
     {
         super(0, 0);
-        _imageFile = new Image("file:/net/cremi/gchupin/espaces/travail/M1/ApprocheObjet/labyrinthe/utils/bad.png");
-        _imageDisp = new ImageView(_imageFile);
+        _imgPath = "/bad.png";
         _type = -1;
         _running = 0;
     }
@@ -47,17 +41,11 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy (int x, int y)
     {
         super(x, y);
-        _imageFile = new Image("file:/net/cremi/gchupin/espaces/travail/M1/ApprocheObjet/labyrinthe/utils/bad.png");
-        _imageDisp = new ImageView(_imageFile);
+        _imgPath = "/bad.png";
         _type = -1;
         _running = 0;
     }
     
-    public static ImageView getImage ()
-    {
-        return _imageDisp;
-    }
-
     public void stopRunning ()
     {
         _running = 0;

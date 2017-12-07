@@ -2,7 +2,6 @@ package model;
 
 import java.util.Random;
 
-import controller.Controller;
 import model.Model.Directions;
 
 /**
@@ -15,6 +14,7 @@ public abstract class AbstractCharacter extends Thread
     protected int _type;
     protected Vertex _position;
     protected OnChangeListener onChangeListener;
+    protected String _imgPath;
 
     /**
      * Constructor of AbstractCharacter.
@@ -24,7 +24,7 @@ public abstract class AbstractCharacter extends Thread
      * @param x Abscissa in the labyrinth of the character.
      * @param y Ordinate in the labyrinth of the character.
      */
-    public AbstractCharacter (int x, int y)
+    public AbstractCharacter(int x, int y)
     {
         _position = new Vertex(x, y);
     }
@@ -37,14 +37,22 @@ public abstract class AbstractCharacter extends Thread
      *
      * @return The type.
      */
-    public int getType ()
+    public int getType()
     {
         return _type;
     }
 
-    public Vertex getPosition ()
+    public Vertex getPosition()
     {
         return _position;
+    }
+    
+    /**
+     * @return the _imgPath
+     */
+    public String getImgPath()
+    {
+        return _imgPath;
     }
 
     /**
@@ -53,17 +61,19 @@ public abstract class AbstractCharacter extends Thread
      * @param x The target location abscissa.
      * @param y The target location ordinate.
      */
-    public void setPosition (int x, int y)
+    public void setPosition(int x, int y)
     {
         _position.setX(x);
         _position.setY(y);
         //Controller.getInstance().refreshAbstractCharacter(_position.getX(), _position.getY());
     }
 
-    private boolean validMove (Vertex v, Directions dir)
+    private boolean validMove(Vertex v, Directions dir)
     {
-    	if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()))
-    		return false;
+        if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()))
+        {
+            return false;
+        }
         else if (Graph.getInstance().isWall(v, dir))
         {
             return false;
@@ -74,14 +84,14 @@ public abstract class AbstractCharacter extends Thread
     /**
      * Increment the ordinate of the character.
      */
-    public void up ()
+    public void up()
     {
         Vertex newPos = new Vertex();
         newPos.copy(_position);
 
         if (validMove(newPos, Directions.NORTH))
         {
-        	newPos.setY(newPos.getY() - 1);
+            newPos.setY(newPos.getY() - 1);
             _position.copy(newPos);
             System.out.println("HAUT   -> " + _position.toString());
         }
@@ -94,14 +104,14 @@ public abstract class AbstractCharacter extends Thread
     /**
      * Decrement the ordinate of the character.
      */
-    public void down ()
+    public void down()
     {
         Vertex newPos = new Vertex();
         newPos.copy(_position);
 
         if (validMove(newPos, Directions.SOUTH))
         {
-        	newPos.setY(newPos.getY() + 1);
+            newPos.setY(newPos.getY() + 1);
             _position.copy(newPos);
             System.out.println("BAS    -> " + _position.toString());
         }
@@ -114,14 +124,14 @@ public abstract class AbstractCharacter extends Thread
     /**
      * Decrement the abscissa of the character.
      */
-    public void left ()
+    public void left()
     {
         Vertex newPos = new Vertex();
         newPos.copy(_position);
 
         if (validMove(newPos, Directions.WEST))
         {
-        	newPos.setX(newPos.getX() - 1);
+            newPos.setX(newPos.getX() - 1);
             _position.copy(newPos);
             System.out.println("GAUCHE -> " + _position.toString());
         }
@@ -134,14 +144,14 @@ public abstract class AbstractCharacter extends Thread
     /**
      * Increment the abscissa of the character.
      */
-    public void right ()
+    public void right()
     {
         Vertex newPos = new Vertex();
         newPos.copy(_position);
 
         if (validMove(newPos, Directions.EAST))
         {
-        	newPos.setX(newPos.getX() + 1);
+            newPos.setX(newPos.getX() + 1);
             _position.copy(newPos);
             System.out.println("DROIT  -> " + _position.toString());
         }
@@ -154,7 +164,7 @@ public abstract class AbstractCharacter extends Thread
     /**
      * Generate and set a random position for the character.
      */
-    public void randomizePosition ()
+    public void randomizePosition()
     {
         Random rand = new Random();
         int min = 0;
@@ -165,14 +175,14 @@ public abstract class AbstractCharacter extends Thread
         setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
     }
 
-    public void setOnChangeListener (OnChangeListener onChangeListener)
+    public void setOnChangeListener(OnChangeListener onChangeListener)
     {
         this.onChangeListener = onChangeListener;
     }
 
     public interface OnChangeListener
     {
-        void changed (int x, int y);
+        void changed(int x, int y);
     }
 
 }
