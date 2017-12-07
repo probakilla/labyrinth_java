@@ -43,4 +43,8 @@ public abstract class  AbstractCandy implements Candy
     {
         return _imgPath;
     }
+    
+    public boolean collision(Vertex v) {
+    	return _position.getX() == v.getX() && _position.getY() == v.getY();
+    }
 }

@@ -94,4 +94,8 @@ public class Enemy extends AbstractCharacter implements Runnable
             }
         }
     }
+    
+    public boolean collision(Vertex v) {
+    	return _position.getX() == v.getX() && _position.getY() == v.getY();
+    }
 }

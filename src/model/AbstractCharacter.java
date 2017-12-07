@@ -9,183 +9,158 @@ import model.Model.Directions;
  *
  * @author Java Group
  */
-public abstract class AbstractCharacter extends Thread
-{
-    protected int _type;
-    protected Vertex _position;
-    protected OnChangeListener onChangeListener;
-    protected String _imgPath;
+public abstract class AbstractCharacter extends Thread {
+	protected int _type;
+	protected Vertex _position;
+	protected OnChangeListener onChangeListener;
+	protected String _imgPath;
 
-    /**
-     * Constructor of AbstractCharacter.
-     *
-     * Set the position of the AbstractCharacter with specific coordinates.
-     *
-     * @param x Abscissa in the labyrinth of the character.
-     * @param y Ordinate in the labyrinth of the character.
-     */
-    public AbstractCharacter(int x, int y)
-    {
-        _position = new Vertex(x, y);
-    }
+	/**
+	 * Constructor of AbstractCharacter.
+	 *
+	 * Set the position of the AbstractCharacter with specific coordinates.
+	 *
+	 * @param x
+	 *            Abscissa in the labyrinth of the character.
+	 * @param y
+	 *            Ordinate in the labyrinth of the character.
+	 */
+	public AbstractCharacter(int x, int y) {
+		_position = new Vertex(x, y);
+	}
 
-    /**
-     * Retrieves the type of the Character.
-     *
-     * Retrieves the type of the character : -1 is for the
-     * {@link model.Enemy Enemy} 1 is for the {@link model.PlayableCharacter}.
-     *
-     * @return The type.
-     */
-    public int getType()
-    {
-        return _type;
-    }
+	/**
+	 * Retrieves the type of the Character.
+	 *
+	 * Retrieves the type of the character : -1 is for the {@link model.Enemy Enemy}
+	 * 1 is for the {@link model.PlayableCharacter}.
+	 *
+	 * @return The type.
+	 */
+	public int getType() {
+		return _type;
+	}
 
-    public Vertex getPosition()
-    {
-        return _position;
-    }
-    
-    /**
-     * @return the _imgPath
-     */
-    public String getImgPath()
-    {
-        return _imgPath;
-    }
+	public Vertex getPosition() {
+		return _position;
+	}
 
-    /**
-     * Change the position of the character to specific location.
-     *
-     * @param x The target location abscissa.
-     * @param y The target location ordinate.
-     */
-    public void setPosition(int x, int y)
-    {
-        _position.setX(x);
-        _position.setY(y);
-    }
+	/**
+	 * @return the _imgPath
+	 */
+	public String getImgPath() {
+		return _imgPath;
+	}
 
-    private boolean validMove(Vertex v, Directions dir)
-    {
-        if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()))
-        {
-            return false;
-        }
-        else if (Graph.getInstance().isWall(v, dir))
-        {
-            return false;
-        }
-        return true;
-    }
+	/**
+	 * Change the position of the character to specific location.
+	 *
+	 * @param x
+	 *            The target location abscissa.
+	 * @param y
+	 *            The target location ordinate.
+	 */
+	public void setPosition(int x, int y) {
+		_position.setX(x);
+		_position.setY(y);
+	}
 
-    /**
-     * Increment the ordinate of the character.
-     */
-    public void up()
-    {
-        Vertex newPos = new Vertex();
-        newPos.copy(_position);
+	private boolean validMove(Vertex v, Directions dir) {
+		if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT())) {
+			return false;
+		} else if (Graph.getInstance().isWall(v, dir)) {
+			return false;
+		}
+		return true;
+	}
 
-        if (validMove(newPos, Directions.NORTH))
-        {
-            newPos.setY(newPos.getY() - 1);
-            _position.copy(newPos);
-            System.out.println("HAUT   -> " + _position.toString());
-            onChangeListener.changed(newPos.getX(), newPos.getY());
-        }
-        else if (!validMove(newPos, Directions.NORTH))
-        {
-            System.out.println("NOPE" + _position.toString());
-        }
-    }
+	/**
+	 * Increment the ordinate of the character.
+	 */
+	public void up() {
+		Vertex newPos = new Vertex();
+		newPos.copy(_position);
 
-    /**
-     * Decrement the ordinate of the character.
-     */
-    public void down()
-    {
-        Vertex newPos = new Vertex();
-        newPos.copy(_position);
+		if (validMove(newPos, Directions.NORTH)) {
+			newPos.setY(newPos.getY() - 1);
+			_position.copy(newPos);
+			System.out.println("HAUT   -> " + _position.toString());
+			onChangeListener.changed(newPos.getX(), newPos.getY());
+		} else if (!validMove(newPos, Directions.NORTH)) {
+			System.out.println("NOPE" + _position.toString());
+		}
+	}
 
-        if (validMove(newPos, Directions.SOUTH))
-        {
-            newPos.setY(newPos.getY() + 1);
-            _position.copy(newPos);
-            System.out.println("BAS    -> " + _position.toString());
-            onChangeListener.changed(newPos.getX(), newPos.getY());
-        }
-        else if (!validMove(newPos, Directions.SOUTH))
-        {
-            System.out.println("NOPE" + _position.toString());
-        }
-    }
+	/**
+	 * Decrement the ordinate of the character.
+	 */
+	public void down() {
+		Vertex newPos = new Vertex();
+		newPos.copy(_position);
 
-    /**
-     * Decrement the abscissa of the character.
-     */
-    public void left()
-    {
-        Vertex newPos = new Vertex();
-        newPos.copy(_position);
+		if (validMove(newPos, Directions.SOUTH)) {
+			newPos.setY(newPos.getY() + 1);
+			_position.copy(newPos);
+			System.out.println("BAS    -> " + _position.toString());
+			onChangeListener.changed(newPos.getX(), newPos.getY());
+		} else if (!validMove(newPos, Directions.SOUTH)) {
+			System.out.println("NOPE" + _position.toString());
+		}
+	}
 
-        if (validMove(newPos, Directions.WEST))
-        {
-            newPos.setX(newPos.getX() - 1);
-            _position.copy(newPos);
-            System.out.println("GAUCHE -> " + _position.toString());
-            onChangeListener.changed(newPos.getX(), newPos.getY());
-        }
-        else if (!validMove(newPos, Directions.WEST))
-        {
-            System.out.println("NOPE" + _position.toString());
-        }
-    }
+	/**
+	 * Decrement the abscissa of the character.
+	 */
+	public void left() {
+		Vertex newPos = new Vertex();
+		newPos.copy(_position);
 
-    /**
-     * Increment the abscissa of the character.
-     */
-    public void right()
-    {
-        Vertex newPos = new Vertex();
-        newPos.copy(_position);
+		if (validMove(newPos, Directions.WEST)) {
+			newPos.setX(newPos.getX() - 1);
+			_position.copy(newPos);
+			System.out.println("GAUCHE -> " + _position.toString());
+			onChangeListener.changed(newPos.getX(), newPos.getY());
+		} else if (!validMove(newPos, Directions.WEST)) {
+			System.out.println("NOPE" + _position.toString());
+		}
+	}
 
-        if (validMove(newPos, Directions.EAST))
-        {
-            newPos.setX(newPos.getX() + 1);
-            _position.copy(newPos);
-            System.out.println("DROIT  -> " + _position.toString());
-            onChangeListener.changed(newPos.getX(), newPos.getY());
-        }
-        else if (!validMove(newPos, Directions.EAST))
-        {
-            System.out.println("NOPE" + _position.toString());
-        }
-    }
+	/**
+	 * Increment the abscissa of the character.
+	 */
+	public void right() {
+		Vertex newPos = new Vertex();
+		newPos.copy(_position);
 
-    /**
-     * Generate and set a random position for the character.
-     */
-    public void randomizePosition()
-    {
-        Random rand = new Random();
-        int min = 0;
-        int maxWidth = Graph.getGRIDWIDTH() - 1;
-        int maxHeight = Graph.getGRIDHEIGHT() - 1;
-        // Formule trouvée sur internet pour générer des nombres entre min et
-        // max inclus.
-        setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
-    }
+		if (validMove(newPos, Directions.EAST)) {
+			newPos.setX(newPos.getX() + 1);
+			_position.copy(newPos);
+			System.out.println("DROIT  -> " + _position.toString());
+			onChangeListener.changed(newPos.getX(), newPos.getY());
+		} else if (!validMove(newPos, Directions.EAST)) {
+			System.out.println("NOPE" + _position.toString());
+		}
+	}
 
-    public void setOnChangeListener(OnChangeListener onChangeListener)
-    {
-        this.onChangeListener = onChangeListener;
-    }
+	/**
+	 * Generate and set a random position for the character.
+	 */
+	public void randomizePosition() {
+		Random rand = new Random();
+		int min = 0;
+		int maxWidth = Graph.getGRIDWIDTH() - 1;
+		int maxHeight = Graph.getGRIDHEIGHT() - 1;
+		// Formule trouvée sur internet pour générer des nombres entre min et
+		// max inclus.
+		setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
+	}
 
-    public interface OnChangeListener
-    {
-        void changed(int x, int y);
-    }
+	public void setOnChangeListener(OnChangeListener onChangeListener) {
+		this.onChangeListener = onChangeListener;
+	}
+
+	public interface OnChangeListener {
+		void changed(int x, int y);
+	}
 
 }
