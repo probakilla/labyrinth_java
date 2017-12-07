@@ -56,5 +56,9 @@ public class PlayableCharacter extends AbstractCharacter
     {
         System.out.println("Vous avez gagné " + _score + " points.");
     }
+    
+    public boolean collision(Vertex v) {
+    	return _position.getX() == v.getX() && _position.getY() == v.getY();
+    }
 
 }

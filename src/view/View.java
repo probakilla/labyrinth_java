@@ -1,13 +1,19 @@
 package view;
 
 import java.util.ArrayList;
+
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Edge;
 import model.Enemy;
@@ -33,6 +39,8 @@ public class View {
 
 	private final ImageView _player, _door;
 	private final ArrayList<ImageView> _iv_enemies, _iv_candies;
+	private Label score;
+	Text endgame;
 
 	private View() {
 		_pane = new Pane();
@@ -93,7 +101,7 @@ public class View {
 	 *            Width of the labyrinth.
 	 */
 	public void drawFrame(Stage stage, int nbrX, int nbrY) {
-		_scene = new Scene(_pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN);
+		_scene = new Scene(_pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN + 50);
 
 		_scene.setFill(SCENE_COLOR);
 		stage.setScene(_scene);
@@ -123,6 +131,21 @@ public class View {
 				_pane.getChildren().add(square);
 			}
 		}
+		
+		score = new Label();
+		score.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN)/2 - 100);
+		score.setLayoutY(((WALL + CELL) * nbrY + WALL) * SPAN + 10);
+		score.setFont(new Font("Serif", 20));
+		score.setText("Votre score : 0pt");
+		_pane.getChildren().add(score);
+		
+		endgame = new Text();
+		endgame.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN)/3 - 100);
+		endgame.setLayoutY((((WALL + CELL) * nbrY + WALL) * SPAN )/2);
+		endgame.setFont(new Font("Serif", 50));
+		endgame.setStyle("-fx-background: #FFFFFF;");
+		endgame.setVisible(false);
+		_pane.getChildren().add(endgame);
 	}
 
 	/**
@@ -235,6 +258,18 @@ public class View {
 	private void setImageViewPosition(ImageView iv, int x, int y) {
 		iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
 		iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
+	}
+	
+	public void setScore(int sc) {
+		score.setText("Votre score : " + sc + "pts");
+	}
+	
+	public void setEndGameText(boolean win) {		
+		endgame.setFill(Color.web(win ? "#00E676" :"#F44336"));
+		endgame.setText(win ? "Bravo mon con !" : "Vous êtes une merde !");
+		endgame.setStyle("-fx-background-color: black;");
+
+		endgame.setVisible(true);
 	}
 
 	/**

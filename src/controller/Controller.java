@@ -15,13 +15,14 @@ import view.*;
 public class Controller {
 
 	private static Controller INSTANCE;
-	private final int NB_ENEMIES = 1, NB_CANDIES = 10;
+	private final int NB_ENEMIES = 10, NB_CANDIES = 10;
 
 	private final Model _model;
 	private final View _view;
 	private final PlayableCharacter _player;
 	private final Enemy[] _enemies;
 	private final AbstractCandy[] _candies;
+	private Vertex door_position;
 
 	private Controller() {
 		_model = Model.getInstance();
@@ -36,17 +37,22 @@ public class Controller {
 			public void changed(int x, int y) {
 				_view.updatePlayerPosition(x, y);
 				for (int i = 0; i < NB_CANDIES; i++) {
-					if (_candies[i] != null && _candies[i].collision(_player.getPosition())) {
+					if (_candies[i] != null && _player.collision(_candies[i].getPosition())) {
 						_view.removeCandy(i);
 						_candies[i] = null;
+						_view.setScore(_model.addPoint(1));
 					}
 				}
 				for (int i = 0; i < NB_ENEMIES; i++) {
-					if (_enemies[i].collision(_player.getPosition())) {
-						System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
-						System.exit(0);
+					if (_player.collision(_enemies[i].getPosition())) {
+						// System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
+						// System.exit(0);
+						_view.setEndGameText(false);
 					}
 				}
+
+				if (_player.collision(door_position))
+					_view.setEndGameText(true);
 			}
 		});
 
@@ -61,9 +67,12 @@ public class Controller {
 				@Override
 				public void changed(int x, int y) {
 					_view.updateEnemyPosition(idx, x, y);
-					if (_enemies[idx].collision(_player.getPosition())) {
-						System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
-						System.exit(0);
+					if (_player.collision(_enemies[idx].getPosition())) {
+						/*
+						 * System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
+						 * System.exit(0);
+						 */
+						_view.setEndGameText(false);
 					}
 
 				}
@@ -111,8 +120,8 @@ public class Controller {
 	public void start(Stage stage) {
 		_model.buildRandomPath(new Vertex(0, 0, 0));
 
-		Vertex v = _model.getGraph().getEndPath();
-		_view.createDoor(v.getX(), v.getY());
+		door_position = _model.getGraph().getEndPath();
+		_view.createDoor(door_position.getX(), door_position.getY());
 		_view.createPlayable();
 
 		_model.buildCycleV(5);
