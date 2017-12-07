@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import model.Model.Directions;
+
 /**
  * Class used to define an enemy.
  *
@@ -16,7 +18,17 @@ import java.util.logging.Logger;
 public class Enemy extends AbstractCharacter implements Runnable
 {
     private int _running;
-    /**
+    private Vertex _target;
+    
+    public Vertex get_target() {
+		return _target;
+	}
+
+	public void set_target(Vertex _target) {
+		this._target = _target;
+	}
+
+	/**
      * Constructor of Enemy.
      *
      * The coordinates of the Enemy are set to [0,0]. The call of this
@@ -50,22 +62,65 @@ public class Enemy extends AbstractCharacter implements Runnable
     {
         _running = 0;
     }
+    
+    public int getNextStep(){
+		int x = 0;
+		int y = 0;
+		int xt = 0;
+		int yt = 0;
+    	int nb = 2;
+    	int idx = 0;
+    	System.out.println("on est au "+this.getPosition());
+    	//System.out.println(Model.getInstance().getGraph().getVertex(this.getPosition().getX(), this.getPosition().getY()).getNbr()+" vers "+nb);
+        	 for (int i = 0; i < 4; ++i)
+             {
+                 switch (i)
+                 {
+                     case 0:
+                         x = 0;
+                         y = -1;
+                         break;
+                     case 1:
+                         x = 0;
+                         y = 1;
+                         break;
+                     case 2:
+                         x = 1;
+                         y = 0;
+                         break;
+                     case 3:
+                         x = -1;
+                         y = 0;
+                         break;
+                 }
+                 System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
+                 if ((this.getPosition().getX()+x >=0 && this.getPosition().getX()+x < Model.getInstance().getGraph().getGRIDWIDTH() 
+                		 && this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT()) 
+                		 && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)) 
+                		 && nb <= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr())
+             		{
+                     //System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
+             			xt = x;
+             			yt = y;
+             			idx = i;
+             			nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr();
+             		}
+             }
+        	 System.out.println("on va vers "+idx+" "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+xt, this.getPosition().getY()+yt));
+        	 return idx;
+    }
 
     // Pour l'instant le perso bouge au pif, mais on pourra changer ça.
     @Override
     public void run ()
     {
         _running = 1;
-        Random rand = new Random();
-        randomizePosition();
-        int max, min, rd;
-        max = 3;
-        min = 0;
         while (_running == 1)
         {
+        	//System.out.println(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr());
             // Formule trouvée sur internet pour générer des nombres entre min et
             // max inclus.
-            rd = rand.nextInt(max - min + 1) + min;
+            /*rd = rand.nextInt(max - min + 1) + min;
             switch (rd)
             {
                 case 0:
@@ -82,7 +137,26 @@ public class Enemy extends AbstractCharacter implements Runnable
                     break;
                 default:
                     break;
+            }*/
+        	Model.getInstance().launchManhattan(this.getPosition(), this.get_target());
+        	switch (this.getNextStep())
+            {
+                case 0:
+                    this.up();
+                    break;
+                case 1:
+                    this.down();
+                    break;
+                case 2:
+                    this.left();
+                    break;
+                case 3:
+                    this.right();
+                    break;
+                default:
+                    break;
             }
+        	
 
             try
             {

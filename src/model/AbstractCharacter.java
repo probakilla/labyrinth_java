@@ -92,12 +92,12 @@ public abstract class AbstractCharacter extends Thread
         {
             newPos.setY(newPos.getY() - 1);
             _position.copy(newPos);
-            System.out.println("HAUT   -> " + _position.toString());
+            //System.out.println("HAUT   -> " + _position.toString());
             onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.NORTH))
         {
-            System.out.println("NOPE" + _position.toString());
+            //System.out.println("NOPE" + _position.toString());
         }
     }
 
@@ -113,12 +113,12 @@ public abstract class AbstractCharacter extends Thread
         {
             newPos.setY(newPos.getY() + 1);
             _position.copy(newPos);
-            System.out.println("BAS    -> " + _position.toString());
+            //System.out.println("BAS    -> " + _position.toString());
             onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.SOUTH))
         {
-            System.out.println("NOPE" + _position.toString());
+            //System.out.println("NOPE" + _position.toString());
         }
     }
 
@@ -134,12 +134,12 @@ public abstract class AbstractCharacter extends Thread
         {
             newPos.setX(newPos.getX() - 1);
             _position.copy(newPos);
-            System.out.println("GAUCHE -> " + _position.toString());
+            //System.out.println("GAUCHE -> " + _position.toString());
             onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.WEST))
         {
-            System.out.println("NOPE" + _position.toString());
+            //System.out.println("NOPE" + _position.toString());
         }
     }
 
@@ -155,12 +155,12 @@ public abstract class AbstractCharacter extends Thread
         {
             newPos.setX(newPos.getX() + 1);
             _position.copy(newPos);
-            System.out.println("DROIT  -> " + _position.toString());
+            //System.out.println("DROIT  -> " + _position.toString());
             onChangeListener.changed(newPos.getX(), newPos.getY());
         }
         else if (!validMove(newPos, Directions.EAST))
         {
-            System.out.println("NOPE" + _position.toString());
+            //System.out.println("NOPE" + _position.toString());
         }
     }
 

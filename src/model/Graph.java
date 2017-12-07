@@ -109,7 +109,12 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                 yt = y;
                 break;
         }
-        return !this.containsVertex(new Vertex(xt, yt, v.getNbr() + 1));
+        return !this.containsVertex(new Vertex(xt, yt));
+    }
+    
+    public boolean doesntExist (Vertex v)
+    {
+        return !this.containsVertex(v);
     }
 
     /**
@@ -283,7 +288,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	public boolean isOpenedDoor(Vertex actual, Directions dir)
 	{
 		Edge edge = this.getEdge(actual, dir);
-		return (edge != null && edge.getType() == Type.OPENED_DOOR);
+		return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
 	}
 	
 	/**

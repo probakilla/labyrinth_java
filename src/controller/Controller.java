@@ -82,13 +82,12 @@ public class Controller
         _model.buildRandomPath(new Vertex(0, 0, 0));
         
         Vertex v = _model.getGraph().getEndPath();
-        System.out.println(_model.getGraph().getGRIDHEIGHT());
         _view.createDoor(v.getX(), v.getY());
         
         _model.buildCycleV(5);
         _model.buildCycleH(4);
         _model.getGraph().GraphToDot();
-        _model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
+        _model.launchManhattan(_model.getGraph().getVertex(0, 0), v);
         _view.start(stage, _model.getGraph());
         _view.printRules();
 
@@ -112,6 +111,11 @@ public class Controller
 			@Override
 			public void changed(int x, int y) {
 				_view.updatePlayable(x,  y);
+				for (int i = 0; i < NB_ENEMIES; i++)
+		        {
+					_enemies[i].set_target(_model.getGraph().getVertex(x, y));
+					System.out.println(_enemies[i].get_target());
+		        }
 			}
 		});
 
