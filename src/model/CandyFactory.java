@@ -37,7 +37,6 @@ public class CandyFactory
         	candyType = candies[rd.nextInt(4)];
         	x = 1 + rd.nextInt(15);
         	y = 1 + rd.nextInt(15);
-        	System.out.println("my candy " + candyType);
             switch (candyType)
             {
                 case 2:

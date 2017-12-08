@@ -164,7 +164,6 @@ public class Model
         {
             vertex.setNbr(0);
         }
-        System.out.println(_graph.getVertex(15, 15).getNbr());
         calculateManhattanDistance(source, target);
     }
     
@@ -192,7 +191,6 @@ public class Model
 			}
 			xsimple = rand.nextInt(15-1)+1;
 			ysimple = rand.nextInt(14-1)+1;
-			//System.out.println(_graph.getVertex(xsimple, ysimple).toString());
 		}
 	}
 		
@@ -212,8 +210,6 @@ public class Model
 			}
 			xsimple = rand.nextInt(14-1)+1;
 			ysimple = rand.nextInt(15-1)+1;
-			System.out.println(_graph.getVertex(xsimple, ysimple).toString());
-
 		}  	
 	}
 }

@@ -129,7 +129,6 @@ public class Controller {
 		for (int i = 0; i < NB_ENEMIES; i++) {
 			_enemies[i].set_targetX(_player.getPosition().getX());
 			_enemies[i].set_targetY(_player.getPosition().getY());
-			System.out.println("ZZZZZZZZZZ"+_enemies[i].get_targetX()+" "+_enemies[i].get_targetY());
 		}
 		_model.buildCycleV(5);
 		_model.buildCycleH(4);
