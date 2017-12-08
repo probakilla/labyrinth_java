@@ -134,7 +134,6 @@ public class Controller {
 		_model.buildCycleH(4);
 		_model.getGraph().GraphToDot();
 		//_model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
-
 		_view.start(stage, _model.getGraph());
 		_view.printRules();
 

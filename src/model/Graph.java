@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import org.jgrapht.graph.SimpleGraph;
 
@@ -314,6 +315,66 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	{
 		Edge edge = this.getEdge(actual, dir);
 		return (edge != null && edge.getType() == Type.CLOSED_DOOR);
+	}
+	
+	/**
+	 * Retrieves the vertex to place the switch to open the edge door.
+	 * @param door edge to be open by the switch
+	 * @return The vertex where to place the switch
+	 */
+	public Vertex setSwitchOn(Edge door)
+	{
+		Random rand = new Random ();
+		Set<Vertex> listeVertex = this.vertexSet();
+		int i = 0;
+		int j = 0;
+        Vertex vertex;
+        for (Iterator<Vertex> it = listeVertex.iterator(); it.hasNext(); i++)
+    	{
+    		vertex = it.next();
+    		vertex.setNbr(i);
+    	}
+        if (door.getSource().getNbr() < door.getTarget().getNbr())
+        	vertex = door.getSource();
+        else
+        	vertex = door.getTarget();
+        i = rand.nextInt(vertex.getNbr() + 1);
+        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
+    	{
+        	vertex = it.next();
+    	}
+		return vertex;
+		
+	}
+	
+	/**
+	 * Retrieves the vertex to place the switch to close the edge door.
+	 * @param door edge to be open by the switch
+	 * @return The vertex where to place the switch
+	 */
+	public Vertex setSwitchOff(Edge door)
+	{
+		Random rand = new Random ();
+		Set<Vertex> listeVertex = this.vertexSet();
+		int i = 0;
+		int j = 0;
+        Vertex vertex;
+        for (Iterator<Vertex> it = listeVertex.iterator(); it.hasNext(); i++)
+    	{
+    		vertex = it.next();
+    		vertex.setNbr(i);
+    	}
+        if (door.getSource().getNbr() > door.getTarget().getNbr())
+        	vertex = door.getSource();
+        else
+        	vertex = door.getTarget();
+        i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr() + 1);
+        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
+    	{
+        	vertex = it.next();
+    	}
+		return vertex;
+		
 	}
 
 }
