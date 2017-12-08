@@ -222,8 +222,15 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             writer = new PrintWriter("graph.dot");
             writer.println("graph path {");
             Set<Vertex> v1 = this.vertexSet();
+            Vertex vertex;
             int i = 0;
             int j;
+            for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
+        	{
+        		vertex = it.next();
+        		vertex.setNbr(i);
+        	}
+            i = 0;
             for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
             {
                 Vertex from = it.next();
