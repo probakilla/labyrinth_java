@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Door;
 import model.Edge;
 import model.Enemy;
 import model.Graph;
@@ -38,7 +39,7 @@ public class View {
 	private final Pane _pane;
 
 	private final ImageView _player, _door;
-	private final ArrayList<ImageView> _iv_enemies, _iv_candies;
+	private final ArrayList<ImageView> _iv_enemies, _iv_candies, _iv_switch_on, _iv_switch_off;
 	private Label score;
 	Text endgame;
 
@@ -46,13 +47,15 @@ public class View {
 		_pane = new Pane();
 		_iv_enemies = new ArrayList<ImageView>();
 		_iv_candies = new ArrayList<ImageView>();
-
-		Image imD = new Image("file:" + System.getProperty("user.dir") + "/utils/door_open.png");
+		_iv_switch_on = new ArrayList<ImageView>();
+		_iv_switch_off = new ArrayList<ImageView>();
+		
+		Image imD = new Image("file:" + System.getProperty("user.dir") + Door.get_doorPath());
 		_door = new ImageView(imD);
 
-		Image imP = new Image("file:" + System.getProperty("user.dir") + "/utils/player.png");
+		Image imP = new Image("file:" + System.getProperty("user.dir") + PlayableCharacter.getImgPath());
 		_player = new ImageView(imP);
-	}
+		}
 
 	private static View INSTANCE;
 
@@ -222,7 +225,7 @@ public class View {
 	}
 
 	public void createEnnemies(int x, int y) {
-		Image im = new Image("file:" + System.getProperty("user.dir") + "/utils/bad.png");
+		Image im = new Image("file:" + System.getProperty("user.dir") + Enemy.getImgPath());
 		ImageView iv = new ImageView(im);
 
 		_pane.getChildren().add(iv);
@@ -230,8 +233,8 @@ public class View {
 		_iv_enemies.add(iv);
 	}
 	
-	public void createCandy(int x, int y, String filename) {
-		Image im = new Image("file:" + System.getProperty("user.dir") + "/utils/" + filename);
+	public void createCandy(int x, int y, String imgPath) {
+		Image im = new Image("file:" + System.getProperty("user.dir") + imgPath);
 		ImageView iv = new ImageView(im);
 		setImageViewPosition(iv, x, y);
 		_pane.getChildren().add(iv);
@@ -260,7 +263,25 @@ public class View {
 	public void updatePlayerPosition(int x, int y) {
 		setImageViewPosition(_player, x, y);
 	}
+	
+	public void createSwitchOn (int x, int y) {
+		Image im = new Image("file:" + System.getProperty("user.dir") + Door.getSwitchOnPath());
+		ImageView iv = new ImageView(im);
 
+		_pane.getChildren().add(iv);
+		setImageViewPosition(iv, x, y);
+		_iv_switch_on.add(iv);
+	}
+	
+	public void createSwitchOff (int x, int y) {
+		Image im = new Image("file:" + System.getProperty("user.dir") + Door.getSwitchOffPath());
+		ImageView iv = new ImageView(im);
+
+		_pane.getChildren().add(iv);
+		setImageViewPosition(iv, x, y);
+		_iv_switch_off.add(iv);
+	}
+	
 	private void setImageViewPosition(ImageView iv, int x, int y) {
 		iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
 		iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));

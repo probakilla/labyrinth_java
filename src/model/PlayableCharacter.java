@@ -8,18 +8,18 @@ package model;
  * is a candy, for a collision with a {@link model.Candy Candy}, it can be any
  * positive integer.
  *
- * @author Java Group
+ * @author Java Groupbutton_close.png
  */
 public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
+	private static String _imgPath = "/utils/player.png";
 
 
     private PlayableCharacter()
     {
         super(0, 0);
-        _imgPath = "player.png";
         _type = 1;
         _score = 0;
     }
@@ -42,6 +42,13 @@ public class PlayableCharacter extends AbstractCharacter
     }
     
     /**
+  	 * @return the _imgPath
+  	 */
+  	public static String getImgPath() {
+  		return _imgPath;
+  	}
+    
+    /**
      * Increase the score of the player in function of the
      * {@link model.Candy Candy} he get.
      *
@@ -60,5 +67,4 @@ public class PlayableCharacter extends AbstractCharacter
     public boolean collision(Vertex v) {
     	return _position.getX() == v.getX() && _position.getY() == v.getY();
     }
-
 }

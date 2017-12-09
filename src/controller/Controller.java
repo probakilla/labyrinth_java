@@ -124,8 +124,8 @@ public class Controller {
 	 */
 	public void start(Stage stage) {
 		_model.buildRandomPath(new Vertex(0, 0, 0));
-
-		door_position = _model.getGraph().getEndPath();
+		Graph graph = _model.getGraph ();
+		door_position = graph.getEndPath();
 		_view.createDoor(door_position.getX(), door_position.getY());
 		_view.createPlayable();
 		for (int i = 0; i < NB_ENEMIES; i++) {
@@ -135,9 +135,14 @@ public class Controller {
 		//_model.buildCycleV(5);
 		//_model.buildCycleH(4);
 		for (int i = 0; i < _nb_opened_door; ++i)
-			_model.getGraph().openDoorRandom();
+			graph.openDoorRandom();
 		for (int i = 0; i < _nb_closed_door; ++i)
-			_model.getGraph().closeDoorRandom();
+		{
+			Vertex switchOn = graph.setSwitchOn(_model.getGraph().closeDoorRandom());
+			_view.createSwitchOn(switchOn.getX(), switchOn.getY());
+			Vertex switchOff = graph.setSwitchOff(_model.getGraph().closeDoorRandom());
+			_view.createSwitchOff(switchOff.getX(), switchOff.getY());
+		}
 		System.out.println(_model.getGraph().closeDoorRandom());
 		_model.getGraph().closeDoorRandom();
 		_model.getGraph().GraphToDot();

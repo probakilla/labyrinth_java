@@ -9,15 +9,15 @@ public class Door
    
     private final Vertex _switchOn, _switchOff;
     private final Edge _door;
-    private static String _switchOnPath, _switchOffPath;
-    
-    public Door (Vertex switchOn, Vertex switchOff, Edge door)
+    private static String _switchOnPath = "/utils/button_open.png";
+    private static String _switchOffPath = "/utils/button_close.png";
+    private static String _doorPath = "/utils/door_open.png";
+
+	public Door (Vertex switchOn, Vertex switchOff, Edge door)
     {
         _switchOn = switchOn;
         _switchOff = switchOff;
         _door = door;
-        _switchOnPath = "XD";
-        _switchOffPath = "LMAO";
     }    
    
        
@@ -41,6 +41,14 @@ public class Door
     {
         return _switchOffPath;
     }
+    
+    /**
+     * 
+     * @return the _doorPath
+     */
+    public static String get_doorPath() {
+		return _doorPath;
+	}
 
     /**
      * @return the _switchOn

@@ -17,7 +17,7 @@ public class PinkCandy extends AbstractCandy
     public PinkCandy (int x, int y)
     {
         super(x, y);
-        _imgPath = "candy-2.png";
+        _imgPath = "/utils/candy-2.png";
         _type = 3;
     }
 

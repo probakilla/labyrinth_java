@@ -18,7 +18,7 @@ public class RoundCandy extends AbstractCandy
     public RoundCandy (int x, int y)
     {
         super(x, y);
-        _imgPath = "candy-4.png";
+        _imgPath = "/utils/candy-4.png";
         _type = 5;
     }
 }

@@ -157,7 +157,6 @@ public class Model
         }
     }
 
-
     public void launchManhattan (Vertex source, Vertex target)
     {
         for (Vertex vertex : _graph.vertexSet())

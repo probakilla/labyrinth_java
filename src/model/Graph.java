@@ -339,7 +339,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         	vertex = door.getSource();
         else
         	vertex = door.getTarget();
-        i = rand.nextInt(vertex.getNbr() + 1);
+        i = rand.nextInt(vertex.getNbr());
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
     	{
         	vertex = it.next();
@@ -369,7 +369,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         	vertex = door.getSource();
         else
         	vertex = door.getTarget();
-        i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr() + 1);
+        i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr()) + vertex.getNbr();
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
     	{
         	vertex = it.next();
@@ -419,6 +419,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	
 	/**
 	 * Change the type of a random edge, from the graph, to OPENNED_DOOR.
+	 * @return 
 	 */
 	public void openDoorRandom ()
 	{

@@ -18,7 +18,7 @@ public class Cherry extends AbstractCandy
     public Cherry (int x, int y)
     {
         super(x, y);
-        _imgPath = "candy-3.png";
+        _imgPath = "/utils/candy-3.png";
         _type = 10;
     }
 

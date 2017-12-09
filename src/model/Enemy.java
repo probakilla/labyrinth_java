@@ -20,6 +20,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _running;
     private int _targetX;
     private int _targetY;
+	protected static String _imgPath = "/utils/bad.png";
     
     public int get_targetX() {
 		return _targetX;
@@ -46,7 +47,6 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy ()
     {
         super(0, 0);
-        _imgPath = "/bad.png";
         _type = -1;
         _running = 0;
     }
@@ -62,10 +62,16 @@ public class Enemy extends AbstractCharacter implements Runnable
     public Enemy (int x, int y)
     {
         super(x, y);
-        _imgPath = "/bad.png";
         _type = -1;
         _running = 0;
     }
+    
+    /**
+   	 * @return the _imgPath
+   	 */
+   	public static String getImgPath() {
+   		return _imgPath;
+   	}
     
     public void stopRunning ()
     {

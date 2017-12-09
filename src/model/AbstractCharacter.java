@@ -13,7 +13,6 @@ public abstract class AbstractCharacter extends Thread {
 	protected int _type;
 	protected Vertex _position;
 	protected OnChangeListener onChangeListener;
-	protected String _imgPath;
 
 	/**
 	 * Constructor of AbstractCharacter.
@@ -43,13 +42,6 @@ public abstract class AbstractCharacter extends Thread {
 
 	public Vertex getPosition() {
 		return _position;
-	}
-
-	/**
-	 * @return the _imgPath
-	 */
-	public String getImgPath() {
-		return _imgPath;
 	}
 
 	/**
