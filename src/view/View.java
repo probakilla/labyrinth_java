@@ -198,6 +198,9 @@ public class View {
 						if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
 							drawWall(x, y, x + 1, y, Color.BLUE);
 						}
+						else if (e != null && (e.getType() == Edge.Type.CLOSED_DOOR)) {
+							drawWall(x, y, x + 1, y, Color.DEEPPINK);
+						}
 					}
 				}
 
@@ -207,6 +210,9 @@ public class View {
 						drawWall(x, y, x, y + 1, Color.CHOCOLATE);
 						if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
 							drawWall(x, y, x, y + 1, Color.BLUE);
+						}
+						else if (e != null && (e.getType() == Edge.Type.CLOSED_DOOR)) {
+							drawWall(x, y, x + 1, y, Color.DEEPPINK);
 						}
 					}
 

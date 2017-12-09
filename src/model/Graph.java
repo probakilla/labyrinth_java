@@ -3,6 +3,7 @@ package model;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayDeque;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.Random;
@@ -375,6 +376,107 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     	}
 		return vertex;
 		
+	}
+	
+	/**
+	 * Set the type of the Edge edge to CLOSED_DOOR.
+	 * 
+	 * @param edge the Edge to be changed.
+	 * @return The modified Edge.
+	 */
+	public Edge closedDoor (Edge edge)
+	{
+		edge.setType(Edge.Type.CLOSED_DOOR);
+		return edge;
+	}
+	
+	/**
+	 * Close randomly a door from the graph.
+	 * @return The Edge containing the recently close door.
+	 */
+	public Edge closeDoorRandom  ()
+	{
+		Edge edge = this.randomEdge ();
+		return closedDoor (edge);
+	}
+
+	/**
+	 * Retrieves a random Edge from the graph
+	 * 
+	 * @return The random Edge.
+	 */
+	private Edge randomEdge()
+	{
+		Random rand = new Random();
+		Set<Edge> listeEdge = this.edgeSet();
+		int randEdge = rand.nextInt(listeEdge.size());
+		Iterator<Edge> it = listeEdge.iterator();
+		Edge edge = it.next();
+		for (int i = 0; i < randEdge; ++i)
+			edge = it.next();
+		return edge;
+	}
+	
+	/**
+	 * Change the type of a random edge, from the graph, to OPENNED_DOOR.
+	 */
+	public void openDoorRandom ()
+	{
+		int i;
+		Random rand = new Random ();
+		for (i = 0; i < 1000; ++i)
+		{
+			Vertex source = this.randomVertex ();
+			if (source != null)
+			{
+				Directions dir = Directions.values()[rand.nextInt(Directions.values().length)];
+				if (isWall (source, dir))
+				{
+					Vertex target = this.getVertexByDir(source, dir);
+					if (target != null)
+					{
+						Edge edge = this.getEdge(source, target);
+						if (edge == null)
+						{
+							this.addEdge(source, target, new Edge (Type.OPENED_DOOR));
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Retrieves a random vertex from the graph.
+	 * 
+	 * @return The random vertex.
+	 */
+	private Vertex randomVertex() 
+	{
+		Random rand = new Random();
+		Set<Vertex> listeVertex = this.vertexSet();
+		int randVertex = rand.nextInt(listeVertex.size());
+		Iterator<Vertex> it = listeVertex.iterator();
+		Vertex vertex = it.next();
+		for (int i = 0; i < randVertex; ++i)
+			vertex = it.next();
+		return vertex;
+	}
+	
+	/**
+	 * Returns a set of the closed edges contained in this graph
+	 * 
+	 * @return The set of the closed edges.
+	 */
+	public Set<Edge> allClosedDoor ()
+	{
+		//Set<Edge> listEdge = this.edgeSet();
+		Set<Edge> listClosedEdge = new HashSet<Edge> ();
+		for (Edge edge : this.edgeSet())
+			if (edge.getType() == Type.CLOSED_DOOR)
+				listClosedEdge.add(edge);
+		return listClosedEdge;
 	}
 
 }

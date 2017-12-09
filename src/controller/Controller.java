@@ -24,7 +24,9 @@ public class Controller {
 	private final Enemy[] _enemies;
 	private final AbstractCandy[] _candies;
 	private Vertex door_position;
-
+	private int _nb_opened_door = 10;
+	private int _nb_closed_door = 10;
+	
 	private Controller() {
 		_model = Model.getInstance();
 		_view = View.getInstance();
@@ -130,8 +132,14 @@ public class Controller {
 			_enemies[i].set_targetX(_player.getPosition().getX());
 			_enemies[i].set_targetY(_player.getPosition().getY());
 		}
-		_model.buildCycleV(5);
-		_model.buildCycleH(4);
+		//_model.buildCycleV(5);
+		//_model.buildCycleH(4);
+		for (int i = 0; i < _nb_opened_door; ++i)
+			_model.getGraph().openDoorRandom();
+		for (int i = 0; i < _nb_closed_door; ++i)
+			_model.getGraph().closeDoorRandom();
+		System.out.println(_model.getGraph().closeDoorRandom());
+		_model.getGraph().closeDoorRandom();
 		_model.getGraph().GraphToDot();
 		//_model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
 		_view.start(stage, _model.getGraph());
