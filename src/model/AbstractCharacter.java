@@ -68,7 +68,7 @@ public abstract class AbstractCharacter extends Thread {
 	private boolean validMove(Vertex v, Directions dir) {
 		if (!v.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT())) {
 			return false;
-		} else if (Graph.getInstance().isWall(v, dir)) {
+		} else if (Graph.getInstance().isWall(v, dir) || Graph.getInstance().isClosedDoor(v, dir)) {
 			return false;
 		}
 		return true;

@@ -409,7 +409,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	{
 		Random rand = new Random();
 		Set<Edge> listeEdge = this.edgeSet();
-		int randEdge = rand.nextInt(listeEdge.size());
+		int randEdge = rand.nextInt(listeEdge.size()) + 1;
 		Iterator<Edge> it = listeEdge.iterator();
 		Edge edge = it.next();
 		for (int i = 0; i < randEdge; ++i)

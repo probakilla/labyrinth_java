@@ -176,40 +176,4 @@ public class Model
     {
         return _graph;
     }
-
-	public void buildCycleV(int nbCycle) 
-	{
-		Random rand = new Random();
-		int xsimple = rand.nextInt(15-1)+1;
-		int ysimple = rand.nextInt(14-1)+1;
-		for (int i=0; i<nbCycle; i++) {
-			
-			while(!_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple, ysimple+1), new Edge(Type.OPENED_DOOR)))
-			{
-				xsimple = rand.nextInt(15-1)+1;
-				ysimple = rand.nextInt(14-1)+1;		
-			}
-			xsimple = rand.nextInt(15-1)+1;
-			ysimple = rand.nextInt(14-1)+1;
-		}
-	}
-		
-	public void buildCycleH(int nbCycle) {
-		Random rand = new Random();
-		int xsimple = rand.nextInt(14-1)+1;
-		int ysimple = rand.nextInt(15-1)+1;
-		
-		for (int i=0; i<nbCycle; i++) 
-		{
-			//Si il n'a pas put rajouter l'arrête on retente avec d'autre coordonnées jusqu'a ce qu'il y arrive.
-			while(!_graph.addEdge(_graph.getVertex(xsimple, ysimple), _graph.getVertex(xsimple+1, ysimple), new Edge(Type.OPENED_DOOR)))
-			{
-				xsimple = rand.nextInt(14-1)+1;
-				ysimple = rand.nextInt(15-1)+1;
-			
-			}
-			xsimple = rand.nextInt(14-1)+1;
-			ysimple = rand.nextInt(15-1)+1;
-		}  	
-	}
 }

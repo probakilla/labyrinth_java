@@ -25,7 +25,7 @@ public class Controller {
 	private final AbstractCandy[] _candies;
 	private Vertex door_position;
 	private int _nb_opened_door = 10;
-	private int _nb_closed_door = 10;
+	private int _nb_closed_door = 3;
 	
 	private Controller() {
 		_model = Model.getInstance();
@@ -41,9 +41,9 @@ public class Controller {
 				_view.updatePlayerPosition(x, y);
 				for (int i = 0; i < NB_CANDIES; i++) {
 					if (_candies[i] != null && _player.collision(_candies[i].getPosition())) {
+						_view.setScore(_model.addPoint(_candies[i].getType()));
 						_view.removeCandy(i);
-						_candies[i] = null;
-						_view.setScore(_model.addPoint(1));
+						_candies[i] = null;				
 					}
 				}
 				for (int i = 0; i < NB_ENEMIES; i++) {
@@ -74,7 +74,7 @@ public class Controller {
 					_view.updateEnemyPosition(idx, x, y);
 					if (_player.collision(_enemies[idx].getPosition())) {
 						/*
-						 * System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
+						 * System.out.println("GAME OVER BRO. Faut pas toucher lies méchants stp");
 						 * System.exit(0);
 						 */
 						_view.setEndGameText(false);
