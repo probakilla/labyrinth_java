@@ -77,10 +77,8 @@ public class View {
 	/**
 	 * Start the View.
 	 *
-	 * @param stage
-	 *            Stage used for the graphical interface.
-	 * @param g
-	 *            the {@link model.Graph Graph} to display.
+	 * @param stage Stage used for the graphical interface.
+	 * @param g the {@link model.Graph Graph} to display.
 	 */
 	public void start(Stage stage, Graph g) {
 		_stage = stage;
@@ -96,12 +94,9 @@ public class View {
 	 *
 	 * Draw the main structure of the labyrinth (e.g borders of the labyrinth).
 	 *
-	 * @param stage
-	 *            Window where we draw the labyrinth.
-	 * @param nbrX
-	 *            Height of the labyrinth.
-	 * @param nbrY
-	 *            Width of the labyrinth.
+	 * @param stage Window where we draw the labyrinth.
+	 * @param nbrX Height of the labyrinth.
+	 * @param nbrY Width of the labyrinth.
 	 */
 	public void drawFrame(Stage stage, int nbrX, int nbrY) {
 		_scene = new Scene(_pane, ((WALL + CELL) * nbrX + WALL) * SPAN, ((WALL + CELL) * nbrY + WALL) * SPAN + 50);
@@ -158,16 +153,11 @@ public class View {
 	 * points given in parameters (with their coordinates). Color of the wall is
 	 * also set by this method.
 	 *
-	 * @param xs
-	 *            abscissa of the first point.
-	 * @param ys
-	 *            Ordinate of the first point.
-	 * @param xt
-	 *            Abscissa of the second point.
-	 * @param yt
-	 *            Ordinate of the second point.
-	 * @param color
-	 *            Color of the wall.
+	 * @param xs abscissa of the first point.
+	 * @param ys Ordinate of the first point.
+	 * @param xt Abscissa of the second point.
+	 * @param yt Ordinate of the second point.
+	 * @param color Color of the wall.
 	 */
 	public void drawWall(int xs, int ys, int xt, int yt, Paint color) {
 		int x = 0, y = 0, xspan = 0, yspan = 0;

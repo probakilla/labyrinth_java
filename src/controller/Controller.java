@@ -41,7 +41,8 @@ public class Controller {
 				_view.updatePlayerPosition(x, y);
 				for (int i = 0; i < NB_CANDIES; i++) {
 					if (_candies[i] != null && _player.collision(_candies[i].getPosition())) {
-						_view.setScore(_model.addPoint(_candies[i].getType()));
+						_player.increaseScore(_candies [i]);
+						_view.setScore(_player.getScore());
 						_view.removeCandy(i);
 						_candies[i] = null;				
 					}
@@ -50,9 +51,8 @@ public class Controller {
 					_enemies[i].set_targetX(_player.getPosition().getX());
 					_enemies[i].set_targetY(_player.getPosition().getY());
 					if (_player.collision(_enemies[i].getPosition())) {
-						// System.out.println("GAME OVER BRO. Faut pas toucher les méchants stp");
-						// System.exit(0);
-						_view.setEndGameText(false);
+						if (_player.decrementLife())
+							_view.setEndGameText(false);
 					}
 				}
 
@@ -73,11 +73,8 @@ public class Controller {
 				public void changed(int x, int y) {
 					_view.updateEnemyPosition(idx, x, y);
 					if (_player.collision(_enemies[idx].getPosition())) {
-						/*
-						 * System.out.println("GAME OVER BRO. Faut pas toucher lies méchants stp");
-						 * System.exit(0);
-						 */
-						_view.setEndGameText(false);
+						if (!_player.decrementLife())
+							_view.setEndGameText(false);
 					}
 
 				}
@@ -119,8 +116,7 @@ public class Controller {
 	/**
 	 * Start the Controller.
 	 *
-	 * @param stage
-	 *            Stage where the display will be managed.
+	 * @param stage Stage where the display will be managed.
 	 */
 	public void start(Stage stage) {
 		_model.buildRandomPath(new Vertex(0, 0, 0));
@@ -132,21 +128,17 @@ public class Controller {
 			_enemies[i].set_targetX(_player.getPosition().getX());
 			_enemies[i].set_targetY(_player.getPosition().getY());
 		}
-		//_model.buildCycleV(5);
-		//_model.buildCycleH(4);
 		for (int i = 0; i < _nb_opened_door; ++i)
 			graph.openDoorRandom();
 		for (int i = 0; i < _nb_closed_door; ++i)
 		{
-			Vertex switchOn = graph.setSwitchOn(_model.getGraph().closeDoorRandom());
+			Edge door = _model.getGraph().closeDoorRandom();
+			Vertex switchOn = graph.setSwitchOn(door);
 			_view.createSwitchOn(switchOn.getX(), switchOn.getY());
-			Vertex switchOff = graph.setSwitchOff(_model.getGraph().closeDoorRandom());
+			Vertex switchOff = graph.setSwitchOff(door);
 			_view.createSwitchOff(switchOff.getX(), switchOff.getY());
 		}
-		System.out.println(_model.getGraph().closeDoorRandom());
-		_model.getGraph().closeDoorRandom();
 		_model.getGraph().GraphToDot();
-		//_model.launchManhattan(_model.getGraph().getVertex(0, 0), _model.getGraph().getVertex(15, 15));
 		_view.start(stage, _model.getGraph());
 		_view.printRules();
 

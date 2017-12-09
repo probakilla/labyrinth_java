@@ -28,14 +28,12 @@ public class Model
     private final AtomicInteger _iteration;
     private final Random _random;
     private final Graph _graph;
-    private int _cycle, _score;
 
     private Model ()
     {
         _iteration = new AtomicInteger(1);
         _graph = Graph.getInstance();
         _random = new Random();
-        _score = 0;
     }
 
     private static Model INSTANCE;
@@ -56,27 +54,14 @@ public class Model
         }
         return INSTANCE;
     }
-    
-    public int addPoint(int nb) {
-    	_score += nb;
-    	return _score;
-    }
-    
-    public int getScore() {
-    	return _score;
-    }
-
+ 
     /**
      * Randomly create a {@link model.Graph Graphs}.
      *
      * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
     public void buildRandomPath (Vertex vertex)
-    {
-    	
-    	Vertex vertex1 = null;
-    	_cycle = 0;
-    	
+    {	
     	_graph.addVertex(vertex);
         //une liste aleatoire des 4 directions	
         Vector<Directions> v = new Vector<Directions>();

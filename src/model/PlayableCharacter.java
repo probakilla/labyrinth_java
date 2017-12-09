@@ -14,6 +14,8 @@ public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
+    private int _life;
+
 	private static String _imgPath = "/utils/player.png";
 
 
@@ -42,6 +44,25 @@ public class PlayableCharacter extends AbstractCharacter
     }
     
     /**
+     * 
+     * @return the _life
+     */
+    public int getLife() 
+	{
+		return _life;
+	}
+	
+    /**
+     * Decrement the player's life, and check if the _life is positive.
+     * @return True if _life is positive after decrementation, otherwise false.
+     */
+	public boolean decrementLife() 
+	{
+		return --_life == 0;	
+	}
+    
+    
+    /**
   	 * @return the _imgPath
   	 */
   	public static String getImgPath() {
@@ -58,13 +79,16 @@ public class PlayableCharacter extends AbstractCharacter
     {
         _score += c.getType();
     }
-
-    public void printScore()
-    {
-        System.out.println("Vous avez gagné " + _score + " points.");
-    }
     
-    public boolean collision(Vertex v) {
+    /**
+     * 
+     * @return The _score
+     */
+    public int getScore() {
+		return _score;
+	}
+
+	public boolean collision(Vertex v) {
     	return _position.getX() == v.getX() && _position.getY() == v.getY();
     }
 }
