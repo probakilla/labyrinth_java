@@ -297,13 +297,13 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	public boolean isOpenedDoor(Vertex actual, Directions dir)
 	{
 		Edge edge = this.getEdge(actual, dir);
-		return (edge != null && (/*edge.getType() == Type.OPENED_DOOR ||*/ edge.getType() == Type.CORRIDOR));
+		return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
 	}
 	
 	public boolean isOpenedDoor(Vertex actual, Vertex target)
 	{
 		Edge edge = this.getEdge(actual, target);
-		return (edge != null && (/*edge.getType() == Type.OPENED_DOOR ||*/ edge.getType() == Type.CORRIDOR));
+		return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
 	}
 	
 	/**

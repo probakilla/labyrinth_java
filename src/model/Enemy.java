@@ -113,7 +113,8 @@ public class Enemy extends AbstractCharacter implements Runnable
     				&& this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT()) 
     				&& !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)) 
     				&& nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
-    				&& Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)))
+    				&& Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y))
+    				&& Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr() != 0)
     		{
     			//System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
     			xt = x;
@@ -153,7 +154,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     		}
     		try
     		{
-    			Enemy.sleep(1000);
+    			Enemy.sleep(500);
     		}
     		catch (InterruptedException ex)
     		{
