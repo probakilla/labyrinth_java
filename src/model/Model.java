@@ -6,8 +6,6 @@ import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.sound.sampled.BooleanControl;
-
 import model.Edge.Type;
 import model.Model.Directions;
 
@@ -22,8 +20,6 @@ public class Model
     {
         EAST, WEST, NORTH, SOUTH;
     }
-
-	private static final boolean Boolean = false;;
 
     private final AtomicInteger _iteration;
     private final Random _random;
@@ -81,7 +77,7 @@ public class Model
         // pour chacune de ces directions, on avance en profondeur d’abord
         for (int i = 0; i < 4; ++i)
         {
-        	Directions dir = directions[i];
+            Directions dir = directions[i];
             if (vertex.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir))
             {
                 int x = vertex.getX();

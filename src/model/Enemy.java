@@ -74,11 +74,21 @@ public class Enemy extends AbstractCharacter implements Runnable
    		return _imgPath;
    	}
     
+     /**
+      * Set _running at 0.
+      * 
+      * This will stop ennemies, be carrefull once stopped ennemies can't be unstopped.
+      */
     public void stopRunning ()
     {
     	_running = 0;
     }
 
+    /**
+     * Return the direction of the next enemie's move.
+     * 
+     * @return An int corresponding of the direction of the move (0 = NORTH, 1 = East, 2 = South, 3 = West).
+     */
     public int getNextStep(){
     	int x = 0;
     	int y = 0;
@@ -92,19 +102,19 @@ public class Enemy extends AbstractCharacter implements Runnable
 
     		switch (i)
     		{
-    		case 0:
+    		case 0://Direction North
     			x = 0;
     			y = -1;
     			break;
-    		case 1:
+    		case 1://Direction East
     			x = 0;
     			y = 1;
     			break;
-    		case 2:
+    		case 2://Direction South
     			x = 1;
     			y = 0;
     			break;
-    		case 3:
+    		case 3://Direction West
     			x = -1;
     			y = 0;
     			break;

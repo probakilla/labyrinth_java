@@ -296,7 +296,7 @@ public class View {
             Vertex target = door.getTarget();
             if (status == Edge.Type.CLOSED_DOOR)
             {
-                drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.RED);
+                drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.DEEPPINK);
             }
             else if (status == Edge.Type.OPENED_DOOR)
             {

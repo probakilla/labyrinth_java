@@ -29,7 +29,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
 
-    private Vertex[][] _vertex;
+    private final Vertex[][] _vertex;
 
     /**
      * Create a Graph base structure with {@link model.Vertex Vertices} and
@@ -409,7 +409,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	{
 		Random rand = new Random();
 		Set<Edge> listeEdge = this.edgeSet();
-		int randEdge = rand.nextInt(listeEdge.size()) + 1;
+		int randEdge = rand.nextInt(listeEdge.size() - 1) + 1;
 		Iterator<Edge> it = listeEdge.iterator();
 		Edge edge = it.next();
 		for (int i = 0; i < randEdge; ++i)

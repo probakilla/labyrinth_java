@@ -146,15 +146,15 @@ public class Controller {
 			graph.openDoorRandom();
 		for (int i = 0; i < NB_CLOSED_DOOR; ++i)
 		{
-			Edge door = _model.getGraph().closeDoorRandom();
+			Edge door = graph.closeDoorRandom();
 			Vertex switchOn = graph.setSwitchOn(door);
 			_view.createSwitchOn(switchOn.getX(), switchOn.getY());
 			Vertex switchOff = graph.setSwitchOff(door);
 			_view.createSwitchOff(switchOff.getX(), switchOff.getY());
                         _closed_door[i] = new Door (switchOn, switchOff, door);
 		}
-		_model.getGraph().GraphToDot();
-		_view.start(stage, _model.getGraph());
+		graph.GraphToDot();
+		_view.start(stage, graph);
 		_view.printRules();
 
 		// Gestion du mouvement du joueur.
