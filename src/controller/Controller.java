@@ -17,15 +17,16 @@ public class Controller {
 
 	private static Controller INSTANCE;
 	private final int NB_ENEMIES = 2, NB_CANDIES = 10;
-
+      	private int NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
+        
 	private final Model _model;
 	private final View _view;
 	private final PlayableCharacter _player;
 	private final Enemy[] _enemies;
 	private final AbstractCandy[] _candies;
+        private final Door[] _closed_door; 
 	private Vertex door_position;
-	private int _nb_opened_door = 10;
-	private int _nb_closed_door = 3;
+
 	
 	private Controller() {
 		_model = Model.getInstance();
@@ -33,7 +34,7 @@ public class Controller {
 		_player = PlayableCharacter.getInstance();
 		_enemies = new Enemy[NB_ENEMIES];
 		_candies = new AbstractCandy[NB_CANDIES];
-
+                _closed_door = new Door[NB_CLOSED_DOOR];
 		_player.setOnChangeListener(new AbstractCharacter.OnChangeListener() {
 
 			@Override
@@ -55,7 +56,21 @@ public class Controller {
 							_view.setEndGameText(false);
 					}
 				}
-
+                                for  (int i = 0; i < NB_CLOSED_DOOR; i++)
+                                {   
+                                    if (_player.collision (_closed_door[i].getSwitchOn()))//on ouvre la porte associé
+                                    {
+                                        Edge door = _closed_door[i].getDoor();
+                                        door.setType(Edge.Type.OPENED_DOOR);
+                                        _view.updateDoor(door, Edge.Type.OPENED_DOOR);
+                                    }
+                                    else if (_player.collision(_closed_door[i].getSwitchOff()))
+                                    {
+                                        Edge door = _closed_door[i].getDoor();
+                                        door.setType(Edge.Type.CLOSED_DOOR);
+                                        _view.updateDoor(door, Edge.Type.CLOSED_DOOR);
+                                    }
+                                }
 				if (_player.collision(door_position))
 					_view.setEndGameText(true);
 			}
@@ -86,7 +101,6 @@ public class Controller {
 			_view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
 					_candies[i].getImgPath());
 		}
-
 	}
 
 	/**
@@ -128,15 +142,16 @@ public class Controller {
 			_enemies[i].set_targetX(_player.getPosition().getX());
 			_enemies[i].set_targetY(_player.getPosition().getY());
 		}
-		for (int i = 0; i < _nb_opened_door; ++i)
+		for (int i = 0; i < NB_OPENED_DOOR; ++i)
 			graph.openDoorRandom();
-		for (int i = 0; i < _nb_closed_door; ++i)
+		for (int i = 0; i < NB_CLOSED_DOOR; ++i)
 		{
 			Edge door = _model.getGraph().closeDoorRandom();
 			Vertex switchOn = graph.setSwitchOn(door);
 			_view.createSwitchOn(switchOn.getX(), switchOn.getY());
 			Vertex switchOff = graph.setSwitchOff(door);
 			_view.createSwitchOff(switchOff.getX(), switchOff.getY());
+                        _closed_door[i] = new Door (switchOn, switchOff, door);
 		}
 		_model.getGraph().GraphToDot();
 		_view.start(stage, _model.getGraph());

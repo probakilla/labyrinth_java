@@ -85,10 +85,10 @@ public class PlayableCharacter extends AbstractCharacter
      * @return The _score
      */
     public int getScore() {
-		return _score;
-	}
+	return _score;
+    }
 
-	public boolean collision(Vertex v) {
+    public boolean collision(Vertex v) {
     	return _position.getX() == v.getX() && _position.getY() == v.getY();
     }
 }
