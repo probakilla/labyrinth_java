@@ -1,8 +1,10 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import model.*;
 import view.*;
@@ -20,6 +22,7 @@ public class Controller {
       	private int NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
         
 	private final Model _model;
+        @FXML
 	private final View _view;
 	private final PlayableCharacter _player;
 	private final Enemy[] _enemies;
@@ -52,9 +55,11 @@ public class Controller {
 					_enemies[i].set_targetX(_player.getPosition().getX());
 					_enemies[i].set_targetY(_player.getPosition().getY());
 					if (_player.collision(_enemies[i].getPosition())) {
-						if (_player.decrementLife())
-							_view.setEndGameText(false);
-					}
+                                                int lf = _player.decrementLife();
+                                                _view.setLife(lf);
+						if (lf  == 0)
+                                                    _view.setEndGameText(false);
+                                        }
 				}
                                 for  (int i = 0; i < NB_CLOSED_DOOR; i++)
                                 {   
@@ -88,10 +93,13 @@ public class Controller {
 				public void changed(int x, int y) {
 					_view.updateEnemyPosition(idx, x, y);
 					if (_player.collision(_enemies[idx].getPosition())) {
-						if (!_player.decrementLife())
-							_view.setEndGameText(false);
-					}
-
+                                             int lf = _player.decrementLife();  
+                                            Platform.runLater(() -> {//Les threads ne peuvent pas modifier les aspects graphiques, .
+                                                _view.setLife(lf);                  
+                                            });
+                                            if (lf == 0)
+                                                _view.setEndGameText(false);
+                                        }
 				}
 			});
 		}

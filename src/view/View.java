@@ -41,7 +41,7 @@ public class View {
 
 	private final ImageView _player, _door;
 	private final ArrayList<ImageView> _iv_enemies, _iv_candies, _iv_switch_on, _iv_switch_off;
-	private Label score;
+	private Label _score, _life;
 	Text endgame;
 
 	private View() {
@@ -131,13 +131,20 @@ public class View {
 			}
 		}
 		
-		score = new Label();
-		score.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN)/2 - 100);
-		score.setLayoutY(((WALL + CELL) * nbrY + WALL) * SPAN + 10);
-		score.setFont(new Font("Serif", 20));
-		score.setText("Votre score : 0pt");
-		_pane.getChildren().add(score);
+		_score = new Label();
+		_score.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN)/3 - 100);
+		_score.setLayoutY(((WALL + CELL) * nbrY + WALL) * SPAN + 10);
+		_score.setFont(new Font("Serif", 20));
+		_score.setText("Votre score : 0pt");
+		_pane.getChildren().add(_score);
 		
+                _life = new Label();
+		_life.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN) - 100);
+		_life.setLayoutY(((WALL + CELL) * nbrY + WALL) * SPAN + 10);
+		_life.setFont(new Font("Serif", 20));
+		_life.setText("Vie : 3");
+		_pane.getChildren().add(_life);
+                
 		endgame = new Text();
 		endgame.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN)/3 - 100);
 		endgame.setLayoutY((((WALL + CELL) * nbrY + WALL) * SPAN )/2);
@@ -206,7 +213,7 @@ public class View {
 							drawWall(x, y, x, y + 1, Color.BLUE);
 						}
 						else if (e != null && (e.getType() == Edge.Type.CLOSED_DOOR)) {
-							drawWall(x, y, x + 1, y, Color.DEEPPINK);
+							drawWall(x, y, x, y + 1, Color.DEEPPINK);
 						}
 					}
 
@@ -279,8 +286,13 @@ public class View {
 	}
 	
 	public void setScore(int sc) {
-		score.setText("Votre score : " + sc + "pts");
+		_score.setText("Votre score : " + sc + "pts");
 	}
+        
+        public void setLife (int lf)
+        {
+            _life.setText("Vie : " + lf);
+        }
 	
 	public void setEndGameText(boolean win) {		
 		endgame.setFill(Color.web(win ? "#00E676" :"#F44336"));

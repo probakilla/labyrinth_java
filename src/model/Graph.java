@@ -394,7 +394,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 	 * Close randomly a door from the graph.
 	 * @return The Edge containing the recently close door.
 	 */
-	public Edge closeDoorRandom  ()
+	public Edge closeDoorRandom ()
 	{
 		Edge edge = this.randomEdge ();
 		return closedDoor (edge);

@@ -14,7 +14,7 @@ public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
-    private int _life;
+    private int _life = 3;
 
 	private static String _imgPath = "/utils/player.png";
 
@@ -56,9 +56,13 @@ public class PlayableCharacter extends AbstractCharacter
      * Decrement the player's life, and check if the _life is positive.
      * @return True if _life is positive after decrementation, otherwise false.
      */
-	public boolean decrementLife() 
+	public  int decrementLife() 
 	{
-		return --_life == 0;	
+                if (_life == 0)
+                {
+                    return _life;
+                }
+		return --_life;	
 	}
     
     
