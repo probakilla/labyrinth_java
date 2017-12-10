@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Door;
 import model.Edge;
+import model.Vertex;
 import model.Enemy;
 import model.Graph;
 import model.PlayableCharacter;
@@ -288,6 +289,20 @@ public class View {
 
 		endgame.setVisible(true);
 	}
+        
+        public void updateDoor (Edge door, Edge.Type status)
+        {
+            Vertex source = door.getSource();
+            Vertex target = door.getTarget();
+            if (status == Edge.Type.CLOSED_DOOR)
+            {
+                drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.RED);
+            }
+            else if (status == Edge.Type.OPENED_DOOR)
+            {
+                drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.BLUE);
+            }
+        }
 
 	/**
 	 * Print rules in console.
