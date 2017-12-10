@@ -139,7 +139,7 @@ public abstract class AbstractCharacter extends Thread {
 	 */
 	public void randomizePosition() {
 		Random rand = new Random();
-		int min = 0;
+		int min = 5;//On place les ennemies à au moins 5 cases du joueur. 
 		int maxWidth = Graph.getGRIDWIDTH() - 1;
 		int maxHeight = Graph.getGRIDHEIGHT() - 1;
 		// Formule trouvée sur internet pour générer des nombres entre min et

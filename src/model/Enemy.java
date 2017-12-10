@@ -89,32 +89,29 @@ public class Enemy extends AbstractCharacter implements Runnable
      * 
      * @return An int corresponding of the direction of the move (0 = NORTH, 1 = East, 2 = South, 3 = West).
      */
-    public int getNextStep(){
+    public Directions getNextStep(){
     	int x = 0;
     	int y = 0;
-    	int xt = 0;
-    	int yt = 0;
     	int nb = 1000;
-    	int idx = 0;
     	//System.out.println("on est au "+this.getPosition());
-    	for (int i = 0; i < 4; ++i)
+        Directions ret = Directions.NORTH;
+    	for (Directions dir : Directions.values())
     	{
-
-    		switch (i)
+    		switch (dir)
     		{
-    		case 0://Direction North
+    		case NORTH:
     			x = 0;
     			y = -1;
     			break;
-    		case 1://Direction East
+    		case SOUTH:
     			x = 0;
     			y = 1;
     			break;
-    		case 2://Direction South
+    		case EAST:
     			x = 1;
     			y = 0;
     			break;
-    		case 3://Direction West
+    		case WEST:
     			x = -1;
     			y = 0;
     			break;
@@ -124,18 +121,15 @@ public class Enemy extends AbstractCharacter implements Runnable
     				&& this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT()) 
     				&& !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)) 
     				&& nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
-    				&& Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y))
+    				&& Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
     				&& Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr() != 0)
     		{
     			//System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
-    			xt = x;
-    			yt = y;
-    			idx = i;
     			nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr();
+                        ret = dir;
     		}
     	}
-    	//System.out.println("on va vers "+idx+" "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+xt, this.getPosition().getY()+yt));
-    	return idx;
+    	return ret;
     }
 
     @Override
@@ -148,16 +142,16 @@ public class Enemy extends AbstractCharacter implements Runnable
     		Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
     		switch (this.getNextStep())
     		{
-    		case 0:
+    		case NORTH:
     			this.up();
     			break;
-    		case 1:
+    		case SOUTH:
     			this.down();
     			break;
-    		case 2:
+    		case EAST:
     			this.right();
     			break;
-    		case 3:
+    		case WEST:
     			this.left();
     			break;
     		default:
