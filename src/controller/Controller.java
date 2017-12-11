@@ -32,7 +32,7 @@ public class Controller {
     
     
     private Controller() {
-        _model = Model.getInstance();
+    	_model = Model.getInstance();
         _view = View.getInstance();
         _player = PlayableCharacter.getInstance();
         _enemies = new Enemy[NB_ENEMIES];
