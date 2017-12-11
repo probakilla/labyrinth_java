@@ -1,3 +1,5 @@
+import java.awt.event.KeyEvent;
+
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,7 +22,8 @@ public class Labyrinth extends Application
      */
     public static void main (String args[])
     {
-        launch();
+    	while(true)
+    		launch();
     }
     
     /**
@@ -36,6 +39,7 @@ public class Labyrinth extends Application
         {
             _controller = Controller.getInstance();
             _controller.start(primaryStage);
+
         }
         catch (Exception e)
         {

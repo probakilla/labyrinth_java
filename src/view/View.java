@@ -223,10 +223,29 @@ public class View {
     public void createEnnemies(int x, int y) {
         Image im = new Image("file:" + System.getProperty("user.dir") + Enemy.getImgPath());
         ImageView iv = new ImageView(im);
-        
         _pane.getChildren().add(iv);
         setImageViewPosition(iv, x, y);
         _iv_enemies.add(iv);
+    }
+    
+    /**
+     * Remove all candies in the array list.
+     */
+    public void removeAllCandies(){
+    	for(int i=0; i<_iv_candies.size(); i++) {
+    		_pane.getChildren().remove(_iv_candies.get(i));
+    	}
+    	_iv_candies.clear();
+    }
+    
+    /**
+     * Remove all enemies in the array list.
+     */
+    public void removeAllEnemies(){
+    	for(int i=0; i<_iv_enemies.size(); i++) {
+    		_pane.getChildren().remove(_iv_enemies.get(i));
+    	}
+    	_iv_enemies.clear();
     }
     
     public void createCandy(int x, int y, String imgPath) {
@@ -235,9 +254,11 @@ public class View {
         setImageViewPosition(iv, x, y);
         _pane.getChildren().add(iv);
         _iv_candies.add(iv);
+       
     }
     
     public void removeCandy(int idx) {
+    	System.out.println(_iv_candies.size());
         _pane.getChildren().remove(_iv_candies.get(idx));
         _iv_candies.set(idx, null);
     }
@@ -294,7 +315,7 @@ public class View {
     
     public void setEndGameText(boolean win) {
         endgame.setFill(Color.web(win ? "#00E676" :"#F44336"));
-        endgame.setText(win ? "Bravo mon con !" : "Vous êtes une merde !");
+        endgame.setText(win ? "Bravo!" : "GAME OVER!");
         endgame.setStyle("-fx-background-color: black;");
         
         endgame.setVisible(true);
@@ -321,6 +342,7 @@ public class View {
         System.out.println("Voici les commandes disponibles :");
         System.out.println("    - Touches directionnelles : Déplacer le personnage.");
         System.out.println("    - Q ou ESCP : Quitter le jeu.");
+        System.out.println("    - R : Recommencer le niveau.");
         System.out.println("");
     }
 }

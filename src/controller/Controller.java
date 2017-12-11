@@ -18,7 +18,8 @@ import view.*;
 public class Controller {
     
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 2, NB_CANDIES = 10;
+    private final int NB_ENEMIES = 2;
+    private int NB_CANDIES = 10;
     private int NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
     
     private final Model _model;
@@ -49,6 +50,7 @@ public class Controller {
                         _view.setScore(_player.getScore());
                         _view.removeCandy(i);
                         _candies[i] = null;
+                        System.out.println("remove de "+i);
                     }
                 }
                 for (int i = 0; i < NB_ENEMIES; i++) {
@@ -107,7 +109,7 @@ public class Controller {
         for (int i = 0; i < NB_CANDIES; i++) {
             _candies[i] = (AbstractCandy) CandyFactory.getCandy(0, 0, 0);
             _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
-                    _candies[i].getImgPath());
+            _candies[i].getImgPath());
         }
     }
     
@@ -201,6 +203,29 @@ public class Controller {
                                     _enemies[i].stopRunning();
                                 }
                                 break;
+                            case R:
+                            	 _view.removeAllCandies();
+                            	 _view.removeAllEnemies();
+                            	 
+                            	 for (int i = 0; i < NB_CANDIES; i++) {
+                        			 _candies[i] = (AbstractCandy) CandyFactory.getCandy(0, 0, 0);
+                                     _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
+                                     _candies[i].getImgPath());
+                                 }
+                            	 
+                            	 for (int i = 0; i < NB_ENEMIES; i++) {
+                            		 _enemies[i].randomizePosition();
+                                     _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+                                 }
+                            	 
+                            	 _view.setScore(0);
+                                 _view.setLife(3);
+                                 _player.setScore(0);
+                                 _player.setLife(3);
+                                 _player.setPosition(0, 0);
+                                 _view.updatePlayerPosition(0, 0);
+                                 
+                            	break;
                             default:
                                 break;
                         }

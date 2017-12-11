@@ -102,6 +102,11 @@ public class PlayableCharacter extends AbstractCharacter
         return _score;
     }
     
+    public void setScore(int score) {
+        _score = score;
+    }
+    
+    
     public boolean collision(Vertex v) {
         return _position.getX() == v.getX() && _position.getY() == v.getY();
     }
