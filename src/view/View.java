@@ -79,8 +79,8 @@ public class View {
      * @param stage Stage used for the graphical interface.
      * @param g the {@link model.Graph Graph} to display.
      */
-    public void start(Stage stage, Graph g) {
-        new MenuView(new MenuView.OnPlayListener() {
+    public void start(Stage stage, Graph g, final OnPlayListener playing) {
+        new MenuView(new OnPlayListener() {
 			
 			@Override
 			public void play() {
@@ -89,6 +89,7 @@ public class View {
 		        drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
 		        drawGraph(g);
 		        stage.show();
+		        playing.play();
 			}
 		}).start(stage);
     }
@@ -328,4 +329,8 @@ public class View {
         System.out.println("    - Q ou ESCP : Quitter le jeu.");
         System.out.println("");
     }
+    
+    public interface OnPlayListener {
+		void play();
+	}
 }
