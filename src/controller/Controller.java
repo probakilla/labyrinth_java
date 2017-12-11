@@ -80,7 +80,11 @@ public class Controller {
                     }
                 }
                 if (_player.collision(door_position))
+                {
+                	for (int i = 0; i < NB_ENEMIES; i++)
+                        _enemies[i].stopRunning();
                     _view.setEndGameText(true);
+                }
             }
         });
         
@@ -104,7 +108,6 @@ public class Controller {
                 }
             });
         }
-        System.out.println("Pose des bonbons");
         Random rd = new Random ();
         for (int i = 0; i < NB_CANDIES; i++) {
         	AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
@@ -115,7 +118,6 @@ public class Controller {
             {
         		if (CandyFactory.correctCandyPosition(_candies, candy))
         			break;
-        		System.out.println("test");
         		candy = (AbstractCandy) CandyFactory.getCandy();
             }
         	if (j == nbGraphCases)
