@@ -14,7 +14,7 @@ public class PlayableCharacter extends AbstractCharacter
 {
     private static PlayableCharacter INSTANCE;
     private int _score;
-    private int _life = 3;
+    private static int _life = 3;
 
 	private static String _imgPath = "/utils/player.png";
 
@@ -47,10 +47,20 @@ public class PlayableCharacter extends AbstractCharacter
      * 
      * @return the _life
      */
-    public int getLife() 
+    public static int getLife() 
 	{
-		return _life;
+            return _life;
 	}
+    
+    /**
+     *  Set the player's life.
+     * 
+     * @param life The number of life to be set.
+     */
+    public static void setLife(int life)
+    {
+        _life = life;
+    }
 	
     /**
      * Decrement the player's life, and check if the _life is positive.

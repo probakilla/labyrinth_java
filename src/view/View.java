@@ -142,7 +142,7 @@ public class View {
 		_life.setLayoutX((((WALL + CELL) * nbrX + WALL) * SPAN) - 100);
 		_life.setLayoutY(((WALL + CELL) * nbrY + WALL) * SPAN + 10);
 		_life.setFont(new Font("Serif", 20));
-		_life.setText("Vie : 3");
+		_life.setText("Vie : " + PlayableCharacter.getLife());
 		_pane.getChildren().add(_life);
                 
 		endgame = new Text();
