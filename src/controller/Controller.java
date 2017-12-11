@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.Random;
+
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -18,7 +20,7 @@ import view.*;
 public class Controller {
     
     private static Controller INSTANCE;
-    private final int NB_ENEMIES = 2, NB_CANDIES = 10;
+    private final int NB_ENEMIES = 2, NB_CANDIES = 10;//Max candy = (Graph.width * Graph.height) - 2 (-2*NB_CLOSED_DOOR) si on met plus ça boucle à l'infini.
     private int NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
     
     private final Model _model;
@@ -103,9 +105,23 @@ public class Controller {
                 }
             });
         }
-        
+        System.out.println("Pose des bonbons");
+        Random rd = new Random ();
         for (int i = 0; i < NB_CANDIES; i++) {
-            _candies[i] = (AbstractCandy) CandyFactory.getCandy(0, 0, 0);
+        	AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
+        	int nbGraphCases = Graph.getGRIDHEIGHT()*Graph.getGRIDWIDTH();
+           	int j;
+            //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
+        	for (j = 0; j < nbGraphCases; ++j)
+            {
+        		if (CandyFactory.correctCandyPosition(_candies, candy))
+        			break;
+        		System.out.println("test");
+        		candy = (AbstractCandy) CandyFactory.getCandy();
+            }
+        	if (j == nbGraphCases)
+        		break;
+            _candies[i] = candy;           
             _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
                     _candies[i].getImgPath());
         }
