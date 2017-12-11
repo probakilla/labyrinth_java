@@ -52,7 +52,6 @@ public class Controller {
                         _view.setScore(_player.getScore());
                         _view.removeCandy(i);
                         _candies[i] = null;
-                        System.out.println("remove de "+i);
                     }
                 }
                 for (int i = 0; i < NB_ENEMIES; i++) {
@@ -232,6 +231,8 @@ public class Controller {
                             case R:
                             	 _view.removeAllCandies();
                             	 _view.removeAllEnemies();
+                            	 _view.removeAllSwitchOn();
+                            	 _view.removeAllSwitchOff();
                             	 for (int i = 0; i < NB_CANDIES; i++)
                             		 _candies[i] = null;
                             	 for (int i = 0; i < NB_CANDIES; i++) {
@@ -251,10 +252,22 @@ public class Controller {
                                      _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
                                      _candies[i].getImgPath());
                                  }
-                            	 
+                            	 startEnemies = false;
                             	 for (int i = 0; i < NB_ENEMIES; i++) {
                             		 _enemies[i].randomizePosition();
                                      _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+                                 }
+                            	 
+                                 //for (int i = 0; i < NB_OPENED_DOOR; ++i)
+                                     //graph.openDoorRandom();
+                                 for (int i = 0; i < NB_CLOSED_DOOR; ++i)
+                                 {
+                                     Edge door = graph.closeDoorRandom();
+                                     Vertex switchOn = graph.setSwitchOn(door);
+                                     _view.createSwitchOn(switchOn.getX(), switchOn.getY());
+                                     Vertex switchOff = graph.setSwitchOff(door);
+                                     _view.createSwitchOff(switchOff.getX(), switchOff.getY());
+                                     //_closed_door[i] = new Door (switchOn, switchOff, door);
                                  }
                             	 
                             	 _view.setScore(0);

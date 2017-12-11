@@ -212,9 +212,9 @@ public class View {
 					if (e == null || (e.getType() != Edge.Type.CORRIDOR)) {
 						drawWall(x, y, x + 1, y, Color.CHOCOLATE);
 						if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
-							drawWall(x, y, x + 1, y, Color.BLUE);
+							drawWall(x, y, x + 1, y, SCENE_COLOR);
 						} else if (e != null && (e.getType() == Edge.Type.CLOSED_DOOR)) {
-							drawWall(x, y, x + 1, y, Color.DEEPPINK);
+							drawWall(x, y, x + 1, y, Color.BLUE);
 						}
 					}
 				}
@@ -224,9 +224,9 @@ public class View {
 					if (e == null || (e.getType() != Edge.Type.CORRIDOR)) {
 						drawWall(x, y, x, y + 1, Color.CHOCOLATE);
 						if (e != null && (e.getType() == Edge.Type.OPENED_DOOR)) {
-							drawWall(x, y, x, y + 1, Color.BLUE);
+							drawWall(x, y, x, y + 1, SCENE_COLOR);
 						} else if (e != null && (e.getType() == Edge.Type.CLOSED_DOOR)) {
-							drawWall(x, y, x, y + 1, Color.DEEPPINK);
+							drawWall(x, y, x, y + 1, Color.BLUE);
 						}
 					}
 
@@ -275,6 +275,26 @@ public class View {
     		_pane.getChildren().remove(_iv_enemies.get(i));
     	}
     	_iv_enemies.clear();
+    }
+    
+    /**
+     * Remove all switch on in the array list.
+     */
+    public void removeAllSwitchOn(){
+    	for(int i=0; i<_iv_switch_on.size(); i++) {
+    		_pane.getChildren().remove(_iv_switch_on.get(i));
+    	}
+    	_iv_switch_on.clear();
+    }
+    
+    /**
+     * Remove all switch off in the array list.
+     */
+    public void removeAllSwitchOff(){
+    	for(int i=0; i<_iv_switch_off.size(); i++) {
+    		_pane.getChildren().remove(_iv_switch_off.get(i));
+    	}
+    	_iv_switch_off.clear();
     }
 
 	public void createPlayable() {
@@ -346,9 +366,9 @@ public class View {
 		Vertex source = door.getSource();
 		Vertex target = door.getTarget();
 		if (status == Edge.Type.CLOSED_DOOR) {
-			drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.DEEPPINK);
-		} else if (status == Edge.Type.OPENED_DOOR) {
 			drawWall(source.getX(), source.getY(), target.getX(), target.getY(), Color.BLUE);
+		} else if (status == Edge.Type.OPENED_DOOR) {
+			drawWall(source.getX(), source.getY(), target.getX(), target.getY(), SCENE_COLOR);
 		}
 	}
 
