@@ -28,15 +28,20 @@ public class CandyFactory
      * @param y The ordinate of the {@link model.Candy Candy}.
      * @return A {@link model.Candy Candy} with specific coordinates.
      */
-    public static Candy getCandy (int candyType, int x, int y)
+    public static Candy getCandy ()
     {
         try
         {
             Random rd = new Random();
             int[] candies = new int[] {2, 3, 5, 10};
-            candyType = candies[rd.nextInt(4)];
-            x = 1 + rd.nextInt(15);
-            y = 1 + rd.nextInt(15);
+            int candyType = candies[rd.nextInt(4)];
+            int x = rd.nextInt(16);
+            int y;
+            //Pour ne pas mettre de bonbon en 0.0 (sur le joueur)
+            if (x == 0)
+            	y = rd.nextInt(15) + 1;
+            else
+            	y = rd.nextInt(16);
             switch (candyType)
             {
                 case 2:
@@ -56,5 +61,17 @@ public class CandyFactory
             e.printMessage();
             return null;
         }
+    }
+    
+    public static boolean correctCandyPosition (AbstractCandy [] candyList, AbstractCandy candy)
+    {
+    	int i = 0;
+    	while (candyList[i] != null)
+    	{
+    		if (candy.getPosition().equals(candyList[i].getPosition()))
+    			return false;
+    		++i;
+    	}
+		return true;	
     }
 }
