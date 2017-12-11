@@ -20,7 +20,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _targetX;
     private int _targetY;
     private static String _imgPath = "/utils/bad.png";
-    private int _sleepTime = 1000;//Time in ms between each enemies' move
+    private int _sleepTime = 200;//Time in ms between each enemies' move
     
     public int get_targetX() {
         return _targetX;

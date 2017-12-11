@@ -27,9 +27,9 @@ import model.PlayableCharacter;
  */
 public class View {
     
-    static final int SPAN = 4;
-    static final int WALL = 2;
-    static final int CELL = 9;
+	public static final int SPAN = 4;
+	public static final int WALL = 2;
+	public static final int CELL = 9;
     public static final Paint WALL_COLOR = Color.BURLYWOOD;
     public static final Paint SCENE_COLOR = Color.BEIGE;
     
@@ -80,12 +80,17 @@ public class View {
      * @param g the {@link model.Graph Graph} to display.
      */
     public void start(Stage stage, Graph g) {
-        _stage = stage;
-        
-        drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
-        drawGraph(g);
-        
-        stage.show();
+        new MenuView(new MenuView.OnPlayListener() {
+			
+			@Override
+			public void play() {
+				_stage = stage;
+		        
+		        drawFrame(stage, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT());
+		        drawGraph(g);
+		        stage.show();
+			}
+		}).start(stage);
     }
     
     /**
