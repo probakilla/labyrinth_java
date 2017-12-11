@@ -31,6 +31,7 @@ public class Controller {
     private final AbstractCandy[] _candies;
     private final Door[] _closed_door;
     private Vertex door_position;
+    private boolean startEnemies = false;
     
     
     private Controller() {
@@ -180,7 +181,7 @@ public class Controller {
 
 			@Override
 			public void play() {
-				playGame();
+				//playGame();
 			}
 		});
         _view.printRules();
@@ -193,6 +194,10 @@ public class Controller {
                 if (event.getClass() == KeyEvent.class) {
                     KeyEvent e = (KeyEvent) event;
                     if (null != e.getCode()) {
+                    	if(!startEnemies) {
+                    		startEnemies = true;
+                    		playGame();
+                    	}
                         switch (e.getCode()) {
                             case UP:
                                 _player.up();
