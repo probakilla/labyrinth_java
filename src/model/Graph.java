@@ -22,20 +22,20 @@ import model.Model.Directions;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private static Graph INSTANCE;
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
-    
+
     private final Vertex[][] _vertex;
-    
+
     /**
      * Create a Graph base structure with {@link model.Vertex Vertices} and
      * {@link model.Edge Edges}.
      */
-    private Graph ()
+    private Graph()
     {
         super(Edge.class);
         _vertex = new Vertex[GRID_WIDTH][GRID_HEIGHT];
@@ -50,36 +50,39 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
-    
+
+    /**
+     * Get the unique instance of the Graph.
+     * 
+     * @return The unique instance of the graph.
+     */
     public static Graph getInstance()
     {
         if (INSTANCE == null)
-        {
             INSTANCE = new Graph();
-        }
         return INSTANCE;
     }
-    
+
     /**
      * Retrieves the width of the labyrinth.
      *
      * @return The width of the labyrinth.
      */
-    public static int getGRIDWIDTH ()
+    public static int getGRIDWIDTH()
     {
         return GRID_WIDTH;
     }
-    
+
     /**
      * Retrieves the height of the labyrinth.
      *
      * @return The height of the labyrinth.
      */
-    public static int getGRIDHEIGHT ()
+    public static int getGRIDHEIGHT()
     {
         return GRID_HEIGHT;
     }
-    
+
     /**
      * Check if the vertex exists in the Graph.
      *
@@ -87,7 +90,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @param dir direction to check.
      * @return true if both exists, false in the other case.
      */
-    public boolean doesntExist (Vertex v, Model.Directions dir)
+    public boolean doesntExist(Vertex v, Model.Directions dir)
     {
         int xt = 0, yt = 0;
         int x = v.getX();
@@ -113,12 +116,19 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
         return !this.containsVertex(new Vertex(xt, yt));
     }
-    
-    public boolean doesntExist (Vertex v)
+
+    /**
+     * Retrieves a {@link java.boolean boolean} in function of the 
+     * {@link model.Vertex Vertex}.
+     * 
+     * @param v The {@link model.Vertex Vertex} we want to test.
+     * @return True if v doesn't exists, false in the other case.
+     */
+    public boolean doesntExist(Vertex v)
     {
         return !this.containsVertex(v);
     }
-    
+
     /**
      * Retrieves a {@link model.Vertex Vertex} locate in specific coordinates.
      *
@@ -126,19 +136,21 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
      * @return The {@link model.Vertex Vertex} locate in i, j coordinates.
      */
-    public Vertex getVertex (int i, int j)
+    public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];
     }
-    
+
     /**
-     * Retrieve the vertex in the direction dir of the actual vertex.
+     * Retrieve the {@link model.Vertex Vertex} in the direction dir of the 
+     * actual {@link model.Vertex Vertex}.
      *
-     * @param actual vertex used to search.
-     * @param dir direction were we search the vertex.
-     * @return the specific vertex if such vertices exist, otherwise return null.
+     * @param actual The {@link model.Vertex Vertex} used to search.
+     * @param dir direction were we search the {@link model.Vertex Vertex}.
+     * @return the specific {@link model.Vertex Vertex} if such vertices exist, 
+     * otherwise return null.
      */
-    public Vertex getVertexByDir (Vertex actual, Directions dir)
+    public Vertex getVertexByDir(Vertex actual, Directions dir)
     {
         if (!this.doesntExist(actual, dir))
         {
@@ -168,14 +180,16 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
         return null;
     }
-    
+
     /**
-     * Retrieve the vertex as far possible from the origin vertex.
+     * Retrieve the {@link model.Vertex Vertex} as far possible from the origin 
+     * {@link model.Vertex Vertex}.
      *
      * Used to place the door as far possible from the player.
-     * @return The specific vertex.
+     *
+     * @return The specific {@link model.Vertex Vertex}.
      */
-    public Vertex getEndPath ()
+    public Vertex getEndPath()
     {
         Vertex v = this.getVertex(1, 1);
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
@@ -196,29 +210,34 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             {
                 Vertex next = edge.getSource();
                 if (next.equals(actual))
+                {
                     next = edge.getTarget();
+                }
                 if (next.getNbr() == 0)
                 {
-                    
+
                     next.setNbr(actual.getNbr() + 1);
                     if (next.getNbr() > ret.getNbr())
+                    {
                         ret = next;
+                    }
                     fifo.add(next);
                 }
             }
         }
-        while (ret.equals(new Vertex (0, 0)))//Si jamais la porte est sur le joueur on relance.
+        // Si jamais la porte est sur le joueur on relance.
+        while (ret.equals(new Vertex(0, 0)))
             ret = getEndPath();
         return ret;
     }
-    
+
     /**
-     * Write the graph in a .dot file.
+     * Write the {@link model.Graph graph} in a .dot file.
      *
      * This method writes the {@link model.Graph Graph} in a .dot file in order
      * to display it with graphviz.
      */
-    public void GraphToDot ()
+    public void GraphToDot()
     {
         PrintWriter writer;
         try
@@ -263,65 +282,82 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             e.printStackTrace();
         }
     }
-    
+
     /**
-     * Check if there is a wall between the actual vertex and the vertex in the directions dir.
+     * Check if there is a wall between the actual {@link model.Vertex Vertex} 
+     * and the {@link model.Vertex Vertex} in the
+     * {@link model.Model.Directions Directions} dir.
      *
-     * @param actual actual vertex.
-     * @param dir direction to find the target vertex.
-     * @return true if there is a wall.
+     * @param actual actual {@link model.Vertex Vertex}.
+     * @param dir direction to find the target {@link model.Vertex Vertex}.
+     * @return true if there is a wall, false otherwise.
      */
     public boolean isWall(Vertex actual, Directions dir)
     {
         return (this.getEdge(actual, dir) == null);
     }
-    
+
     /**
-     * Return an edge connecting the source vertex to a vertex in the direction dir.
+     * Return an {@link model.Edge Edge} connecting the source 
+     * {@link model.Vertex Vertex} to a {@link model.Vertex Vertex} in the 
+     * {@link model.Model.Directions Directions} dir.
      *
-     * @param source source vertex of the edge
-     * @param dir direction to find the target vertex
-     * @return The specific edge if such edge exist, otherwise return null.
+     * @param source source {@link model.Vertex Vertex} of the 
+     * {@link model.Edge Edge}
+     * @param dir {@link model.Model.Directions Directions} to find the target
+     * {@link model.Vertex Vertex}
+     * @return The specific {@link model.Edge Edge} if such edge exist, 
+     * otherwise return null.
      */
-    public Edge getEdge(Vertex source, Directions dir) {
+    public Edge getEdge(Vertex source, Directions dir)
+    {
         Vertex target = this.getVertexByDir(source, dir);
         if (target == null)
+        {
             return null;
+        }
         return this.getEdge(source, target);
     }
-    
+
     /**
-     * Check if the Edge ,in directions dir, is an opened door.
-     * @param actual actual vertex.
-     * @param dir directions to check.
-     * @return true if the edge is an opened door.
+     * Check if the {@link model.Edge Edge} ,in 
+     * {@link model.Model.Directions Directions} dir, is an opened door.
+     *
+     * @param actual actual {@link model.Vertex Vertex}.
+     * @param dir {@link model.Model.Directions Directions} to check.
+     * @return true if the {@link model.Edge Edge} is an opened door.
      */
     public boolean isOpenedDoor(Vertex actual, Directions dir)
     {
         Edge edge = this.getEdge(actual, dir);
         return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
     }
-    
+
     /**
-     * Check if the Edge, in directions dir, is a closed door.
-     * @param actual actual vertex.
-     * @param dir directions to check.
-     * @return true if the edge is a closed door or if the edge doesn't exist.
+     * Check if the Edge, in {@link model.Model.Directions Directions} dir, is a
+     * closed door.
+     *
+     * @param actual actual {@link model.Vertex Vertex}.
+     * @param dir {@link model.Model.Directions Directions} to check.
+     * @return true if the {@link model.Edge Edge} is a closed door or if the 
+     * {@link model.Edge Edge} doesn't exist.
      */
     public boolean isClosedDoor(Vertex actual, Directions dir)
     {
         Edge edge = this.getEdge(actual, dir);
         return (edge != null && edge.getType() == Type.CLOSED_DOOR);
     }
-    
+
     /**
-     * Retrieves the vertex to place the switch to open the edge door.
-     * @param door edge to be open by the switch
-     * @return The vertex where to place the switch
+     * Retrieves the {@link model.Vertex Vertex} to place the switch to open the
+     * {@link model.Edge Edge} door.
+     *
+     * @param door {@link model.Edge Edge} to be open by the switch
+     * @return The {@link model.Vertex Vertex} where to place the switch
      */
     public Vertex setSwitchOn(Edge door)
     {
-        Random rand = new Random ();
+        Random rand = new Random();
         Set<Vertex> listeVertex = this.vertexSet();
         int i = 0;
         int j = 0;
@@ -332,26 +368,32 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex.setNbr(i);
         }
         if (door.getSource().getNbr() < door.getTarget().getNbr())
+        {
             vertex = door.getSource();
+        }
         else
+        {
             vertex = door.getTarget();
+        }
         i = rand.nextInt(vertex.getNbr());
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
         {
             vertex = it.next();
         }
         return vertex;
-        
+
     }
-    
+
     /**
-     * Retrieves the vertex to place the switch to close the edge door.
-     * @param door edge to be open by the switch
-     * @return The vertex where to place the switch
+     * Retrieves the {@link model.Vertex Vertex} to place the switch to close 
+     * the {@link model.Edge Edge} door.
+     *
+     * @param door {@link model.Edge Edge} to be open by the switch
+     * @return The {@link model.Vertex Vertex} where to place the switch
      */
     public Vertex setSwitchOff(Edge door)
     {
-        Random rand = new Random ();
+        Random rand = new Random();
         Set<Vertex> listeVertex = this.vertexSet();
         int i = 0;
         int j = 0;
@@ -362,44 +404,49 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex.setNbr(i);
         }
         if (door.getSource().getNbr() > door.getTarget().getNbr())
+        {
             vertex = door.getSource();
+        }
         else
+        {
             vertex = door.getTarget();
+        }
         i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr()) + vertex.getNbr();
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
         {
             vertex = it.next();
         }
         return vertex;
-        
+
     }
-    
+
     /**
-     * Set the type of the Edge edge to CLOSED_DOOR.
+     * Set the type of the {@link model.Edge Edge} to CLOSED_DOOR.
      *
-     * @param edge the Edge to be changed.
-     * @return The modified Edge.
+     * @param edge the {@link model.Edge Edge} to be changed.
+     * @return The modified {@link model.Edge Edge}.
      */
-    public Edge closedDoor (Edge edge)
+    public Edge closedDoor(Edge edge)
     {
         edge.setType(Edge.Type.CLOSED_DOOR);
         return edge;
     }
-    
+
     /**
      * Close randomly a door from the graph.
-     * @return The Edge containing the recently close door.
-     */
-    public Edge closeDoorRandom ()
-    {
-        Edge edge = this.randomEdge ();
-        return closedDoor (edge);
-    }
-    
-    /**
-     * Retrieves a random Edge from the graph
      *
-     * @return The random Edge.
+     * @return The {@link model.Edge Edge} containing the recently close door.
+     */
+    public Edge closeDoorRandom()
+    {
+        Edge edge = this.randomEdge();
+        return closedDoor(edge);
+    }
+
+    /**
+     * Retrieves a random {@link model.Edge Edge} from the graph
+     *
+     * @return The random {@link model.Edge Edge}.
      */
     private Edge randomEdge()
     {
@@ -409,25 +456,27 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         Iterator<Edge> it = listeEdge.iterator();
         Edge edge = it.next();
         for (int i = 0; i < randEdge; ++i)
+        {
             edge = it.next();
+        }
         return edge;
     }
-    
+
     /**
-     * Change the type of a random edge, from the graph, to OPENNED_DOOR.
-     * @return
+     * Change the type of a random {@link model.Edge Edge}, from the graph, to 
+     * OPENNED_DOOR.
      */
-    public void openDoorRandom ()
+    public void openDoorRandom()
     {
         int i;
-        Random rand = new Random ();
+        Random rand = new Random();
         for (i = 0; i < 1000; ++i)
         {
-            Vertex source = this.randomVertex ();
+            Vertex source = this.randomVertex();
             if (source != null)
             {
                 Directions dir = Directions.values()[rand.nextInt(Directions.values().length)];
-                if (isWall (source, dir))
+                if (isWall(source, dir))
                 {
                     Vertex target = this.getVertexByDir(source, dir);
                     if (target != null)
@@ -435,7 +484,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                         Edge edge = this.getEdge(source, target);
                         if (edge == null)
                         {
-                            this.addEdge(source, target, new Edge (Type.OPENED_DOOR));
+                            this.addEdge(source, target, new Edge(Type.OPENED_DOOR));
                             return;
                         }
                     }
@@ -443,11 +492,11 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
-    
+
     /**
-     * Retrieves a random vertex from the graph.
+     * Retrieves a random {@link model.Vertex Vertex} from the graph.
      *
-     * @return The random vertex.
+     * @return The random {@link model.Vertex Vertex}.
      */
     private Vertex randomVertex()
     {
@@ -460,20 +509,22 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = it.next();
         return vertex;
     }
-    
+
     /**
-     * Returns a set of the closed edges contained in this graph
+     * Returns a set of the closed {@link model.Edge Edge} contained in this 
+     * graph.
      *
-     * @return The set of the closed edges.
+     * @return The set of the closed {@link model.Edge Edge}.
      */
-    public Set<Edge> allClosedDoor ()
+    public Set<Edge> allClosedDoor()
     {
-        //Set<Edge> listEdge = this.edgeSet();
-        Set<Edge> listClosedEdge = new HashSet<Edge> ();
+        Set<Edge> listClosedEdge = new HashSet<Edge>();
         for (Edge edge : this.edgeSet())
+        {
             if (edge.getType() == Type.CLOSED_DOOR)
                 listClosedEdge.add(edge);
+        }
         return listClosedEdge;
     }
-    
+
 }

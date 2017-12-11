@@ -14,7 +14,7 @@ public class PinkCandy extends AbstractCandy
      * @param x The Abscissa of the {@link model.Candy Candy}.
      * @param y The Ordinate of the {@link model.Candy Candy}.
      */
-    public PinkCandy (int x, int y)
+    public PinkCandy(int x, int y)
     {
         super(x, y);
         _imgPath = "/utils/candy-2.png";

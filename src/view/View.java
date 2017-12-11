@@ -34,6 +34,7 @@ public class View {
 	public static final int CELL = 9;
 	public static final Paint WALL_COLOR = Color.CHOCOLATE;
 	public static final Paint SCENE_COLOR = Color.BEIGE;
+        
 
 	private Stage _stage;
 	private Scene _scene;
@@ -42,6 +43,7 @@ public class View {
 	private final ImageView _player, _door;
 	private final ArrayList<ImageView> _iv_enemies, _iv_candies, _iv_switch_on, _iv_switch_off;
 	private Label _score, _life, endgame;
+        private static final String DOOR_PATH = "/utils/door_open.png";
 
 	private View() {
 		_pane = new Pane();
@@ -50,7 +52,7 @@ public class View {
 		_iv_switch_on = new ArrayList<ImageView>();
 		_iv_switch_off = new ArrayList<ImageView>();
 
-		Image imD = new Image("file:" + System.getProperty("user.dir") + Door.get_doorPath());
+		Image imD = new Image("file:" + System.getProperty("user.dir") + DOOR_PATH);
 		_door = new ImageView(imD);
 
 		Image imP = new Image("file:" + System.getProperty("user.dir") + PlayableCharacter.getImgPath());
@@ -266,7 +268,7 @@ public class View {
     	}
     	_iv_candies.clear();
     }
-    
+
     /**
      * Remove all enemies in the array list.
      */
@@ -385,4 +387,5 @@ public class View {
 	public interface OnPlayListener {
 		void play();
 	}
+
 }

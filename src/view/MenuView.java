@@ -1,6 +1,5 @@
 package view;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,87 +11,111 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class MenuView {
+/**
+ * The class used for the menu before the start of the game.
+ *
+ * @author Java Group
+ */
+public class MenuView
+{
 
-	private Stage stage;
-	private Scene scene;
-	private final Pane pane;
-	private Label menuHeader, instructions;
-	private Button play, cancel, help;
-	private VBox vbox;
-	private View.OnPlayListener onplay;
+    private Stage _stage;
+    private Scene _scene;
+    private final Pane _pane;
+    private final Label _menuHeader, _instructions;
+    private final Button _play, _cancel, _help;
+    private final VBox _vbox;
+    private final View.OnPlayListener _onplay;
 
-	MenuView(View.OnPlayListener onplay) {
-		pane = new Pane();
-		play = new Button();
-		cancel = new Button();
-		help = new Button();
-		vbox = new VBox(3);
-		menuHeader = new Label();
-		instructions = new Label();
-		this.onplay = onplay;
+    /**
+     * Create a window for the menu before the game.
+     *
+     * @param onplay The {@link view.View View} where the menu is used.
+     */
+    public MenuView(View.OnPlayListener onplay)
+    {
+        _pane = new Pane();
+        _play = new Button();
+        _cancel = new Button();
+        _help = new Button();
+        _vbox = new VBox(3);
+        _menuHeader = new Label();
+        _instructions = new Label();
+        _onplay = onplay;
 
-	}
+    }
 
-	public void start(Stage stage) {
-		this.stage = stage;
-		drawMenu();
-	}
+    /**
+     * Method used to start the menu.
+     *
+     * @param stage The {@link javafx.stage.Stage Stage} where the menu will be
+     * displayed.
+     */
+    public void start(Stage stage)
+    {
+        _stage = stage;
+        drawMenu();
+    }
 
-	private void drawMenu() {
-		scene = new Scene(pane);
-		scene.setFill(View.SCENE_COLOR);
-		stage.setScene(scene);
+    private void drawMenu()
+    {
+        _scene = new Scene(_pane);
+        _scene.setFill(View.SCENE_COLOR);
+        _stage.setScene(_scene);
 
-		menuHeader.setText("Labyrinthe best game ever");
-		menuHeader.setFont(new Font("Serif", 50));
-		menuHeader.setMaxWidth(Double.MAX_VALUE);
-		menuHeader.setAlignment(Pos.CENTER);
-		menuHeader.setTextFill(Color.web("#F44336"));
-		menuHeader.setPadding(new Insets(20, 20, 20, 20));
+        _menuHeader.setText("Labyrinthe best game ever");
+        _menuHeader.setFont(new Font("Serif", 50));
+        _menuHeader.setMaxWidth(Double.MAX_VALUE);
+        _menuHeader.setAlignment(Pos.CENTER);
+        _menuHeader.setTextFill(Color.web("#F44336"));
+        _menuHeader.setPadding(new Insets(20, 20, 20, 20));
 
-		play.setText("Jouer");
-		play.setFont(new Font("Serif", 50));
-		play.setMaxWidth(Double.MAX_VALUE);
+        _play.setText("Jouer");
+        _play.setFont(new Font("Serif", 50));
+        _play.setMaxWidth(Double.MAX_VALUE);
 
-		cancel.setText("Quitter");
-		cancel.setFont(new Font("Serif", 50));
-		cancel.setMaxWidth(Double.MAX_VALUE);
+        _cancel.setText("Quitter");
+        _cancel.setFont(new Font("Serif", 50));
+        _cancel.setMaxWidth(Double.MAX_VALUE);
 
-		help.setText("Aidez moi svp");
-		help.setFont(new Font("Serif", 50));
-		help.setMaxWidth(Double.MAX_VALUE);
+        _help.setText("Aidez moi svp");
+        _help.setFont(new Font("Serif", 50));
+        _help.setMaxWidth(Double.MAX_VALUE);
 
-		instructions.setText("Voici les commandes disponibles :\n"
-				+ "    - Touches directionnelles : Déplacer le personnage.\n" + "    - Q ou ESCP : Quitter le jeu.");
-		instructions.setFont(new Font("Serif", 20));
-		instructions.setMaxWidth(Double.MAX_VALUE);
-		instructions.setAlignment(Pos.CENTER);
-		instructions.setPadding(new Insets(20, 20, 20, 20));
+        _instructions.setText("Voici les commandes disponibles :\n"
+            + "    - Touches directionnelles : Déplacer le personnage.\n" + "    - Q ou ESCP : Quitter le jeu.");
+        _instructions.setFont(new Font("Serif", 20));
+        _instructions.setMaxWidth(Double.MAX_VALUE);
+        _instructions.setAlignment(Pos.CENTER);
+        _instructions.setPadding(new Insets(20, 20, 20, 20));
 
-		vbox.getChildren().addAll(menuHeader, play, cancel, help);
+        _vbox.getChildren().addAll(_menuHeader, _play, _cancel, _help);
 
-		pane.getChildren().add(vbox);
+        _pane.getChildren().add(_vbox);
 
-		setListeners();
+        setListeners();
 
-		stage.show();
-	}
+        _stage.show();
+    }
 
-	private void setListeners() {
-		play.setOnAction(event -> {
-			onplay.play();
-		});
+    private void setListeners()
+    {
+        _play.setOnAction(event ->
+        {
+            _onplay.play();
+        });
 
-		cancel.setOnAction(event -> {
-			System.exit(1);
-		});
+        _cancel.setOnAction(event ->
+        {
+            System.exit(1);
+        });
 
-		help.setOnAction(event -> {
-			vbox.getChildren().add(instructions);
-			vbox.getChildren().remove(help);
-			stage.setHeight(500);
-		});
-	}
+        _help.setOnAction(event ->
+        {
+            _vbox.getChildren().add(_instructions);
+            _vbox.getChildren().remove(_help);
+            _stage.setHeight(500);
+        });
+    }
 
 }

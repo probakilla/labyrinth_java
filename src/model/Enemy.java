@@ -21,36 +21,55 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _targetY;
     private static String _imgPath = "/utils/bad.png";
     private int _sleepTime = 500;//Time in ms between each enemies' move
-    
-    public int get_targetX() {
+
+    public int get_targetX()
+    {
         return _targetX;
     }
-    
-    public void set_targetX(int _target) {
-        this._targetX = _target;
+
+    /**
+     * Set the target's abscissa of the Enemy.
+     *
+     * @param target The target abscissa of the Enemy.
+     */
+    public void set_targetX(int target)
+    {
+        _targetX = target;
     }
-    
-    public int get_targetY() {
+
+    /**
+     * Retrieves the target's ordinate of the Enemy.
+     *
+     * @param target The target's ordinate of the Enemy.
+     */
+    public int get_targetY()
+    {
         return _targetY;
     }
-    
-    public void set_targetY(int _target) {
+
+    /**
+     * Set the target's ordinate of the Enemy.
+     *
+     * @param target The target's ordinate of the Enemy.
+     */
+    public void set_targetY(int _target)
+    {
         this._targetY = _target;
     }
-    
+
     /**
      * Constructor of Enemy.
      *
      * The coordinates of the Enemy are set to [0,0]. The call of this
      * constructor should be followed by randomizePosition().
      */
-    public Enemy ()
+    public Enemy()
     {
         super(0, 0);
         _type = -1;
         _running = 0;
     }
-    
+
     /**
      * Constructor of Enemy.
      *
@@ -59,36 +78,40 @@ public class Enemy extends AbstractCharacter implements Runnable
      * @param x Abscissa in the labyrinth of the Enemy.
      * @param y Ordinate in the labyrinth of the Enemy.
      */
-    public Enemy (int x, int y)
+    public Enemy(int x, int y)
     {
         super(x, y);
         _type = -1;
         _running = 0;
     }
-    
+
     /**
      * @return the _imgPath
      */
-    public static String getImgPath() {
+    public static String getImgPath()
+    {
         return _imgPath;
     }
-    
+
     /**
      * Set _running at 0.
      *
-     * This will stop ennemies, be carrefull once stopped ennemies can't be unstopped.
+     * This will stop enemies, be careful once stopped enemies can't be
+     * unstopped.
      */
-    public void stopRunning ()
+    public void stopRunning()
     {
         _running = 0;
     }
-    
+
     /**
-     * Return the direction of the next enemie's move.
+     * Return the direction of the next enemies move.
      *
-     * @return An int corresponding of the direction of the move (0 = NORTH, 1 = East, 2 = South, 3 = West).
+     * @return An integer corresponding of the direction of the move (0 = NORTH,
+     * 1 = East, 2 = South, 3 = West).
      */
-    public Directions getNextStep(){
+    public Directions getNextStep()
+    {
         int x = 0;
         int y = 0;
         int nb = 1000;
@@ -115,29 +138,26 @@ public class Enemy extends AbstractCharacter implements Runnable
                     y = 0;
                     break;
             }
-            //System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
-            if ((this.getPosition().getX()+x >=0 && this.getPosition().getX()+x < Model.getInstance().getGraph().getGRIDWIDTH()
-                    && this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT())
-                    && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y))
-                    && nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
-                    && Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
-                    && Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr() != 0)
+            if ((this.getPosition().getX() + x >= 0 && this.getPosition().getX() + x < Model.getInstance().getGraph().getGRIDWIDTH()
+                && this.getPosition().getY() + y >= 0 && this.getPosition().getY() + y < Model.getInstance().getGraph().getGRIDHEIGHT())
+                && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y))
+                && nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr()
+                && Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
+                && Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr() != 0)
             {
-                //System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
-                nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr();
+                nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr();
                 ret = dir;
             }
         }
         return ret;
     }
-    
+
     @Override
-    public void run ()
+    public void run()
     {
         _running = 1;
         while (_running == 1)
         {
-            //System.out.println(this.get_targetX()+" "+this.get_targetY());
             Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
             switch (this.getNextStep())
             {
@@ -166,5 +186,5 @@ public class Enemy extends AbstractCharacter implements Runnable
             }
         }
     }
-    
+
 }

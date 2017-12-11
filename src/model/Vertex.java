@@ -9,19 +9,19 @@ import model.Model.Directions;
  */
 public class Vertex
 {
-    
+
     private int _x, _y, _nbr;
-    
+
     /**
      * Create a Vertex with null coordinates.
      */
-    public Vertex ()
+    public Vertex()
     {
         _x = 0;
         _y = 0;
         _nbr = -1;
     }
-    
+
     /**
      * Create a Vertex with specific coordinates and a fixed number.
      *
@@ -31,23 +31,33 @@ public class Vertex
      * @param x Abscissa of the Vertex.
      * @param y Ordinate of the Vertex.
      */
-    public Vertex (int x, int y)
+    public Vertex(int x, int y)
     {
         _x = x;
         _y = y;
         _nbr = -1;
     }
-    
-    public void setX (int x)
+
+    /**
+     * Setter on the abscissa of the {@link model.Vertex Vertex}.
+     * 
+     * @param x The abscissa of the {@link model.Vertex Vertex}.
+     */
+    public void setX(int x)
     {
         _x = x;
     }
-    
-    public void setY (int y)
+
+    /**
+     * Setter on the ordinate of the {@link model.Vertex Vertex}.
+     * 
+     * @param y The abscissa of the {@link model.Vertex Vertex}.
+     */
+    public void setY(int y)
     {
         _y = y;
     }
-    
+
     /**
      * Create a Vertex with specific coordinates and a number.
      *
@@ -55,72 +65,75 @@ public class Vertex
      * @param y Ordinate of the Vertex.
      * @param nbr Number of the Vertex.
      */
-    public Vertex (int x, int y, int nbr)
+    public Vertex(int x, int y, int nbr)
     {
         _x = x;
         _y = y;
         _nbr = nbr;
     }
-    
+
     /**
-     * Retrieves the number of the Vertex.
+     * Retrieves the number of the {@link model.Vertex Vertex}.
      *
-     * @return The number of the Vertex.
+     * @return The number of the {@link model.Vertex Vertex}.
      */
-    public int getNbr ()
+    public int getNbr()
     {
         return _nbr;
     }
-    
-    public void setNbr (int nbr)
+
+    /**
+     * Setter on the number of the current {@link model.Vertex Vertex}.
+     * 
+     * @param nbr The number of the {@link model.Vertex Vertex}.
+     */
+    public void setNbr(int nbr)
     {
         _nbr = nbr;
     }
-    
+
     /**
-     * Retrieves the Abscissa of the Vertex.
+     * Retrieves the Abscissa of the {@link model.Vertex Vertex}.
      *
-     * @return The Abscissa of the Vertex.
+     * @return The Abscissa of the {@link model.Vertex Vertex}.
      */
-    public int getX ()
+    public int getX()
     {
         return _x;
     }
-    
+
     /**
-     * Retrieves the Ordinate of the Vertex.
+     * Retrieves the Ordinate of the {@link model.Vertex Vertex}.
      *
-     * @return The Ordinate of the Vertex.
+     * @return The Ordinate of the {@link model.Vertex Vertex}.
      */
-    public int getY ()
+    public int getY()
     {
         return _y;
     }
-    
+
     /**
      * Compare two vertices according to their x, y and nbr.
      *
      * @param v The vertex to compare.
      * @return 0 if they are equals, 1 in the other case.
      */
-    public int compareTo (Vertex v)
+    public int compareTo(Vertex v)
     {
         if (v.getX() == _x && v.getY() == _y && _nbr == v.getNbr())
-        {
             return 0;
-        }
         return 1;
     }
-    
+
     /**
      * Compare two Vertices coordinates.
      *
      * @param obj The object to compare with.
-     * @return True if two vertices have the same x and y, false in the other
-     * case.
+     * @return True if two {@link model.Vertex Vertices} have the same x and y, 
+     * false in the other case.
      */
     @Override
-    public boolean equals (Object obj)
+    public boolean equals(Object obj)
     {
         if (obj == this)
         {
@@ -137,13 +150,13 @@ public class Vertex
         Vertex v = (Vertex) obj;
         return v.getX() == _x && v.getY() == _y;
     }
-    
+
     @Override
-    public int hashCode ()
+    public int hashCode()
     {
         return _x - _y;
     }
-    
+
     /**
      * Check if we stay in the limits of the graph when we move.
      *
@@ -152,7 +165,7 @@ public class Vertex
      * @param height height of the labyrinth.
      * @return false if we go off the labyrinth, true in the other case.
      */
-    public boolean inBorders (Directions dir, int width, int height)
+    public boolean inBorders(Directions dir, int width, int height)
     {
         switch (dir)
         {
@@ -167,24 +180,31 @@ public class Vertex
         }
         return false;
     }
-    
+
     /**
      * Retrieves a String with coordinates.
      *
-     * Retrieves a String with the coordinates of the Vertex with the format
-     * [x-y].
-     * @return The String with the coordinates of the Vertex.
+     * Retrieves a {@link java.String String} with the coordinates of the 
+     * {@link model.Vertex Vertex} with the format [x-y].
+     *
+     * @return The {@link java.String String} with the coordinates of the 
+     * {@link model.Vertex Vertex}.
      */
     @Override
-    public String toString ()
+    public String toString()
     {
         StringBuilder str = new StringBuilder("[");
         str.append(_x).append(",").append(_y).append("]").append(" nb ").append(_nbr);
         return str.toString();
     }
-    
-    
-    public void copy (Object o)
+
+    /**
+     * Copy a {@link model.Vertex Vertex} into the current 
+     * {@link model.Vertex Vertex}.
+     * 
+     * @param o The object (should be a {@link model.Vertex Vertex}) to copy.
+     */
+    public void copy(Object o)
     {
         if (o instanceof Vertex)
         {

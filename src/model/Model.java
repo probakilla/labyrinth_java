@@ -20,20 +20,20 @@ public class Model
     {
         EAST, WEST, NORTH, SOUTH;
     }
-    
+
     private final AtomicInteger _iteration;
     private final Random _random;
     private final Graph _graph;
-    
-    private Model ()
+
+    private Model()
     {
         _iteration = new AtomicInteger(1);
         _graph = Graph.getInstance();
         _random = new Random();
     }
-    
+
     private static Model INSTANCE;
-    
+
     /**
      * Retrieves an instance of the Model.
      *
@@ -42,7 +42,7 @@ public class Model
      *
      * @return An unique instance of Model.
      */
-    public static Model getInstance ()
+    public static Model getInstance()
     {
         if (INSTANCE == null)
         {
@@ -50,22 +50,20 @@ public class Model
         }
         return INSTANCE;
     }
-    
+
     /**
      * Randomly create a {@link model.Graph Graphs}.
      *
      * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
-    public void buildRandomPath (Vertex vertex)
+    public void buildRandomPath(Vertex vertex)
     {
         _graph.addVertex(vertex);
-        //une liste aleatoire des 4 directions
+        // Une liste aleatoire des 4 directions.
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
-        {
             v.add(Directions.values()[i]);
-        }
-        
+
         Directions directions[] = new Directions[4];
         int index;
         for (int i = 0; i < directions.length; ++i)
@@ -74,7 +72,7 @@ public class Model
             directions[i] = v.get(index);
             v.remove(index);
         }
-        // pour chacune de ces directions, on avance en profondeur d’abord
+        // Pour chacune de ces directions, on avance en profondeur d’abord.
         for (int i = 0; i < 4; ++i)
         {
             Directions dir = directions[i];
@@ -102,7 +100,7 @@ public class Model
                         yt = y;
                         break;
                 }
-                
+
                 Vertex next = _graph.getVertex(xt, yt);
                 next.setNbr(_iteration.incrementAndGet());
                 _graph.addVertex(next);
@@ -111,8 +109,8 @@ public class Model
             }
         }
     }
-    
-    private void calculateManhattanDistance (Vertex source, Vertex target)
+
+    private void calculateManhattanDistance(Vertex source, Vertex target)
     {
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
         target.setNbr(1);
@@ -137,22 +135,28 @@ public class Model
             }
         }
     }
-    
-    public void launchManhattan (Vertex source, Vertex target)
+
+    /**
+     * Method used to launch the algorithm used to order the {@link model.Enemy Enemies}
+     * to follow the {@link model.PlayableCharacter Player}.
+     * 
+     * @param source The {@link model.Vertex Vertex} of the character who will 
+     * follow.
+     * @param target The {@link model.Vertex Vertex} of the character to follow.
+     */
+    public void launchManhattan(Vertex source, Vertex target)
     {
         for (Vertex vertex : _graph.vertexSet())
-        {
             vertex.setNbr(0);
-        }
         calculateManhattanDistance(source, target);
     }
-    
+
     /**
-     * Return the graph used in Model.
+     * Return the graph used in the Model.
      *
-     * @return graph
+     * @return The graph used to draw the labyrinth.
      */
-    public Graph getGraph ()
+    public Graph getGraph()
     {
         return _graph;
     }
