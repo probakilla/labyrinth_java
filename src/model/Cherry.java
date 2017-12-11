@@ -8,14 +8,14 @@ package model;
  */
 public class Cherry extends AbstractCandy
 {
-    
+
     /**
      * Create an instance of PinkCandy with specific coordinates.
      *
      * @param x The Abscissa of the {@link model.Candy Candy}.
      * @param y The Ordinate of the {@link model.Candy Candy}.
      */
-    public Cherry (int x, int y)
+    public Cherry(int x, int y)
     {
         super(x, y);
         _imgPath = "/utils/candy-3.png";

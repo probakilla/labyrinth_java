@@ -14,7 +14,7 @@ public class RoundCandy extends AbstractCandy
      * @param x The Abscissa of the {@link model.Candy Candy}.
      * @param y The Ordinate of the {@link model.Candy Candy}.
      */
-    public RoundCandy (int x, int y)
+    public RoundCandy(int x, int y)
     {
         super(x, y);
         _imgPath = "/utils/candy-4.png";
