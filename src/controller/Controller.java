@@ -79,7 +79,11 @@ public class Controller {
                     }
                 }
                 if (_player.collision(door_position))
+                {
+                	for (int i = 0; i < NB_ENEMIES; i++)
+                        _enemies[i].stopRunning();
                     _view.setEndGameText(true);
+                }
             }
         });
         
