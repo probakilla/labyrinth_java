@@ -20,9 +20,9 @@ public class MenuView {
 	private Label menuHeader, instructions;
 	private Button play, cancel, help;
 	private VBox vbox;
-	private OnPlayListener onplay;
+	private View.OnPlayListener onplay;
 
-	MenuView(OnPlayListener onplay) {
+	MenuView(View.OnPlayListener onplay) {
 		pane = new Pane();
 		play = new Button();
 		cancel = new Button();
@@ -93,10 +93,6 @@ public class MenuView {
 			vbox.getChildren().remove(help);
 			stage.setHeight(500);
 		});
-	}
-
-	interface OnPlayListener {
-		void play();
 	}
 
 }

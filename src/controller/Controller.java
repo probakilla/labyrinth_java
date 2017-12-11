@@ -87,8 +87,6 @@ public class Controller {
             _enemies[i] = new Enemy();
             _enemies[i].randomizePosition();
             _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-            
-            _enemies[i].start();
             final int idx = i;
             _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener() {
                 @Override
@@ -178,7 +176,13 @@ public class Controller {
             _closed_door[i] = new Door (switchOn, switchOff, door);
         }
         graph.GraphToDot();
-        _view.start(stage, graph);
+        _view.start(stage, graph, new View.OnPlayListener() {
+
+			@Override
+			public void play() {
+				playGame();
+			}
+		});
         _view.printRules();
         
         // Gestion du mouvement du joueur.
@@ -228,4 +232,9 @@ public class Controller {
         };
         stage.addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
+
+	private void playGame() {
+		for (int i = 0; i < NB_ENEMIES; i++)
+			_enemies[i].start();
+	}
 }
