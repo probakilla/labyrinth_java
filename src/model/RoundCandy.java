@@ -8,7 +8,6 @@ package model;
  */
 public class RoundCandy extends AbstractCandy
 {
-
     /**
      * Create an instance of PinkCandy with specific coordinates.
      *

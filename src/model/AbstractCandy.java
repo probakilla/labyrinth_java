@@ -2,7 +2,7 @@ package model;
 
 /**
  * Abstract Class of {@link model.Candy Candy}.
- * 
+ *
  * @author Java Group
  */
 public abstract class  AbstractCandy implements Candy
@@ -13,8 +13,8 @@ public abstract class  AbstractCandy implements Candy
     
     /**
      * Constructor of AbstractCandy.
-     * 
-     * Set the position of the {@link model.Candy Candy} with specific 
+     *
+     * Set the position of the {@link model.Candy Candy} with specific
      * coordinates.
      * @param x Abscissa of the {@link model.Candy Candy}.
      * @param y Ordinate of the {@link model.Candy Candy}.
@@ -29,11 +29,11 @@ public abstract class  AbstractCandy implements Candy
     {
         return _type;
     }
-  
+    
     @Override
     public Vertex getPosition ()
     {
-       return _position;
+        return _position;
     }
     
     /**

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,22 +23,22 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _sleepTime = 1000;//Time in ms between each enemies' move
     
     public int get_targetX() {
-		return _targetX;
-	}
-
-	public void set_targetX(int _target) {
-		this._targetX = _target;
-	}
-	
+        return _targetX;
+    }
+    
+    public void set_targetX(int _target) {
+        this._targetX = _target;
+    }
+    
     public int get_targetY() {
-		return _targetY;
-	}
-
-	public void set_targetY(int _target) {
-		this._targetY = _target;
-	}
-
-	/**
+        return _targetY;
+    }
+    
+    public void set_targetY(int _target) {
+        this._targetY = _target;
+    }
+    
+    /**
      * Constructor of Enemy.
      *
      * The coordinates of the Enemy are set to [0,0]. The call of this
@@ -51,7 +50,7 @@ public class Enemy extends AbstractCharacter implements Runnable
         _type = -1;
         _running = 0;
     }
-
+    
     /**
      * Constructor of Enemy.
      *
@@ -68,104 +67,104 @@ public class Enemy extends AbstractCharacter implements Runnable
     }
     
     /**
-   	 * @return the _imgPath
-   	 */
-   	public static String getImgPath() {
-   		return _imgPath;
-   	}
+     * @return the _imgPath
+     */
+    public static String getImgPath() {
+        return _imgPath;
+    }
     
-     /**
-      * Set _running at 0.
-      * 
-      * This will stop ennemies, be carrefull once stopped ennemies can't be unstopped.
-      */
+    /**
+     * Set _running at 0.
+     *
+     * This will stop ennemies, be carrefull once stopped ennemies can't be unstopped.
+     */
     public void stopRunning ()
     {
-    	_running = 0;
+        _running = 0;
     }
-
+    
     /**
      * Return the direction of the next enemie's move.
-     * 
+     *
      * @return An int corresponding of the direction of the move (0 = NORTH, 1 = East, 2 = South, 3 = West).
      */
     public Directions getNextStep(){
-    	int x = 0;
-    	int y = 0;
-    	int nb = 1000;
-    	//System.out.println("on est au "+this.getPosition());
+        int x = 0;
+        int y = 0;
+        int nb = 1000;
+        //System.out.println("on est au "+this.getPosition());
         Directions ret = Directions.NORTH;
-    	for (Directions dir : Directions.values())
-    	{
-    		switch (dir)
-    		{
-    		case NORTH:
-    			x = 0;
-    			y = -1;
-    			break;
-    		case SOUTH:
-    			x = 0;
-    			y = 1;
-    			break;
-    		case EAST:
-    			x = 1;
-    			y = 0;
-    			break;
-    		case WEST:
-    			x = -1;
-    			y = 0;
-    			break;
-    		}
-    		//System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
-    		if ((this.getPosition().getX()+x >=0 && this.getPosition().getX()+x < Model.getInstance().getGraph().getGRIDWIDTH() 
-    				&& this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT()) 
-    				&& !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y)) 
-    				&& nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
-    				&& Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
-    				&& Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr() != 0)
-    		{
-    			//System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
-    			nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr();
-                        ret = dir;
-    		}
-    	}
-    	return ret;
+        for (Directions dir : Directions.values())
+        {
+            switch (dir)
+            {
+                case NORTH:
+                    x = 0;
+                    y = -1;
+                    break;
+                case SOUTH:
+                    x = 0;
+                    y = 1;
+                    break;
+                case EAST:
+                    x = 1;
+                    y = 0;
+                    break;
+                case WEST:
+                    x = -1;
+                    y = 0;
+                    break;
+            }
+            //System.out.println("possibilité:"+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
+            if ((this.getPosition().getX()+x >=0 && this.getPosition().getX()+x < Model.getInstance().getGraph().getGRIDWIDTH()
+                    && this.getPosition().getY()+y >= 0 && this.getPosition().getY()+y < Model.getInstance().getGraph().getGRIDHEIGHT())
+                    && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y))
+                    && nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr()
+                    && Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
+                    && Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr() != 0)
+            {
+                //System.out.println("= "+Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y));
+                nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX()+x, this.getPosition().getY()+y).getNbr();
+                ret = dir;
+            }
+        }
+        return ret;
     }
-
+    
     @Override
     public void run ()
     {
-    	_running = 1;
-    	while (_running == 1)
-    	{
-    		//System.out.println(this.get_targetX()+" "+this.get_targetY());
-    		Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
-    		switch (this.getNextStep())
-    		{
-    		case NORTH:
-    			this.up();
-    			break;
-    		case SOUTH:
-    			this.down();
-    			break;
-    		case EAST:
-    			this.right();
-    			break;
-    		case WEST:
-    			this.left();
-    			break;
-    		default:
-    			break;
-    		}
-    		try
-    		{
-    			Enemy.sleep(_sleepTime);
-    		}
-    		catch (InterruptedException ex)
-    		{
-    			Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
-    		}
-    	}
+        _running = 1;
+        while (_running == 1)
+        {
+            //System.out.println(this.get_targetX()+" "+this.get_targetY());
+            Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
+            switch (this.getNextStep())
+            {
+                case NORTH:
+                    this.up();
+                    break;
+                case SOUTH:
+                    this.down();
+                    break;
+                case EAST:
+                    this.right();
+                    break;
+                case WEST:
+                    this.left();
+                    break;
+                default:
+                    break;
+            }
+            try
+            {
+                Enemy.sleep(_sleepTime);
+            }
+            catch (InterruptedException ex)
+            {
+                Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
-        	
+    
 }

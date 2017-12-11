@@ -20,20 +20,20 @@ public class Model
     {
         EAST, WEST, NORTH, SOUTH;
     }
-
+    
     private final AtomicInteger _iteration;
     private final Random _random;
     private final Graph _graph;
-
+    
     private Model ()
     {
         _iteration = new AtomicInteger(1);
         _graph = Graph.getInstance();
         _random = new Random();
     }
-
+    
     private static Model INSTANCE;
-
+    
     /**
      * Retrieves an instance of the Model.
      *
@@ -50,22 +50,22 @@ public class Model
         }
         return INSTANCE;
     }
- 
+    
     /**
      * Randomly create a {@link model.Graph Graphs}.
      *
      * @param vertex the beginning of the {@link model.Graph Graphs}.
      */
     public void buildRandomPath (Vertex vertex)
-    {	
-    	_graph.addVertex(vertex);
-        //une liste aleatoire des 4 directions	
+    {
+        _graph.addVertex(vertex);
+        //une liste aleatoire des 4 directions
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
         {
             v.add(Directions.values()[i]);
         }
-
+        
         Directions directions[] = new Directions[4];
         int index;
         for (int i = 0; i < directions.length; ++i)
@@ -102,7 +102,7 @@ public class Model
                         yt = y;
                         break;
                 }
-
+                
                 Vertex next = _graph.getVertex(xt, yt);
                 next.setNbr(_iteration.incrementAndGet());
                 _graph.addVertex(next);
@@ -111,7 +111,7 @@ public class Model
             }
         }
     }
-
+    
     private void calculateManhattanDistance (Vertex source, Vertex target)
     {
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
@@ -137,7 +137,7 @@ public class Model
             }
         }
     }
-
+    
     public void launchManhattan (Vertex source, Vertex target)
     {
         for (Vertex vertex : _graph.vertexSet())

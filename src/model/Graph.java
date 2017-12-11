@@ -22,15 +22,15 @@ import model.Model.Directions;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-	
+    
     private static final long serialVersionUID = 1L;
     
     private static Graph INSTANCE;
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
-
+    
     private final Vertex[][] _vertex;
-
+    
     /**
      * Create a Graph base structure with {@link model.Vertex Vertices} and
      * {@link model.Edge Edges}.
@@ -53,13 +53,13 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     
     public static Graph getInstance()
     {
-    	if (INSTANCE == null)
+        if (INSTANCE == null)
         {
             INSTANCE = new Graph();
         }
         return INSTANCE;
     }
-
+    
     /**
      * Retrieves the width of the labyrinth.
      *
@@ -69,7 +69,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     {
         return GRID_WIDTH;
     }
-
+    
     /**
      * Retrieves the height of the labyrinth.
      *
@@ -118,7 +118,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     {
         return !this.containsVertex(v);
     }
-
+    
     /**
      * Retrieves a {@link model.Vertex Vertex} locate in specific coordinates.
      *
@@ -130,10 +130,10 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     {
         return _vertex[i][j];
     }
-
+    
     /**
      * Retrieve the vertex in the direction dir of the actual vertex.
-     * 
+     *
      * @param actual vertex used to search.
      * @param dir direction were we search the vertex.
      * @return the specific vertex if such vertices exist, otherwise return null.
@@ -168,48 +168,48 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
         return null;
     }
-
+    
     /**
-     * Retrieve the vertex as far possible from the origin vertex. 
-     * 
-     * Used to place the door as far possible from the player. 
+     * Retrieve the vertex as far possible from the origin vertex.
+     *
+     * Used to place the door as far possible from the player.
      * @return The specific vertex.
      */
     public Vertex getEndPath ()
-    {	
-    	Vertex v = this.getVertex(1, 1);
-    	Queue<Vertex> fifo = new ArrayDeque<Vertex>();
-    	Set<Vertex> ListVertex = this.vertexSet();
-    	Vertex vertex;
-    	for (Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
-    	{
-    		vertex = it.next();
-    		vertex.setNbr(0);
-    	}
-    	v.setNbr(1);
-    	Vertex ret = v;
-    	fifo.add(v);
-    	while (!fifo.isEmpty())
-    	{
-    		Vertex actual = fifo.remove();
-    		for (Edge edge : this.edgesOf(actual))
+    {
+        Vertex v = this.getVertex(1, 1);
+        Queue<Vertex> fifo = new ArrayDeque<Vertex>();
+        Set<Vertex> ListVertex = this.vertexSet();
+        Vertex vertex;
+        for (Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
+        {
+            vertex = it.next();
+            vertex.setNbr(0);
+        }
+        v.setNbr(1);
+        Vertex ret = v;
+        fifo.add(v);
+        while (!fifo.isEmpty())
+        {
+            Vertex actual = fifo.remove();
+            for (Edge edge : this.edgesOf(actual))
             {
-    			Vertex next = edge.getSource();
-    			if (next.equals(actual))
-    				next = edge.getTarget();
-    			if (next.getNbr() == 0)
+                Vertex next = edge.getSource();
+                if (next.equals(actual))
+                    next = edge.getTarget();
+                if (next.getNbr() == 0)
                 {
-    				
-    				next.setNbr(actual.getNbr() + 1);
-    				if (next.getNbr() > ret.getNbr())
-    					ret = next;
-    				fifo.add(next);
+                    
+                    next.setNbr(actual.getNbr() + 1);
+                    if (next.getNbr() > ret.getNbr())
+                        ret = next;
+                    fifo.add(next);
                 }
             }
-    	}
+        }
         while (ret.equals(new Vertex (0, 0)))//Si jamais la porte est sur le joueur on relance.
             ret = getEndPath();
-        return ret;	
+        return ret;
     }
     
     /**
@@ -230,10 +230,10 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             int i = 0;
             int j;
             for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
-        	{
-        		vertex = it.next();
-        		vertex.setNbr(i);
-        	}
+            {
+                vertex = it.next();
+                vertex.setNbr(i);
+            }
             i = 0;
             for (Iterator<Vertex> it = v1.iterator(); it.hasNext(); i++)
             {
@@ -263,217 +263,217 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Check if there is a wall between the actual vertex and the vertex in the directions dir.
-     * 
+     *
      * @param actual actual vertex.
      * @param dir direction to find the target vertex.
      * @return true if there is a wall.
      */
     public boolean isWall(Vertex actual, Directions dir)
     {
-    	return (this.getEdge(actual, dir) == null);
+        return (this.getEdge(actual, dir) == null);
     }
     
     /**
-     * Return an edge connecting the source vertex to a vertex in the direction dir. 
+     * Return an edge connecting the source vertex to a vertex in the direction dir.
      *
      * @param source source vertex of the edge
      * @param dir direction to find the target vertex
      * @return The specific edge if such edge exist, otherwise return null.
      */
-	public Edge getEdge(Vertex source, Directions dir) {
-		Vertex target = this.getVertexByDir(source, dir);
-		if (target == null)
-			return null;
-		return this.getEdge(source, target);
-	}
-
-	/**
-	 * Check if the Edge ,in directions dir, is an opened door.
-	 * @param actual actual vertex.
-	 * @param dir directions to check.
-	 * @return true if the edge is an opened door.
-	 */
-	public boolean isOpenedDoor(Vertex actual, Directions dir)
-	{
-		Edge edge = this.getEdge(actual, dir);
-		return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
-	}
-	
-	/**
-	 * Check if the Edge, in directions dir, is a closed door.
-	 * @param actual actual vertex.
-	 * @param dir directions to check.
-	 * @return true if the edge is a closed door or if the edge doesn't exist.
-	 */
-	public boolean isClosedDoor(Vertex actual, Directions dir)
-	{
-		Edge edge = this.getEdge(actual, dir);
-		return (edge != null && edge.getType() == Type.CLOSED_DOOR);
-	}
-	
-	/**
-	 * Retrieves the vertex to place the switch to open the edge door.
-	 * @param door edge to be open by the switch
-	 * @return The vertex where to place the switch
-	 */
-	public Vertex setSwitchOn(Edge door)
-	{
-		Random rand = new Random ();
-		Set<Vertex> listeVertex = this.vertexSet();
-		int i = 0;
-		int j = 0;
+    public Edge getEdge(Vertex source, Directions dir) {
+        Vertex target = this.getVertexByDir(source, dir);
+        if (target == null)
+            return null;
+        return this.getEdge(source, target);
+    }
+    
+    /**
+     * Check if the Edge ,in directions dir, is an opened door.
+     * @param actual actual vertex.
+     * @param dir directions to check.
+     * @return true if the edge is an opened door.
+     */
+    public boolean isOpenedDoor(Vertex actual, Directions dir)
+    {
+        Edge edge = this.getEdge(actual, dir);
+        return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
+    }
+    
+    /**
+     * Check if the Edge, in directions dir, is a closed door.
+     * @param actual actual vertex.
+     * @param dir directions to check.
+     * @return true if the edge is a closed door or if the edge doesn't exist.
+     */
+    public boolean isClosedDoor(Vertex actual, Directions dir)
+    {
+        Edge edge = this.getEdge(actual, dir);
+        return (edge != null && edge.getType() == Type.CLOSED_DOOR);
+    }
+    
+    /**
+     * Retrieves the vertex to place the switch to open the edge door.
+     * @param door edge to be open by the switch
+     * @return The vertex where to place the switch
+     */
+    public Vertex setSwitchOn(Edge door)
+    {
+        Random rand = new Random ();
+        Set<Vertex> listeVertex = this.vertexSet();
+        int i = 0;
+        int j = 0;
         Vertex vertex;
         for (Iterator<Vertex> it = listeVertex.iterator(); it.hasNext(); i++)
-    	{
-    		vertex = it.next();
-    		vertex.setNbr(i);
-    	}
+        {
+            vertex = it.next();
+            vertex.setNbr(i);
+        }
         if (door.getSource().getNbr() < door.getTarget().getNbr())
-        	vertex = door.getSource();
+            vertex = door.getSource();
         else
-        	vertex = door.getTarget();
+            vertex = door.getTarget();
         i = rand.nextInt(vertex.getNbr());
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
-    	{
-        	vertex = it.next();
-    	}
-		return vertex;
-		
-	}
-	
-	/**
-	 * Retrieves the vertex to place the switch to close the edge door.
-	 * @param door edge to be open by the switch
-	 * @return The vertex where to place the switch
-	 */
-	public Vertex setSwitchOff(Edge door)
-	{
-		Random rand = new Random ();
-		Set<Vertex> listeVertex = this.vertexSet();
-		int i = 0;
-		int j = 0;
+        {
+            vertex = it.next();
+        }
+        return vertex;
+        
+    }
+    
+    /**
+     * Retrieves the vertex to place the switch to close the edge door.
+     * @param door edge to be open by the switch
+     * @return The vertex where to place the switch
+     */
+    public Vertex setSwitchOff(Edge door)
+    {
+        Random rand = new Random ();
+        Set<Vertex> listeVertex = this.vertexSet();
+        int i = 0;
+        int j = 0;
         Vertex vertex;
         for (Iterator<Vertex> it = listeVertex.iterator(); it.hasNext(); i++)
-    	{
-    		vertex = it.next();
-    		vertex.setNbr(i);
-    	}
+        {
+            vertex = it.next();
+            vertex.setNbr(i);
+        }
         if (door.getSource().getNbr() > door.getTarget().getNbr())
-        	vertex = door.getSource();
+            vertex = door.getSource();
         else
-        	vertex = door.getTarget();
+            vertex = door.getTarget();
         i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr()) + vertex.getNbr();
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
-    	{
-        	vertex = it.next();
-    	}
-		return vertex;
-		
-	}
-	
-	/**
-	 * Set the type of the Edge edge to CLOSED_DOOR.
-	 * 
-	 * @param edge the Edge to be changed.
-	 * @return The modified Edge.
-	 */
-	public Edge closedDoor (Edge edge)
-	{
-		edge.setType(Edge.Type.CLOSED_DOOR);
-		return edge;
-	}
-	
-	/**
-	 * Close randomly a door from the graph.
-	 * @return The Edge containing the recently close door.
-	 */
-	public Edge closeDoorRandom ()
-	{
-		Edge edge = this.randomEdge ();
-		return closedDoor (edge);
-	}
-
-	/**
-	 * Retrieves a random Edge from the graph
-	 * 
-	 * @return The random Edge.
-	 */
-	private Edge randomEdge()
-	{
-		Random rand = new Random();
-		Set<Edge> listeEdge = this.edgeSet();
-		int randEdge = rand.nextInt(listeEdge.size() - 1) + 1;
-		Iterator<Edge> it = listeEdge.iterator();
-		Edge edge = it.next();
-		for (int i = 0; i < randEdge; ++i)
-			edge = it.next();
-		return edge;
-	}
-	
-	/**
-	 * Change the type of a random edge, from the graph, to OPENNED_DOOR.
-	 * @return 
-	 */
-	public void openDoorRandom ()
-	{
-		int i;
-		Random rand = new Random ();
-		for (i = 0; i < 1000; ++i)
-		{
-			Vertex source = this.randomVertex ();
-			if (source != null)
-			{
-				Directions dir = Directions.values()[rand.nextInt(Directions.values().length)];
-				if (isWall (source, dir))
-				{
-					Vertex target = this.getVertexByDir(source, dir);
-					if (target != null)
-					{
-						Edge edge = this.getEdge(source, target);
-						if (edge == null)
-						{
-							this.addEdge(source, target, new Edge (Type.OPENED_DOOR));
-							return;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Retrieves a random vertex from the graph.
-	 * 
-	 * @return The random vertex.
-	 */
-	private Vertex randomVertex() 
-	{
-		Random rand = new Random();
-		Set<Vertex> listeVertex = this.vertexSet();
-		int randVertex = rand.nextInt(listeVertex.size());
-		Iterator<Vertex> it = listeVertex.iterator();
-		Vertex vertex = it.next();
-		for (int i = 0; i < randVertex; ++i)
-			vertex = it.next();
-		return vertex;
-	}
-	
-	/**
-	 * Returns a set of the closed edges contained in this graph
-	 * 
-	 * @return The set of the closed edges.
-	 */
-	public Set<Edge> allClosedDoor ()
-	{
-		//Set<Edge> listEdge = this.edgeSet();
-		Set<Edge> listClosedEdge = new HashSet<Edge> ();
-		for (Edge edge : this.edgeSet())
-			if (edge.getType() == Type.CLOSED_DOOR)
-				listClosedEdge.add(edge);
-		return listClosedEdge;
-	}
-
+        {
+            vertex = it.next();
+        }
+        return vertex;
+        
+    }
+    
+    /**
+     * Set the type of the Edge edge to CLOSED_DOOR.
+     *
+     * @param edge the Edge to be changed.
+     * @return The modified Edge.
+     */
+    public Edge closedDoor (Edge edge)
+    {
+        edge.setType(Edge.Type.CLOSED_DOOR);
+        return edge;
+    }
+    
+    /**
+     * Close randomly a door from the graph.
+     * @return The Edge containing the recently close door.
+     */
+    public Edge closeDoorRandom ()
+    {
+        Edge edge = this.randomEdge ();
+        return closedDoor (edge);
+    }
+    
+    /**
+     * Retrieves a random Edge from the graph
+     *
+     * @return The random Edge.
+     */
+    private Edge randomEdge()
+    {
+        Random rand = new Random();
+        Set<Edge> listeEdge = this.edgeSet();
+        int randEdge = rand.nextInt(listeEdge.size() - 1) + 1;
+        Iterator<Edge> it = listeEdge.iterator();
+        Edge edge = it.next();
+        for (int i = 0; i < randEdge; ++i)
+            edge = it.next();
+        return edge;
+    }
+    
+    /**
+     * Change the type of a random edge, from the graph, to OPENNED_DOOR.
+     * @return
+     */
+    public void openDoorRandom ()
+    {
+        int i;
+        Random rand = new Random ();
+        for (i = 0; i < 1000; ++i)
+        {
+            Vertex source = this.randomVertex ();
+            if (source != null)
+            {
+                Directions dir = Directions.values()[rand.nextInt(Directions.values().length)];
+                if (isWall (source, dir))
+                {
+                    Vertex target = this.getVertexByDir(source, dir);
+                    if (target != null)
+                    {
+                        Edge edge = this.getEdge(source, target);
+                        if (edge == null)
+                        {
+                            this.addEdge(source, target, new Edge (Type.OPENED_DOOR));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Retrieves a random vertex from the graph.
+     *
+     * @return The random vertex.
+     */
+    private Vertex randomVertex()
+    {
+        Random rand = new Random();
+        Set<Vertex> listeVertex = this.vertexSet();
+        int randVertex = rand.nextInt(listeVertex.size());
+        Iterator<Vertex> it = listeVertex.iterator();
+        Vertex vertex = it.next();
+        for (int i = 0; i < randVertex; ++i)
+            vertex = it.next();
+        return vertex;
+    }
+    
+    /**
+     * Returns a set of the closed edges contained in this graph
+     *
+     * @return The set of the closed edges.
+     */
+    public Set<Edge> allClosedDoor ()
+    {
+        //Set<Edge> listEdge = this.edgeSet();
+        Set<Edge> listClosedEdge = new HashSet<Edge> ();
+        for (Edge edge : this.edgeSet())
+            if (edge.getType() == Type.CLOSED_DOOR)
+                listClosedEdge.add(edge);
+        return listClosedEdge;
+    }
+    
 }

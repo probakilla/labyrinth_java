@@ -9,9 +9,9 @@ import model.Model.Directions;
  */
 public class Vertex
 {
-
+    
     private int _x, _y, _nbr;
-
+    
     /**
      * Create a Vertex with null coordinates.
      */
@@ -37,17 +37,17 @@ public class Vertex
         _y = y;
         _nbr = -1;
     }
-
+    
     public void setX (int x)
     {
         _x = x;
     }
-
+    
     public void setY (int y)
     {
         _y = y;
     }
-
+    
     /**
      * Create a Vertex with specific coordinates and a number.
      *
@@ -61,7 +61,7 @@ public class Vertex
         _y = y;
         _nbr = nbr;
     }
-
+    
     /**
      * Retrieves the number of the Vertex.
      *
@@ -71,12 +71,12 @@ public class Vertex
     {
         return _nbr;
     }
-
+    
     public void setNbr (int nbr)
     {
         _nbr = nbr;
     }
-
+    
     /**
      * Retrieves the Abscissa of the Vertex.
      *
@@ -86,7 +86,7 @@ public class Vertex
     {
         return _x;
     }
-
+    
     /**
      * Retrieves the Ordinate of the Vertex.
      *
@@ -96,7 +96,7 @@ public class Vertex
     {
         return _y;
     }
-
+    
     /**
      * Compare two vertices according to their x, y and nbr.
      *
@@ -111,7 +111,7 @@ public class Vertex
         }
         return 1;
     }
-
+    
     /**
      * Compare two Vertices coordinates.
      *
@@ -137,13 +137,13 @@ public class Vertex
         Vertex v = (Vertex) obj;
         return v.getX() == _x && v.getY() == _y;
     }
-
+    
     @Override
     public int hashCode ()
     {
         return _x - _y;
     }
-
+    
     /**
      * Check if we stay in the limits of the graph when we move.
      *
@@ -167,10 +167,10 @@ public class Vertex
         }
         return false;
     }
-
+    
     /**
      * Retrieves a String with coordinates.
-     * 
+     *
      * Retrieves a String with the coordinates of the Vertex with the format
      * [x-y].
      * @return The String with the coordinates of the Vertex.
@@ -182,7 +182,7 @@ public class Vertex
         str.append(_x).append(",").append(_y).append("]").append(" nb ").append(_nbr);
         return str.toString();
     }
-   
+    
     
     public void copy (Object o)
     {

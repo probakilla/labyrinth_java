@@ -1,12 +1,7 @@
-
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 import controller.Controller;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Model.Directions;
-import model.Vertex;
+
 
 /**
  * This class is used to start the program.
@@ -15,9 +10,9 @@ import model.Vertex;
  */
 public class Labyrinth extends Application
 {
-
+    
     static Controller _controller;
-
+    
     /**
      * Main function which launch the application.
      *
@@ -27,7 +22,7 @@ public class Labyrinth extends Application
     {
         launch();
     }
-
+    
     /**
      * Function called at the start of the application which set the {@link
      * controller.Controller Controller}.
@@ -47,7 +42,7 @@ public class Labyrinth extends Application
             System.out.println(e.getMessage());
         }
     }
-
+    
     /**
      * Stops the application.
      */
@@ -56,5 +51,5 @@ public class Labyrinth extends Application
     {
         System.exit(0);
     }
-
+    
 }

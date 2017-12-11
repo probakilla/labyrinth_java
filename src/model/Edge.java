@@ -10,28 +10,28 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class Edge extends DefaultEdge implements Comparable<Edge>
 {
-
+    
     /**
      * Keep the compiler happy.
      */
     private static final long serialVersionUID = 1L;
-
+    
     public static enum Type
     {
-
+        
         OPENED_DOOR,
         CLOSED_DOOR,
         CORRIDOR;
     };
-
+    
     private Type _type;
-
+    
     public Edge (Type type)
     {
         super();
         _type = type;
     }
-
+    
     /**
      * Retrieves the source of this edge.
      *
@@ -42,7 +42,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
     {
         return (Vertex) super.getSource();
     }
-
+    
     /**
      * Retrieves the target of this edge.
      *
@@ -53,7 +53,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
     {
         return (Vertex) super.getTarget();
     }
-
+    
     /**
      * Retrieves the type of this edge.
      *
@@ -63,7 +63,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
     {
         return _type;
     }
-
+    
     /**
      * Set the type of this edge.
      *
@@ -73,7 +73,7 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
     {
         _type = type;
     }
-
+    
     
     @Override
     public int compareTo (Edge o)
