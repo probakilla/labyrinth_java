@@ -30,7 +30,7 @@ public class View {
 	public static final int SPAN = 4;
 	public static final int WALL = 2;
 	public static final int CELL = 9;
-    public static final Paint WALL_COLOR = Color.BURLYWOOD;
+    public static final Paint WALL_COLOR = Color.CHOCOLATE;
     public static final Paint SCENE_COLOR = Color.BEIGE;
     
     private Stage _stage;
@@ -300,7 +300,7 @@ public class View {
     
     public void setEndGameText(boolean win) {
         endgame.setFill(Color.web(win ? "#00E676" :"#F44336"));
-        endgame.setText(win ? "Bravo mon con !" : "Vous êtes une merde !");
+        endgame.setText(win ? "Bravo !" : "Game Over !");
         endgame.setStyle("-fx-background-color: black;");
         
         endgame.setVisible(true);
