@@ -78,7 +78,7 @@ public class PlayableCharacter extends AbstractCharacter
     /**
      * Retrieves the {@link java.String String} Corresponding to the path of the
      * image used for the display of the Player.
-     * 
+     *
      * @return the path of the image of the character.
      */
     public static String getImgPath()
@@ -99,7 +99,7 @@ public class PlayableCharacter extends AbstractCharacter
 
     /**
      * Retrieves the score of the player.
-     * 
+     *
      * @return The score of the player.
      */
     public int getScore()
@@ -107,14 +107,11 @@ public class PlayableCharacter extends AbstractCharacter
         return _score;
     }
 
-    /**
-     * Retrieves a boolean in function of the position of the player.
-     * 
-     * @param v The {@link model.Vertex Vertex} corresponding of the position
-     * of the player.
-     * 
-     * @return True if the player collide with something, false otherwise.
-     */
+    public void setScore(int score)
+    {
+        _score = score;
+    }
+
     public boolean collision(Vertex v)
     {
         return _position.getX() == v.getX() && _position.getY() == v.getY();

@@ -20,14 +20,8 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _targetX;
     private int _targetY;
     private static String _imgPath = "/utils/bad.png";
-    // Time in ms between each enemie's move.
-    private final int _sleepTime = 1000;
+    private int _sleepTime = 500;//Time in ms between each enemies' move
 
-    /**
-     * Retrieves the target of the Enemy.
-     *
-     * @return The target of the Enemy.
-     */
     public int get_targetX()
     {
         return _targetX;
@@ -113,8 +107,8 @@ public class Enemy extends AbstractCharacter implements Runnable
     /**
      * Return the direction of the next enemies move.
      *
-     * @return An integer corresponding of the direction of the move (0 = NORTH, 1 =
-     * East, 2 = South, 3 = West).
+     * @return An integer corresponding of the direction of the move (0 = NORTH,
+     * 1 = East, 2 = South, 3 = West).
      */
     public Directions getNextStep()
     {

@@ -35,6 +35,7 @@ public class Controller
     private final AbstractCandy[] _candies;
     private final Door[] _closed_door;
     private Vertex door_position;
+    private boolean startEnemies = false;
 
     private Controller()
     {
@@ -59,6 +60,7 @@ public class Controller
                         _view.setScore(_player.getScore());
                         _view.removeCandy(i);
                         _candies[i] = null;
+                        System.out.println("remove de " + i);
                     }
                 }
                 for (int i = 0; i < NB_ENEMIES; i++)
@@ -133,29 +135,20 @@ public class Controller
                 }
             });
         }
-        System.out.println("Pose des bonbons");
         Random rd = new Random();
         for (int i = 0; i < NB_CANDIES; i++)
         {
             AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
             int nbGraphCases = Graph.getGRIDHEIGHT() * Graph.getGRIDWIDTH();
             int j;
-            /*
-             * On essaye de placer autant de fois qu'il y a de cases dans le 
-             * graphe, si on échoue on n'arrête.
-             */
+            //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
             for (j = 0; j < nbGraphCases; ++j)
             {
                 if (CandyFactory.correctCandyPosition(_candies, candy))
                 {
                     break;
                 }
-                System.out.println("test");
                 candy = (AbstractCandy) CandyFactory.getCandy();
-            }
-            if (j == nbGraphCases)
-            {
-                break;
             }
             _candies[i] = candy;
             _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
@@ -223,11 +216,10 @@ public class Controller
         graph.GraphToDot();
         _view.start(stage, graph, new View.OnPlayListener()
         {
-
             @Override
             public void play()
             {
-                playGame();
+                //playGame();
             }
         });
         _view.printRules();
@@ -244,6 +236,11 @@ public class Controller
                     KeyEvent e = (KeyEvent) event;
                     if (null != e.getCode())
                     {
+                        if (!startEnemies)
+                        {
+                            startEnemies = true;
+                            playGame();
+                        }
                         switch (e.getCode())
                         {
                             case UP:
@@ -273,6 +270,50 @@ public class Controller
                                 {
                                     _enemies[i].stopRunning();
                                 }
+                                break;
+                            case R:
+                                _view.removeAllCandies();
+                                _view.removeAllEnemies();
+                                for (int i = 0; i < NB_CANDIES; i++)
+                                {
+                                    _candies[i] = null;
+                                }
+                                for (int i = 0; i < NB_CANDIES; i++)
+                                {
+                                    AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
+                                    int nbGraphCases = Graph.getGRIDHEIGHT() * Graph.getGRIDWIDTH();
+                                    int j;
+                                    //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
+                                    for (j = 0; j < nbGraphCases; ++j)
+                                    {
+                                        if (CandyFactory.correctCandyPosition(_candies, candy))
+                                        {
+                                            break;
+                                        }
+                                        candy = (AbstractCandy) CandyFactory.getCandy();
+                                    }
+                                    if (j == nbGraphCases)
+                                    {
+                                        break;
+                                    }
+                                    _candies[i] = candy;
+                                    _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
+                                        _candies[i].getImgPath());
+                                }
+
+                                for (int i = 0; i < NB_ENEMIES; i++)
+                                {
+                                    _enemies[i].randomizePosition();
+                                    _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+                                }
+
+                                _view.setScore(0);
+                                _view.setLife(3);
+                                _player.setScore(0);
+                                _player.setLife(3);
+                                _player.setPosition(0, 0);
+                                _view.updatePlayerPosition(0, 0);
+
                                 break;
                             default:
                                 break;
