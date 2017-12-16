@@ -20,7 +20,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _targetX;
     private int _targetY;
     private static String _imgPath = "/utils/bad.png";
-    private int _sleepTime = 500;//Time in ms between each enemies' move
+    private int _sleepTime = 1000;//Time in ms between each enemies' move.
 
     public int get_targetX()
     {
@@ -115,7 +115,6 @@ public class Enemy extends AbstractCharacter implements Runnable
         int x = 0;
         int y = 0;
         int nb = 1000;
-        //System.out.println("on est au "+this.getPosition());
         Directions ret = Directions.NORTH;
         for (Directions dir : Directions.values())
         {

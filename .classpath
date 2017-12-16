@@ -8,12 +8,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="Tests"/>
 	<classpathentry kind="lib" path="jgrapht-core-1.0.1.jar"/>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="/net/cremi/okasoyturk/Bureau/Master/Approche Objet/labyrinthe/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="/net/cremi/okasoyturk/Bureau/Master/Approche Objet/labyrinthe/hamcrest-core-1.3.jar"/>
-=======
 	<classpathentry kind="lib" path="hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="junit-4.12.jar"/>
->>>>>>> fbde6bae8339c09f6a8b3a23bc01c51256077f89
 	<classpathentry kind="output" path="bin"/>
 </classpath>
