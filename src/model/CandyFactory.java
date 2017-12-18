@@ -55,24 +55,4 @@ public class CandyFactory
             return null;
         }
     }
-
-    /**
-     * Check if the position of the {@link model.Candy Candy} we want to put is
-     * not already used by another {@link model.Candy Candy}.
-     * 
-     * @param candyList The array containing all {@link model.Candy Candies}.
-     * @param candy 
-     * @return 
-     */
-    public static boolean correctCandyPosition(AbstractCandy[] candyList, AbstractCandy candy)
-    {
-        int i = 0;
-        while (candyList[i] != null)
-        {
-            if (candy.getPosition().equals(candyList[i].getPosition()))
-                return false;
-            ++i;
-        }
-        return true;
-    }
 }

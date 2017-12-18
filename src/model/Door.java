@@ -85,4 +85,39 @@ public class Door
     {
         return _switchOff;
     }
+    
+    /**
+     * Check if the position of the actual switch we want to put is
+     * not already used by another Switch or {@link model.Candy Candy} or the exit door or the {@link model.PlayableCharacter player} himself.
+     * 
+     * @param doorList The array containing all {@link model.Door closed door}.
+     * @param candyList The array containing all {@link model.Candy Candies}.
+     * @param actualSwitch The switch to be tested
+     * @return True, if there is nothing else, except {@link model.Enemy enemies}, at the same position, otherwise return false.
+     */
+    public static boolean correctSwitchPosition (Door [] doorList, Vertex exitDoor, AbstractCandy[] candyList, Vertex actualSwitch)
+    {
+    	//Check if the actual Switch is on the player position or the exit position.
+    	if (actualSwitch.equals(new Vertex (0, 0)) || actualSwitch.equals(exitDoor))
+    		return false;
+    	int i;
+    	int length = doorList.length;
+    	 for (i = 0; i < length; i++)
+         {
+    		 if (doorList[i] == null)
+    			 break;
+             if (actualSwitch.equals(doorList[i].getSwitchOn()) || actualSwitch.equals(doorList[i].getSwitchOff()))
+                 return false;
+         }
+    	length = candyList.length;
+    	for (i = 0; i < length; i++)
+         {
+    		if (candyList[i] == null)
+    			return true;
+             if (actualSwitch.equals(candyList[i].getPosition()))
+                 return false;
+             
+         }
+    	return true;
+    }
 }

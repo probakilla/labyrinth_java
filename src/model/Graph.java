@@ -191,7 +191,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public Vertex getEndPath()
     {
-        Vertex v = this.getVertex(1, 1);
+        Vertex v = this.getVertex(0, 0);
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
         Set<Vertex> ListVertex = this.vertexSet();
         Vertex vertex;
@@ -348,6 +348,30 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         return (edge != null && edge.getType() == Type.CLOSED_DOOR);
     }
 
+    private void setNbGraph()
+    {
+    	Queue<Vertex> fifo = new ArrayDeque<Vertex>();
+    	Vertex v = new Vertex (0, 0, 0);
+    	fifo.add(v);
+    	while (!fifo.isEmpty())
+    	{
+    		Vertex actual = fifo.remove();
+    		for (Directions dir : Directions.values())
+    		{
+    			if (this.isOpenedDoor(actual, dir))
+    			{
+    				Vertex next = this.getVertexByDir(actual, dir);
+    				if (next.getNbr() == 0)
+    				{
+    					next.setNbr(actual.getNbr() + 1);
+    					fifo.add(next);
+    				}
+    			}
+    		}
+    	}
+    	
+    }
+    
     /**
      * Retrieves the {@link model.Vertex Vertex} to place the switch to open the
      * {@link model.Edge Edge} door.
@@ -358,15 +382,12 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     public Vertex setSwitchOn(Edge door)
     {
         Random rand = new Random();
+        this.setNbGraph();
         Set<Vertex> listeVertex = this.vertexSet();
         int i = 0;
         int j = 0;
         Vertex vertex;
-        for (Iterator<Vertex> it = listeVertex.iterator(); it.hasNext(); i++)
-        {
-            vertex = it.next();
-            vertex.setNbr(i);
-        }
+        Graph.getInstance().GraphToDot();
         if (door.getSource().getNbr() < door.getTarget().getNbr())
         {
             vertex = door.getSource();
@@ -381,7 +402,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = it.next();
         }
         return vertex;
-
     }
 
     /**
@@ -411,7 +431,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         {
             vertex = door.getTarget();
         }
-        i = rand.nextInt((this.getGRIDHEIGHT() * this.getGRIDWIDTH()) - vertex.getNbr()) + vertex.getNbr();
+        i = rand.nextInt((GRID_HEIGHT * GRID_WIDTH) - vertex.getNbr()) + vertex.getNbr();
         for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
         {
             vertex = it.next();
@@ -439,7 +459,11 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public Edge closeDoorRandom()
     {
-        Edge edge = this.randomEdge();
+    	Edge edge = null;
+    	//Try to get a door that is not already Closed.
+    	do 
+    		edge = this.randomEdge();
+    	while (edge.getType() == Type.CLOSED_DOOR);
         return closedDoor(edge);
     }
 

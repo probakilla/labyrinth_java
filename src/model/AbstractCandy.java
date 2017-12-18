@@ -46,4 +46,29 @@ public abstract class AbstractCandy implements Candy
     {
         return _imgPath;
     }
+    
+
+    /**
+     * Check if the position of the {@link model.Candy Candy} we want to put is
+     * not already used by another {@link model.Candy Candy}, or the {@link model.PlayableCharacter player} or the exit door.
+     * 
+     * @param candyList The array containing all {@link model.Candy Candies}.
+     * @param candy The {@link model.Candy Candy} to be tested.
+     * @return True, if there is no other {@link model.Candy Candy}, or {@link model.PlayableCharacter player} or exit door at the same position, otherwise return false.
+     */
+    public static boolean correctCandyPosition(AbstractCandy[] candyList, Vertex exitDoor, AbstractCandy candy)
+    {
+    	Vertex candyPosition = candy.getPosition();
+       if (candyPosition.equals(new Vertex (0, 0)) || candyPosition.equals(exitDoor))
+        		return false;
+        int i;
+        for (i = 0; i < candyList.length; i++)
+        {
+        	if (candyList[i] == null)
+        		return true;
+            if (candyPosition.equals(candyList[i].getPosition()))
+                return false;
+        }
+        return true;
+    }
 }

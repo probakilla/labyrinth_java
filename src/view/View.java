@@ -243,6 +243,7 @@ public class View {
 
 		_pane.getChildren().add(iv);
 		setImageViewPosition(iv, x, y);
+		iv.toFront();
 		_iv_enemies.add(iv);
 	}
 
@@ -311,10 +312,7 @@ public class View {
 
 	public void updateEnemyPosition(int i, int x, int y) {
 		setImageViewPosition(_iv_enemies.get(i), x, y);
-		Platform.runLater(() -> {
-			_iv_enemies.get(i).toFront();
-		});
-
+		_iv_enemies.get(i).toFront();
 	}
 
 	public void updatePlayerPosition(int x, int y) {
