@@ -446,7 +446,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @param edge the {@link model.Edge Edge} to be changed.
      * @return The modified {@link model.Edge Edge}.
      */
-    public Edge closedDoor(Edge edge)
+    private Edge closedDoor(Edge edge)
     {
         edge.setType(Edge.Type.CLOSED_DOOR);
         return edge;

@@ -190,6 +190,11 @@ public class Controller
 				}
 				candy = (AbstractCandy) CandyFactory.getCandy();
 			}
+			if (!AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
+			{
+				NB_CANDIES = i;
+				break;
+			}
 			_candies[i] = candy;
 			_view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
 					_candies[i].getImgPath());
@@ -220,30 +225,34 @@ public class Controller
             if (!Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOn))
             {
             	//On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
-            	door.setType(Type.CORRIDOR);
+            	door.setType(Edge.Type.CORRIDOR);
             	NB_CLOSED_DOOR = i;
-                break;
             }
-            Vertex switchOff = graph.setSwitchOff(door);
-          //On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
-            for (j = 0; j < 1000; ++j)
+            else
             {
-            	 if (Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
-                 {
-                     break;
-                 }
-                 switchOff = graph.setSwitchOff(door);
+            	Vertex switchOff = graph.setSwitchOff(door);
+            	//On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
+            	for (j = 0; j < 1000; ++j)
+            	{
+            		if (Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
+            		{
+            			break;
+            		}
+            		switchOff = graph.setSwitchOff(door);
+            	}
+            	if (!Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
+            	{
+            		//On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
+            		NB_CLOSED_DOOR = i;
+            		door.setType(Edge.Type.CORRIDOR);
+            	}
+            	else
+            	{
+            		_view.createSwitchOn(switchOn.getX(), switchOn.getY());
+            		_view.createSwitchOff(switchOff.getX(), switchOff.getY());
+            		_closed_door[i] = new Door(switchOn, switchOff, door);
+            	}
             }
-            if (!Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
-            {
-            	//On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
-            	NB_CLOSED_DOOR = i;
-            	door.setType(Type.CORRIDOR);
-                break;
-            }
-            _view.createSwitchOn(switchOn.getX(), switchOn.getY());
-            _view.createSwitchOff(switchOff.getX(), switchOff.getY());
-            _closed_door[i] = new Door(switchOn, switchOff, door);
         }
         graph.GraphToDot();
         _view.start(stage, graph, new View.OnPlayListener()
@@ -319,8 +328,12 @@ public class Controller
                                  		if (AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
                                  			break;
                                  		candy = (AbstractCandy) CandyFactory.getCandy();	
-                                 	if (j == NB_GRAPH_VERTICES)
-                                 		break;
+                                 	if (AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
+                                 	{
+                                 		NB_CANDIES = i;
+                                 		break;                                 		
+                                 	}
+
                                      _candies[i] = candy;           
                                      _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
                                      _candies[i].getImgPath());
