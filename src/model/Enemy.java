@@ -28,7 +28,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     }
 
     /**
-     * Set the target's abscissa of the Enemy.
+     * Set the targets abscissa of the Enemy.
      *
      * @param target The target abscissa of the Enemy.
      */
@@ -115,6 +115,7 @@ public class Enemy extends AbstractCharacter implements Runnable
         int x = 0;
         int y = 0;
         int nb = 1000;
+        Graph graph = Graph.getInstance();
         Directions ret = Directions.NORTH;
         for (Directions dir : Directions.values())
         {
@@ -137,14 +138,14 @@ public class Enemy extends AbstractCharacter implements Runnable
                     y = 0;
                     break;
             }
-            if ((this.getPosition().getX() + x >= 0 && this.getPosition().getX() + x < Model.getInstance().getGraph().getGRIDWIDTH()
-                && this.getPosition().getY() + y >= 0 && this.getPosition().getY() + y < Model.getInstance().getGraph().getGRIDHEIGHT())
-                && !Model.getInstance().getGraph().doesntExist(Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y))
-                && nb >= Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr()
-                && Model.getInstance().getGraph().isOpenedDoor(this.getPosition(), dir)
-                && Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr() != 0)
+            if ((this.getPosition().getX() + x >= 0 && this.getPosition().getX() + x < Graph.getGRIDWIDTH()
+                && this.getPosition().getY() + y >= 0 && this.getPosition().getY() + y < Graph.getGRIDHEIGHT())
+                && !graph.doesntExist(graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y))
+                && nb >= graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr()
+                && graph.isOpenedDoor(this.getPosition(), dir)
+                && graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr() != 0)
             {
-                nb = Model.getInstance().getGraph().getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr();
+                nb = graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr();
                 ret = dir;
             }
         }
@@ -157,7 +158,7 @@ public class Enemy extends AbstractCharacter implements Runnable
         _running = 1;
         while (_running == 1)
         {
-            Model.getInstance().launchManhattan(this.getPosition(), Model.getInstance().getGraph().getVertex(this.get_targetX(), this.get_targetY()));
+            Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.get_targetX(), this.get_targetY()));
             switch (this.getNextStep())
             {
                 case NORTH:

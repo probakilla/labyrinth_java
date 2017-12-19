@@ -23,12 +23,10 @@ public class Model
 
     private final AtomicInteger _iteration;
     private final Random _random;
-    private final Graph _graph;
 
     private Model()
     {
         _iteration = new AtomicInteger(1);
-        _graph = Graph.getInstance();
         _random = new Random();
     }
 
@@ -58,7 +56,8 @@ public class Model
      */
     public void buildRandomPath(Vertex vertex)
     {
-        _graph.addVertex(vertex);
+        Graph graph = Graph.getInstance();
+        graph.addVertex(vertex);
         // Une liste aleatoire des 4 directions.
         Vector<Directions> v = new Vector<Directions>();
         for (int i = 0; i < 4; ++i)
@@ -76,7 +75,7 @@ public class Model
         for (int i = 0; i < 4; ++i)
         {
             Directions dir = directions[i];
-            if (vertex.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()) && _graph.doesntExist(vertex, dir))
+            if (vertex.inBorders(dir, Graph.getGRIDWIDTH(), Graph.getGRIDHEIGHT()) && graph.doesntExist(vertex, dir))
             {
                 int x = vertex.getX();
                 int y = vertex.getY();
@@ -101,10 +100,10 @@ public class Model
                         break;
                 }
 
-                Vertex next = _graph.getVertex(xt, yt);
+                Vertex next = graph.getVertex(xt, yt);
                 next.setNbr(_iteration.incrementAndGet());
-                _graph.addVertex(next);
-                _graph.addEdge(vertex, next, new Edge(Type.CORRIDOR));
+                graph.addVertex(next);
+                graph.addEdge(vertex, next, new Edge(Type.CORRIDOR));
                 buildRandomPath(next);
             }
         }
@@ -112,6 +111,7 @@ public class Model
 
     private void calculateManhattanDistance(Vertex source, Vertex target)
     {
+        Graph graph = Graph.getInstance();
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
         target.setNbr(1);
         fifo.add(target);
@@ -120,9 +120,9 @@ public class Model
             Vertex actual = fifo.remove();
             for (Directions dir : Directions.values())
             {
-                if (_graph.isOpenedDoor(actual, dir))
+                if (graph.isOpenedDoor(actual, dir))
                 {
-                    Vertex next = _graph.getVertexByDir(actual, dir);
+                    Vertex next = graph.getVertexByDir(actual, dir);
                     if (next.getNbr() == 0)
                     {
                         next.setNbr(actual.getNbr() + 1);
@@ -146,18 +146,9 @@ public class Model
      */
     public void launchManhattan(Vertex source, Vertex target)
     {
-        for (Vertex vertex : _graph.vertexSet())
+        Graph graph = Graph.getInstance();
+        for (Vertex vertex : graph.vertexSet())
             vertex.setNbr(0);
         calculateManhattanDistance(source, target);
-    }
-
-    /**
-     * Return the graph used in the Model.
-     *
-     * @return The graph used to draw the labyrinth.
-     */
-    public Graph getGraph()
-    {
-        return _graph;
     }
 }

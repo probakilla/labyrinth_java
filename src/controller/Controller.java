@@ -20,241 +20,382 @@ import view.*;
 public class Controller
 {
 
-	private static Controller INSTANCE;
-	private int NB_GRAPH_VERTICES = Graph.getGRIDWIDTH()*Graph.getGRIDHEIGHT();
-	private int NB_ENEMIES = 2, NB_CANDIES = 10, NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
-	private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES/4, NB_MAX_CLOSED_DOOR = NB_GRAPH_VERTICES/2;
+    private static Controller INSTANCE;
+    private final int NB_GRAPH_VERTICES = Graph.getGRIDWIDTH() * Graph.getGRIDHEIGHT();
+    private int NB_ENEMIES = 2, NB_CANDIES = 10, NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
+    private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES / 4, NB_MAX_CLOSED_DOOR = NB_GRAPH_VERTICES / 2;
 
-	private final Model _model;
-	@FXML
-	private final View _view;
-	private final PlayableCharacter _player;
-	private final Enemy[] _enemies;
-	private final AbstractCandy[] _candies;
-	private final Door[] _closed_door;
-	private Vertex exit_door_position;
-	private boolean startEnemies = false;
+    private final Model _model;
+    @FXML
+    private final View _view;
+    private final PlayableCharacter _player;
+    private final Enemy[] _enemies;
+    private final AbstractCandy[] _candies;
+    private final Door[] _closedDoor;
+    private Vertex _exitDoorPosition;
+    private boolean _startEnemies = false;
+    private final int LIFE_NUMBER = 3;
+    private final int WIN_SCORE = 50;
 
-	private Controller()
-	{
-		_model = Model.getInstance();
-		_view = View.getInstance();
-		_player = PlayableCharacter.getInstance();
-		_enemies = new Enemy[NB_ENEMIES];
-		_candies = new AbstractCandy[NB_CANDIES];
-		_closed_door = new Door[NB_CLOSED_DOOR];
-		_player.setOnChangeListener(new AbstractCharacter.OnChangeListener()
-		{
+    private Controller()
+    {
+        _model = Model.getInstance();
+        _view = View.getInstance();
+        _player = PlayableCharacter.getInstance();
+        _enemies = new Enemy[NB_ENEMIES];
+        _candies = new AbstractCandy[NB_CANDIES];
+        _closedDoor = new Door[NB_CLOSED_DOOR];
+        _player.setOnChangeListener((int x, int y) ->
+        {
+            _view.updatePlayerPosition(x, y);
+            for (int i = 0; i < NB_CANDIES; i++)
+            {
+                if (_candies[i] != null && _player.collision(_candies[i].getPosition()))
+                {
+                    _player.increaseScore(_candies[i]);
+                    _view.setScore(_player.getScore());
+                    _view.removeCandy(i);
+                    _candies[i] = null;
+                }
+            }
+            for (int i = 0; i < NB_ENEMIES; i++)
+            {
+                _enemies[i].set_targetX(_player.getPosition().getX());
+                _enemies[i].set_targetY(_player.getPosition().getY());
+                if (_player.collision(_enemies[i].getPosition()))
+                {
+                    int lf = _player.decrementLife();
+                    _view.setLife(lf);
+                    if (lf == 0)
+                    {
+                        //   _view.setEndGameText(false);
+                        // Le joueur perds.
+                        _player.setScore(0);
+                        _view.setScore(0);
+                        reset();
+                    }
+                }
+            }
+            for (int i = 0; i < NB_CLOSED_DOOR && i <= NB_MAX_CLOSED_DOOR; i++)
+            {
+                // On ouvre la porte associé.
+                if (_player.collision(_closedDoor[i].getSwitchOn()))
+                {
+                    Edge door = _closedDoor[i].getDoor();
+                    door.setType(Edge.Type.OPENED_DOOR);
+                    _view.updateDoor(door, Edge.Type.OPENED_DOOR);
+                }
+                else if (_player.collision(_closedDoor[i].getSwitchOff()))
+                {
+                    Edge door = _closedDoor[i].getDoor();
+                    door.setType(Edge.Type.CLOSED_DOOR);
+                    _view.updateDoor(door, Edge.Type.CLOSED_DOOR);
+                }
+            }
+            if (_player.collision(_exitDoorPosition))
+            {
+                for (int i = 0; i < NB_ENEMIES; i++)
+                {
+                    _enemies[i].stopRunning();
+                }
+                // Le joueur gagne.
+                //_view.setEndGameText(true);
+                int score = _player.getScore() + WIN_SCORE;
+                _player.setScore(score);
+                _view.setScore(score);
+                reset();
+            }
+        });
 
-			@Override
-			public void changed(int x, int y)
-			{
-				_view.updatePlayerPosition(x, y);
-				for (int i = 0; i < NB_CANDIES; i++)
-				{
-					if (_candies[i] != null && _player.collision(_candies[i].getPosition()))
-					{
-						_player.increaseScore(_candies[i]);
-						_view.setScore(_player.getScore());
-						_view.removeCandy(i);
-						_candies[i] = null;
-					}
-				}
-				for (int i = 0; i < NB_ENEMIES; i++)
-				{
-					_enemies[i].set_targetX(_player.getPosition().getX());
-					_enemies[i].set_targetY(_player.getPosition().getY());
-					if (_player.collision(_enemies[i].getPosition()))
-					{
-						int lf = _player.decrementLife();
-						_view.setLife(lf);
-						if (lf == 0)
-						{
-							_view.setEndGameText(false);
-						}
-					}
-				}
-				for (int i = 0; i < NB_CLOSED_DOOR && i <= NB_MAX_CLOSED_DOOR; i++)
-				{
-					// On ouvre la porte associé.
-					if (_player.collision(_closed_door[i].getSwitchOn()))
-					{
-						Edge door = _closed_door[i].getDoor();
-						door.setType(Edge.Type.OPENED_DOOR);
-						_view.updateDoor(door, Edge.Type.OPENED_DOOR);
-					}
-					else if (_player.collision(_closed_door[i].getSwitchOff()))
-					{
-						Edge door = _closed_door[i].getDoor();
-						door.setType(Edge.Type.CLOSED_DOOR);
-						_view.updateDoor(door, Edge.Type.CLOSED_DOOR);
-					}
-				}
-				if (_player.collision(exit_door_position))
-				{
-					for (int i = 0; i < NB_ENEMIES; i++)
-					{
-						_enemies[i].stopRunning();
-					}
-					_view.setEndGameText(true);
-				}
-			}
-		});
-
-		for (int i = 0; i < NB_ENEMIES; i++)
-		{
-			_enemies[i] = new Enemy();
-			_enemies[i].randomizePosition();
-			_view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-			final int idx = i;
-			_enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener()
-			{
-				@Override
-				public void changed(int x, int y)
-				{
-					Platform.runLater(() ->
-					{
-						_view.updateEnemyPosition(idx, x, y);
-					});
-					if (_player.collision(_enemies[idx].getPosition()))
-					{
-						int lf = _player.decrementLife();
-						Platform.runLater(() ->
-						{
-							/* 
-							 * Les threads ne peuvent pas modifier les aspects 
-							 * graphiques,
-							 */
-							_view.setLife(lf);
-						});
-						if (lf == 0)
-						{
-							_view.setEndGameText(false);
-						}
-					}
-				}
-			});
-		}
-	}
-
-	/**
-	 * Retrieves the instance of the Controller.
-	 *
-	 * Retrieves the instance of the Controller, there can be only one instance
-	 * of the Controller at once thanks to the singleton design pattern.
-	 *
-	 * @return Instance of the Controller
-	 */
-	public static Controller getInstance()
-	{
-		if (INSTANCE == null)
-		{
-			INSTANCE = new Controller();
-		}
-		return INSTANCE;
-	}
-
-	/**
-	 * Return the model used in the Controller.
-	 *
-	 * @return model
-	 */
-	public Model getModel()
-	{
-		return _model;
-	}
+        for (int i = 0; i < NB_ENEMIES; i++)
+        {
+            _enemies[i] = new Enemy();
+            _enemies[i].randomizePosition();
+            _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+            final int idx = i;
+            _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener()
+            {
+                @Override
+                public void changed(int x, int y)
+                {
+                    Platform.runLater(() ->
+                    {
+                        _view.updateEnemyPosition(idx, x, y);
+                    });
+                    if (_player.collision(_enemies[idx].getPosition()))
+                    {
+                        int lf = _player.decrementLife();
+                        Platform.runLater(() ->
+                        {
+                            /* 
+                             * Les threads ne peuvent pas modifier les aspects 
+                             * graphiques,
+                             */
+                            _view.setLife(lf);
+                        });
+                        if (lf == 0)
+                        {
+                            // Le joueur perds.
+                            int score = 0;
+                            _player.setScore(score);
+                            Platform.runLater(() ->
+                            {
+                                _view.setScore(score);
+                                reset();
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     /**
-     * Start the Controller.
+     * Retrieves the instance of the Controller.
      *
-     * @param stage Stage where the display will be managed.
+     * Retrieves the instance of the Controller, there can be only one instance
+     * of the Controller at once thanks to the singleton design pattern.
+     *
+     * @return Instance of the Controller
      */
-    public void start(Stage stage)
+    public static Controller getInstance()
+    {
+        if (INSTANCE == null)
+        {
+            INSTANCE = new Controller();
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * Return the model used in the Controller.
+     *
+     * @return model
+     */
+    public Model getModel()
+    {
+        return _model;
+    }
+
+    /**
+     * Reset the level.
+     */
+    private void reset()
+    {
+        int i, j; // cpt boucles.
+
+        // Re-création du graph et de sa porte de sortie.      
+        Graph graph = Graph.getInstance();
+        Graph.clearGraph(graph);
+        _model.buildRandomPath(new Vertex(0, 0, 0));
+        _exitDoorPosition = graph.getEndPath();
+        _view.updateDoorPosition(_exitDoorPosition.getX(), _exitDoorPosition.getY());
+        // Pösitions objets du labyrinthe.
+        _player.setPosition(0, 0);
+        PlayableCharacter.setLife(LIFE_NUMBER);
+        _view.updatePlayerPosition(0, 0);
+        _view.setLife(LIFE_NUMBER);
+        for (i = 0; i < NB_ENEMIES; ++i)
+        {
+            _enemies[i].randomizePosition();
+            _view.updateEnemyPosition(i, _enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+        }
+        // Initialisation de la cible des Ennemies.
+        for (i = 0; i < NB_ENEMIES; i++)
+        {
+            _enemies[i].set_targetX(_player.getPosition().getX());
+            _enemies[i].set_targetY(_player.getPosition().getY());
+        }
+
+        _view.removeAllCandies();
+        // Initilisation des Candies.
+        for (i = 0; i < NB_CANDIES && i < NB_MAX_CANDIES; i++)
+        {
+            //Si on à déjà placé le maximum de bonbons possible on arrếte.
+            AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
+            //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
+            for (j = 0; j < NB_GRAPH_VERTICES; ++j)
+            {
+                if (AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+                {
+                    break;
+                }
+                candy = (AbstractCandy) CandyFactory.getCandy();
+            }
+            if (!AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+            {
+                NB_CANDIES = i;
+                break;
+            }
+            _candies[i] = candy;
+            _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
+                _candies[i].getImgPath());
+        }
+
+        // Reset des portes.
+        for (i = 0; i < NB_OPENED_DOOR; ++i)
+        {
+            graph.openDoorRandom();
+        }
+
+        // Reset les portes fermées.
+        _view.removeAllSwitchOff();
+        _view.removeAllSwitchOn();
+        for (i = 0; i < NB_CLOSED_DOOR; ++i)
+        {
+            Edge door = graph.closeDoorRandom();
+            Vertex switchOn = graph.setSwitchOn(door);
+            // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
+            for (j = 0; j < 1000; ++j)
+            {
+                if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+                {
+                    break;
+                }
+                switchOn = graph.setSwitchOn(door);
+            }
+            if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+            {
+                //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
+                door.setType(Edge.Type.CORRIDOR);
+                NB_CLOSED_DOOR = i;
+            }
+            else
+            {
+                Vertex switchOff = graph.setSwitchOff(door);
+                // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
+                for (j = 0; j < 1000; ++j)
+                {
+                    if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                    {
+                        break;
+                    }
+                    switchOff = graph.setSwitchOff(door);
+                }
+                if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                {
+                    //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
+                    NB_CLOSED_DOOR = i;
+                    door.setType(Edge.Type.CORRIDOR);
+                }
+                else
+                {
+                    _view.createSwitchOn(switchOn.getX(), switchOn.getY());
+                    _view.createSwitchOff(switchOff.getX(), switchOff.getY());
+                    _closedDoor[i] = new Door(switchOn, switchOff, door);
+                }
+            }
+        }
+        _view.resetFrame();
+        _view.drawGraph(graph);
+    }
+
+    /**
+     * Set the window with starting parameters.
+     */
+    private void init()
     {
         _model.buildRandomPath(new Vertex(0, 0, 0));
-        Graph graph = _model.getGraph();
-        exit_door_position = graph.getEndPath();
-        _view.createDoor(exit_door_position.getX(), exit_door_position.getY());
+        Graph graph = Graph.getInstance();
+        _exitDoorPosition = graph.getEndPath();
+        _view.createDoor(_exitDoorPosition.getX(), _exitDoorPosition.getY());
         _view.createPlayable();
-		for (int i = 0; i < NB_CANDIES && i < NB_MAX_CANDIES; i++)
-		{
-			//Si on à déjà placé le maximum de bonbons possible on arrếte.
-			AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
-			int j;
-			//On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
-			for (j = 0; j < NB_GRAPH_VERTICES; ++j)
-			{
-				if (AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
-				{
-					break;
-				}
-				candy = (AbstractCandy) CandyFactory.getCandy();
-			}
-			if (!AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
-			{
-				NB_CANDIES = i;
-				break;
-			}
-			_candies[i] = candy;
-			_view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
-					_candies[i].getImgPath());
-		}
+
+        // Initilisation des Candies.
+        for (int i = 0; i < NB_CANDIES && i < NB_MAX_CANDIES; i++)
+        {
+            //Si on à déjà placé le maximum de bonbons possible on arrếte.
+            AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
+            int j;
+            //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
+            for (j = 0; j < NB_GRAPH_VERTICES; ++j)
+            {
+                if (AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+                {
+                    break;
+                }
+                candy = (AbstractCandy) CandyFactory.getCandy();
+            }
+            if (!AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+            {
+                NB_CANDIES = i;
+                break;
+            }
+            _candies[i] = candy;
+            _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
+                _candies[i].getImgPath());
+        }
+
+        // Initialisation des Ennemies.
         for (int i = 0; i < NB_ENEMIES; i++)
         {
             _enemies[i].set_targetX(_player.getPosition().getX());
             _enemies[i].set_targetY(_player.getPosition().getY());
         }
+
+        // Ouvre des murs.
         for (int i = 0; i < NB_OPENED_DOOR; ++i)
         {
             graph.openDoorRandom();
         }
+        // Place les portes fermées.
         for (int i = 0; i < NB_CLOSED_DOOR; ++i)
         {
             Edge door = graph.closeDoorRandom();
             Vertex switchOn = graph.setSwitchOn(door);
             int j;
-            //On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
+            // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
             for (j = 0; j < 1000; ++j)
             {
-            	 if (Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOn))
-                 {
-                     break;
-                 }
-                 switchOn = graph.setSwitchOn(door);
+                if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+                {
+                    break;
+                }
+                switchOn = graph.setSwitchOn(door);
             }
-            if (!Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOn))
+            if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
             {
-            	//On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
-            	door.setType(Edge.Type.CORRIDOR);
-            	NB_CLOSED_DOOR = i;
+                //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
+                door.setType(Edge.Type.CORRIDOR);
+                NB_CLOSED_DOOR = i;
             }
             else
             {
-            	Vertex switchOff = graph.setSwitchOff(door);
-            	//On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
-            	for (j = 0; j < 1000; ++j)
-            	{
-            		if (Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
-            		{
-            			break;
-            		}
-            		switchOff = graph.setSwitchOff(door);
-            	}
-            	if (!Door.correctSwitchPosition( _closed_door, exit_door_position, _candies, switchOff))
-            	{
-            		//On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
-            		NB_CLOSED_DOOR = i;
-            		door.setType(Edge.Type.CORRIDOR);
-            	}
-            	else
-            	{
-            		_view.createSwitchOn(switchOn.getX(), switchOn.getY());
-            		_view.createSwitchOff(switchOff.getX(), switchOff.getY());
-            		_closed_door[i] = new Door(switchOn, switchOff, door);
-            	}
+                Vertex switchOff = graph.setSwitchOff(door);
+                // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
+                for (j = 0; j < 1000; ++j)
+                {
+                    if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                    {
+                        break;
+                    }
+                    switchOff = graph.setSwitchOff(door);
+                }
+                if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                {
+                    //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
+                    NB_CLOSED_DOOR = i;
+                    door.setType(Edge.Type.CORRIDOR);
+                }
+                else
+                {
+                    _view.createSwitchOn(switchOn.getX(), switchOn.getY());
+                    _view.createSwitchOff(switchOff.getX(), switchOff.getY());
+                    _closedDoor[i] = new Door(switchOn, switchOff, door);
+                }
             }
         }
-        graph.GraphToDot();
+    }
+
+    /**
+     * Start the Controller.
+     *
+     * @param stage The stage where we display all content.
+     */
+    public void start(Stage stage)
+    {
+        init();
+        Graph graph = Graph.getInstance();
         _view.start(stage, graph, new View.OnPlayListener()
         {
             @Override
@@ -263,7 +404,6 @@ public class Controller
                 //playGame();
             }
         });
-        _view.printRules();
 
         // Gestion du mouvement du joueur.
         EventHandler handler;
@@ -277,9 +417,9 @@ public class Controller
                     KeyEvent e = (KeyEvent) event;
                     if (null != e.getCode())
                     {
-                        if (!startEnemies)
+                        if (!_startEnemies)
                         {
-                            startEnemies = true;
+                            _startEnemies = true;
                             playGame();
                         }
                         switch (e.getCode())
@@ -288,7 +428,7 @@ public class Controller
                                 _player.up();
                                 break;
                             case DOWN:
-                            	_player.down();
+                                _player.down();
                                 break;
                             case LEFT:
                                 _player.left();
@@ -313,60 +453,9 @@ public class Controller
                                 }
                                 break;
                             case R:
-                            	 _view.removeAllCandies();
-                            	 _view.removeAllEnemies();
-                            	 _view.removeAllSwitchOn();
-                            	 _view.removeAllSwitchOff();
-                            	 for (int i = 0; i < NB_CANDIES; i++)
-                            		 _candies[i] = null;
-                            	 for (int i = 0; i < NB_CANDIES; i++) {
-                            		AbstractCandy candy = (AbstractCandy) CandyFactory.getCandy();
-                                     //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
-                                 	int j;
-                                 	for (j = 0; j < NB_GRAPH_VERTICES; ++j)
-                                     {
-                                 		if (AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
-                                 			break;
-                                 		candy = (AbstractCandy) CandyFactory.getCandy();	
-                                 	if (AbstractCandy.correctCandyPosition(_candies, exit_door_position, candy))
-                                 	{
-                                 		NB_CANDIES = i;
-                                 		break;                                 		
-                                 	}
-
-                                     _candies[i] = candy;           
-                                     _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
-                                     _candies[i].getImgPath());
-                                 }
-                            	 startEnemies = false;
-                            	 for (i = 0; i < NB_ENEMIES; i++) {
-                            		 _enemies[i].randomizePosition();
-                                     _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-                                 }
-                            	 
-                                 //for (int i = 0; i < NB_OPENED_DOOR; ++i)
-                                     //graph.openDoorRandom();
-                                 for (i = 0; i < NB_CLOSED_DOOR; ++i)
-                                 {
-                                     Edge door = graph.closeDoorRandom();
-                                     Vertex switchOn = graph.setSwitchOn(door);
-                                     _view.createSwitchOn(switchOn.getX(), switchOn.getY());
-                                     Vertex switchOff = graph.setSwitchOff(door);
-                                     _view.createSwitchOff(switchOff.getX(), switchOff.getY());
-                                     //_closed_door[i] = new Door (switchOn, switchOff, door);
-                                 }
-                            	 
-                            	 _view.setScore(0);
-                                 _view.setLife(3);
-                                 _player.setScore(0);
-                                 PlayableCharacter.setLife(3);
-                                 _player.setPosition(0, 0);
-                                 _view.updatePlayerPosition(0, 0);
-
-                                 break;
-                            	 }
+                                reset();
                             default:
-                            	break;
+                                break;
                         }
 
                     }
