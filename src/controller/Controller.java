@@ -1,6 +1,7 @@
 package controller;
 
-import java.util.Random;
+
+import java.util.concurrent.CountDownLatch;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -9,7 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import model.*;
-import model.Edge.Type;
 import view.*;
 
 /**
@@ -33,10 +33,11 @@ public class Controller
     private final AbstractCandy[] _candies;
     private final Door[] _closedDoor;
     private Vertex _exitDoorPosition;
-    private boolean _startEnemies = false;
+    private boolean _startEnemies = false, _reStartEnemies = false;
     private final int LIFE_NUMBER = 3;
     private final int WIN_SCORE = 50;
-
+    CountDownLatch _restartSignal = new CountDownLatch(1);
+    
     private Controller()
     {
         _model = Model.getInstance();
@@ -100,7 +101,7 @@ public class Controller
                 }
                 // Le joueur gagne.
                 //_view.setEndGameText(true);
-                int score = _player.getScore() + WIN_SCORE;
+                int score = _player.getScore() + _player.getLife () * WIN_SCORE;//On gagne un nombre de point proportionel au nombre de vie restantes.
                 _player.setScore(score);
                 _view.setScore(score);
                 reset();
@@ -109,7 +110,7 @@ public class Controller
 
         for (int i = 0; i < NB_ENEMIES; i++)
         {
-            _enemies[i] = new Enemy();
+            _enemies[i] = new Enemy(_restartSignal);
             _enemies[i].randomizePosition();
             _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
             final int idx = i;
@@ -190,21 +191,20 @@ public class Controller
         _model.buildRandomPath(new Vertex(0, 0, 0));
         _exitDoorPosition = graph.getEndPath();
         _view.updateDoorPosition(_exitDoorPosition.getX(), _exitDoorPosition.getY());
-        // Pösitions objets du labyrinthe.
+        // Positions objets du labyrinthe.
         _player.setPosition(0, 0);
         PlayableCharacter.setLife(LIFE_NUMBER);
         _view.updatePlayerPosition(0, 0);
         _view.setLife(LIFE_NUMBER);
+        // Réinitialsation des ennemies.
+        _reStartEnemies = true;
         for (i = 0; i < NB_ENEMIES; ++i)
         {
             _enemies[i].randomizePosition();
             _view.updateEnemyPosition(i, _enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-        }
-        // Initialisation de la cible des Ennemies.
-        for (i = 0; i < NB_ENEMIES; i++)
-        {
-            _enemies[i].set_targetX(_player.getPosition().getX());
+             _enemies[i].set_targetX(_player.getPosition().getX());
             _enemies[i].set_targetY(_player.getPosition().getY());
+            _enemies[i].stopRunning();
         }
 
         _view.removeAllCandies();
@@ -229,7 +229,7 @@ public class Controller
             }
             _candies[i] = candy;
             _view.createCandy(_candies[i].getPosition().getX(), _candies[i].getPosition().getY(),
-                _candies[i].getImgPath());
+                    _candies[i].getImgPath());
         }
 
         // Reset des portes.
@@ -245,8 +245,8 @@ public class Controller
         {
             Edge door = graph.closeDoorRandom();
             Vertex switchOn = graph.setSwitchOn(door);
-            // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
-            for (j = 0; j < 1000; ++j)
+            // On essaye de placer l'interrupteur 300 fois, si on échoue on n'arrête.
+            for (j = 0; j < 300; ++j)
             {
                 if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
                 {
@@ -263,8 +263,8 @@ public class Controller
             else
             {
                 Vertex switchOff = graph.setSwitchOff(door);
-                // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
-                for (j = 0; j < 1000; ++j)
+                // On essaye de placer l'interrupteur 300 fois, si on échoue on n'arrête.
+                for (j = 0; j < 300; ++j)
                 {
                     if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
                     {
@@ -422,6 +422,17 @@ public class Controller
                             _startEnemies = true;
                             playGame();
                         }
+                        else if (_reStartEnemies)
+                        {
+                            
+                            for (int i = 0; i < NB_ENEMIES; i++)
+                            {
+                                _enemies[i].keepRunning();
+                               //System.out.println(_enemies[i].getRunning ());     
+                            }
+                            _reStartEnemies = false;
+                            rePlayGame ();
+                        }
                         switch (e.getCode())
                         {
                             case UP:
@@ -473,4 +484,17 @@ public class Controller
             _enemies[i].start();
         }
     }
+    /**
+     * To relaunch enemies when we restart the labyrinth.
+     */
+      private void rePlayGame() 
+      {
+          _restartSignal.countDown();
+          _restartSignal = new CountDownLatch(1); 
+          
+          for (int i = 0; i < NB_ENEMIES; i++)
+          {
+              _enemies[i].updateRestartSignal(_restartSignal);
+          }
+      }
 }

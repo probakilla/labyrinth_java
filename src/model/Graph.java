@@ -33,7 +33,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
 
     /**
      * Create a Graph base structure with {@link model.Vertex Vertices} and
-     * {@link model.Edge Edges}.
+     * {@link model.Edge Edges}. 
      */
     private Graph()
     {
@@ -50,12 +50,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
-
-//    public static void delete()
-//    {
-//        INSTANCE.removeAllEdges(INSTANCE.edgeSet());
-//        INSTANCE.removeAllVertices(INSTANCE.vertexSet());
-//    }
 
     public static <Vertex, Edge> void removeAllEdges(Graph graph)
     {
@@ -384,30 +378,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         return (edge != null && edge.getType() == Type.CLOSED_DOOR);
     }
 
-    private void setNbGraph()
-    {
-        Queue<Vertex> fifo = new ArrayDeque<Vertex>();
-        Vertex v = new Vertex(0, 0, 0);
-        fifo.add(v);
-        while (!fifo.isEmpty())
-        {
-            Vertex actual = fifo.remove();
-            for (Directions dir : Directions.values())
-            {
-                if (this.isOpenedDoor(actual, dir))
-                {
-                    Vertex next = this.getVertexByDir(actual, dir);
-                    if (next.getNbr() == 0)
-                    {
-                        next.setNbr(actual.getNbr() + 1);
-                        fifo.add(next);
-                    }
-                }
-            }
-        }
-
-    }
-
     /**
      * Retrieves the {@link model.Vertex Vertex} to place the switch to open the
      * {@link model.Edge Edge} door.
@@ -418,7 +388,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
     public Vertex setSwitchOn(Edge door)
     {
         Random rand = new Random();
-        this.setNbGraph();
         Set<Vertex> listeVertex = this.vertexSet();
         int i = 0;
         int j = 0;

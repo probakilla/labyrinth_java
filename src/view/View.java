@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Door;
 import model.Edge;
@@ -462,17 +460,6 @@ public class View
         {
             drawWall(source.getX(), source.getY(), target.getX(), target.getY(), SCENE_COLOR);
         }
-    }
-
-    /**
-     * Print rules in console.
-     */
-    public void printRules()
-    {
-        System.out.println("Voici les commandes disponibles :");
-        System.out.println("    - Touches directionnelles : Déplacer le personnage.");
-        System.out.println("    - Q ou ESCP : Quitter le jeu.");
-        System.out.println("");
     }
 
     /**

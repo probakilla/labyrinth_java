@@ -1,5 +1,6 @@
 package model;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +23,33 @@ public class Enemy extends AbstractCharacter implements Runnable
     private static String _imgPath = "/utils/bad.png";
     private int _sleepTime = 1000;//Time in ms between each enemies' move.
 
+    public int getRunning() {
+        return _running;
+    }
+
+    private static final class Lock { }
+    private final Object lock = new Lock();
+    CountDownLatch _restartSignal;
+
+    /**
+     * Constructor of Enemy.
+     *
+     * The coordinates of the Enemy are set to [0,0]. The call of this
+     * constructor should be followed by randomizePosition().
+     */
+    public Enemy(CountDownLatch restartSignal)
+    {
+        super(0, 0);
+        _type = -1;
+        _running = 0;
+        _restartSignal = restartSignal;
+    }
+    
+    /**
+     * Retrieves the target's abscissa of the Enemy.
+     *
+     * @param target The target's abscissa of the Enemy.
+     */
     public int get_targetX()
     {
         return _targetX;
@@ -56,35 +84,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     {
         this._targetY = _target;
     }
-
-    /**
-     * Constructor of Enemy.
-     *
-     * The coordinates of the Enemy are set to [0,0]. The call of this
-     * constructor should be followed by randomizePosition().
-     */
-    public Enemy()
-    {
-        super(0, 0);
-        _type = -1;
-        _running = 0;
-    }
-
-    /**
-     * Constructor of Enemy.
-     *
-     * Retrieves an instance of Enemy with specific coordinates.
-     *
-     * @param x Abscissa in the labyrinth of the Enemy.
-     * @param y Ordinate in the labyrinth of the Enemy.
-     */
-    public Enemy(int x, int y)
-    {
-        super(x, y);
-        _type = -1;
-        _running = 0;
-    }
-
+    
     /**
      * @return the _imgPath
      */
@@ -96,12 +96,30 @@ public class Enemy extends AbstractCharacter implements Runnable
     /**
      * Set _running at 0.
      *
-     * This will stop enemies, be careful once stopped enemies can't be
-     * unstopped.
+     * This will stop enemies.
      */
     public void stopRunning()
     {
         _running = 0;
+    }
+    
+    /**
+     * Set _running at 1.
+     * 
+     * This will restart enemies' movement, if it used with rePlayGame in the Controller.
+     */
+    public void keepRunning ()
+    {
+        _running = 1;
+    }
+    
+    /**
+     * To  update the {@link java.util.concurrent.CountDownLatch restartSignal}.
+     * @param restartSignal The new {@link java.util.concurrent.CountDownLatch restartSignal}.
+     */
+    public void updateRestartSignal (CountDownLatch restartSignal)
+    {
+        _restartSignal = restartSignal;
     }
 
     /**
@@ -185,6 +203,16 @@ public class Enemy extends AbstractCharacter implements Runnable
                 Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        //We block enemies until the main thread deblock them. Used to wait until the player press any key, after a reset by the controller.
+        try
+        {
+            _restartSignal.await();
+        } catch (InterruptedException ex)
+        {
+            Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (_running == 1)
+            run ();
     }
 
 }

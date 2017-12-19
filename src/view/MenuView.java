@@ -81,14 +81,16 @@ public class MenuView
         _help.setText("Aidez moi svp");
         _help.setFont(new Font("Serif", 50));
         _help.setMaxWidth(Double.MAX_VALUE);
-
         _instructions.setText("Voici les commandes disponibles :\n"
-            + "    - Touches directionnelles : Déplacer le personnage.\n" + "    - Q ou ESCP : Quitter le jeu.");
+            + "    - Touches directionnelles : Déplacer le personnage.\n" + "    - Q ou ESCP : Quitter le jeu.\n"
+            + "Le but du jeu est d'arriver le plus loin possible dans le jeu\net on recommence à zéros si on perd.\nPour finir le niveau en cours il faut arriver à la sortie sans se faire\ntoucher"
+                + " trois fois par les ennemies, une fois le niveau fini on gagne\ndes points en fonctions du nombre de vie restante on gagne\négalement des points en ramassant divers bonbons dispersé\n"
+                + "dans le labyrinthe. Le but du jeu étant d'avoir le score le plus élevé\nLes portes bleu sont des portes fermées qu'il faut ouvrir avec les\ninterrupteurs verts et "
+                + "les interrupteurs bleus les refermes.");
         _instructions.setFont(new Font("Serif", 20));
         _instructions.setMaxWidth(Double.MAX_VALUE);
         _instructions.setAlignment(Pos.CENTER);
         _instructions.setPadding(new Insets(20, 20, 20, 20));
-
         _vbox.getChildren().addAll(_menuHeader, _play, _cancel, _help);
 
         _pane.getChildren().add(_vbox);
@@ -114,7 +116,7 @@ public class MenuView
         {
             _vbox.getChildren().add(_instructions);
             _vbox.getChildren().remove(_help);
-            _stage.setHeight(500);
+            _stage.setHeight(800);
         });
     }
 
