@@ -8,8 +8,8 @@ package model;
 public abstract class AbstractCandy implements Candy
 {
     protected int _type;
-    protected final Vertex _position;
     protected String _imgPath;
+    protected final Vertex _position;
 
     /**
      * Constructor of AbstractCandy.

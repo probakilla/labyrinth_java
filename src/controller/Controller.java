@@ -396,13 +396,9 @@ public class Controller
     {
         init();
         Graph graph = Graph.getInstance();
-        _view.start(stage, graph, new View.OnPlayListener()
+        _view.start(stage, graph, () ->
         {
-            @Override
-            public void play()
-            {
-                //playGame();
-            }
+            //playGame();
         });
 
         // Gestion du mouvement du joueur.
@@ -477,6 +473,9 @@ public class Controller
         stage.addEventHandler(KeyEvent.KEY_PRESSED, handler);
     }
 
+    /**
+     * Start the enemies.
+     */
     private void playGame()
     {
         for (int i = 0; i < NB_ENEMIES; i++)
@@ -485,7 +484,7 @@ public class Controller
         }
     }
     /**
-     * To relaunch enemies when we restart the labyrinth.
+     * To re-launch enemies when we restart the labyrinth.
      */
       private void rePlayGame() 
       {

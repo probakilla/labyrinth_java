@@ -12,11 +12,10 @@ package model;
  */
 public class PlayableCharacter extends AbstractCharacter
 {
-    private static PlayableCharacter INSTANCE;
     private int _score;
+    private static PlayableCharacter INSTANCE;
     private static int _life = 3;
-
-    private static String _imgPath = "/utils/player.png";
+    private static final String IMG_PATH = "/utils/player.png";
 
     private PlayableCharacter()
     {
@@ -52,6 +51,27 @@ public class PlayableCharacter extends AbstractCharacter
     }
 
     /**
+     * Retrieves the score of the player.
+     *
+     * @return The score of the player.
+     */
+    public int getScore()
+    {
+        return _score;
+    }
+
+    /**
+     * Retrieves the {@link java.String String} Corresponding to the path of the
+     * image used for the display of the Player.
+     *
+     * @return the path of the image of the character.
+     */
+    public static String getImgPath()
+    {
+        return IMG_PATH;
+    }
+
+    /**
      * Set the player's life.
      *
      * @param life The number of life to be set.
@@ -59,6 +79,16 @@ public class PlayableCharacter extends AbstractCharacter
     public static void setLife(int life)
     {
         _life = life;
+    }
+    
+    /**
+     * Set the player's score.
+     * 
+     * @param score the score to give to the player.
+     */
+    public void setScore(int score)
+    {
+        _score = score;
     }
 
     /**
@@ -76,17 +106,6 @@ public class PlayableCharacter extends AbstractCharacter
     }
 
     /**
-     * Retrieves the {@link java.String String} Corresponding to the path of the
-     * image used for the display of the Player.
-     *
-     * @return the path of the image of the character.
-     */
-    public static String getImgPath()
-    {
-        return _imgPath;
-    }
-
-    /**
      * Increase the score of the player in function of the
      * {@link model.Candy Candy} he get.
      *
@@ -98,22 +117,15 @@ public class PlayableCharacter extends AbstractCharacter
     }
 
     /**
-     * Retrieves the score of the player.
-     *
-     * @return The score of the player.
+     * Retrieves a boolean corresponding if the player is colliding with 
+     * another object.
+     * 
+     * @param v The position of the other object.
+     * @return Retrieves true if the player collides with the object, otherwise
+     * retrieves false.
      */
-    public int getScore()
-    {
-        return _score;
-    }
-
-    public void setScore(int score)
-    {
-        _score = score;
-    }
-
     public boolean collision(Vertex v)
     {
-        return _position.getX() == v.getX() && _position.getY() == v.getY();
+        return _position.equals(v);
     }
 }

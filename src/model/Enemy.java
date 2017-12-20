@@ -20,14 +20,13 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _running;
     private int _targetX;
     private int _targetY;
-    private static String _imgPath = "/utils/bad.png";
-    private int _sleepTime = 1000;//Time in ms between each enemies' move.
+    private final int _sleepTime = 1000;//Time in ms between each enemies' move.
+    private static final String IMG_PATH = "/utils/bad.png";
 
-    public int getRunning() {
-        return _running;
+    // wat ?
+    private static final class Lock
+    {
     }
-
-    private static final class Lock { }
     private final Object lock = new Lock();
     CountDownLatch _restartSignal;
 
@@ -36,61 +35,75 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * The coordinates of the Enemy are set to [0,0]. The call of this
      * constructor should be followed by randomizePosition().
+     * @param restartSignal 
      */
-    public Enemy(CountDownLatch restartSignal)
+    public Enemy (CountDownLatch restartSignal)
     {
         super(0, 0);
         _type = -1;
         _running = 0;
         _restartSignal = restartSignal;
     }
-    
+
     /**
-     * Retrieves the target's abscissa of the Enemy.
+     * Retrieves the targets abscissa of the Enemy.
      *
-     * @param target The target's abscissa of the Enemy.
+     * @return The abscissa of the target.
      */
-    public int get_targetX()
+    public int get_targetX ()
     {
         return _targetX;
     }
-
+    
     /**
-     * Set the targets abscissa of the Enemy.
+     * Retrieves the targets ordinate of the Enemy.
      *
-     * @param target The target abscissa of the Enemy.
+     * @return The ordinate of the target.
      */
-    public void set_targetX(int target)
-    {
-        _targetX = target;
-    }
-
-    /**
-     * Retrieves the target's ordinate of the Enemy.
-     *
-     * @param target The target's ordinate of the Enemy.
-     */
-    public int get_targetY()
+    public int get_targetY ()
     {
         return _targetY;
     }
 
     /**
-     * Set the target's ordinate of the Enemy.
-     *
-     * @param target The target's ordinate of the Enemy.
+     * Retrieves the running data member.
+     * 
+     * @return The running member.
      */
-    public void set_targetY(int _target)
+    public int getRunning ()
     {
-        this._targetY = _target;
+        return _running;
+    }
+
+    /**
+     * Retrieves the path to the image of an Enemy.
+     * 
+     * @return The path to the image.
+     */
+    public static String getImgPath ()
+    {
+        return IMG_PATH;
     }
     
     /**
-     * @return the _imgPath
+     * Set the targets abscissa of the Enemy.
+     *
+     * @param x The target abscissa.
      */
-    public static String getImgPath()
+    public void set_targetX (int x)
     {
-        return _imgPath;
+        _targetX = x;
+    }
+
+
+    /**
+     * Set the targets ordinate of the Enemy.
+     *
+     * @param y The target ordinate.
+     */
+    public void set_targetY (int y)
+    {
+        _targetY = y;
     }
 
     /**
@@ -98,24 +111,27 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * This will stop enemies.
      */
-    public void stopRunning()
+    public void stopRunning ()
     {
         _running = 0;
     }
-    
+
     /**
      * Set _running at 1.
-     * 
-     * This will restart enemies' movement, if it used with rePlayGame in the Controller.
+     *
+     * This will restart enemies movement, if it used with rePlayGame in the
+     * Controller.
      */
     public void keepRunning ()
     {
         _running = 1;
     }
-    
+
     /**
-     * To  update the {@link java.util.concurrent.CountDownLatch restartSignal}.
-     * @param restartSignal The new {@link java.util.concurrent.CountDownLatch restartSignal}.
+     * To update the {@link java.util.concurrent.CountDownLatch restartSignal}.
+     *
+     * @param restartSignal The new
+     * {@link java.util.concurrent.CountDownLatch restartSignal}.
      */
     public void updateRestartSignal (CountDownLatch restartSignal)
     {
@@ -128,7 +144,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      * @return An integer corresponding of the direction of the move (0 = NORTH,
      * 1 = East, 2 = South, 3 = West).
      */
-    public Directions getNextStep()
+    public Directions getNextStep ()
     {
         int x = 0;
         int y = 0;
@@ -171,7 +187,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     }
 
     @Override
-    public void run()
+    public void run ()
     {
         _running = 1;
         while (_running == 1)
@@ -207,12 +223,15 @@ public class Enemy extends AbstractCharacter implements Runnable
         try
         {
             _restartSignal.await();
-        } catch (InterruptedException ex)
+        }
+        catch (InterruptedException ex)
         {
             Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (_running == 1)
-            run ();
+        {
+            run();
+        }
     }
 
 }
