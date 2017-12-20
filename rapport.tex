@@ -1,0 +1,34 @@
+\documentclass [10pt, a4paper]{article}
+
+\usepackage [T1]{fontenc}
+\usepackage [utf8]{inputenc}
+\usepackage [français]{babel}
+
+\title {Rapport Labyrinthe}
+\author {Groupe 6}
+
+\begin {document}
+
+\maketitle
+\newline
+\tableofcontent
+\newline
+
+\section {Gestion des personnages}
+Nous avons décidé pour la gestion des personnages, d'utiliser une classe abstraite ``AbstractCharacter'' à partir de la quelle nous avons fait hériter une classe dédiée au personnage joueur ``PlayableCharacter'' et une autre classe pour la gestion des ennemis ``Enemy''.
+
+\subsection {Partie commune, AbstractCharacter}
+Cette classe possède trois données membres :
+\begin {itemize}
+\item {Une donnée entière type qui servira à différencier les deux classes qui héritent de celle-ci}
+\item {Une Vertex qui correspond à la position du personnage}
+\item {Un OnChangeListener qui permettra la gestion des collisions avec les différents objets du labyrinthe}
+\end   {itemize}
+
+La classe AbstractCharacter ne fait qu'initialiser sa position dans son constructeur, ce sera alors aux classes filles d'initialiser le reste. Cette classe contient aussi un getter sur le type puis un setter et getter sur la position. C'est aussi cette classe qui gère les déplacements des personnages; Il existe alors un méthode pour chaque dirrection pour le mouvement case par case, ces méthodes modifient alors la valeur d'une des deux valeurs du Vertex de 1 en fonction de la direction que l'on veut prendre, puis vérifie que le mouvement est valide grâce à une méthode implémentée dans cette même classe, la méthode valideMove qui prend en entrée un Vertex et une Direction. La méthode peut alors savoir si un personnage placé à la position du Vectrex qu'on donne, peut se déplacer dans la Direction que l'on donne aussi, elle revoie alors un boolean correspondant à la réponse. Nous avons aussi implémenté une méthode permettant de placer un personnage à une position aléatoire qui nous a surtout été utile pour les ennemis. Les deux méthodes restantes sont alors utilisées pour la gestion des collisions avec les personnages.
+% Okan peut peut-être rajouter quelque chose sur les Listeners, je sais pas à quoi ça sert :3
+
+
+
+
+\end   {document}
