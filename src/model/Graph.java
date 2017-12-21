@@ -144,26 +144,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
         return !this.containsVertex(new Vertex(xt, yt));
     }
-
-    /**
-     * Retrieves a {@link java.boolean boolean} in function of the
-     * {@link model.Vertex Vertex}.
-     *
-     * @param v The {@link model.Vertex Vertex} we want to test.
-     * @return True if v doesn't exists, false in the other case.
-     */
-    public boolean doesntExist(Vertex v)
-    {
-        return !this.containsVertex(v);
-    }
-
-    /**
-     * Retrieves a {@link model.Vertex Vertex} locate in specific coordinates.
-     *
-     * @param i Abscissa of the wanted {@link model.Vertex Vertex}.
-     * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
-     * @return The {@link model.Vertex Vertex} locate in i, j coordinates.
-     */
+  
     public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];
@@ -324,7 +305,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isWall(Vertex actual, Directions dir)
     {
-        return (this.getEdge(actual, dir) == null);
+        return (this.getEdgeByDir(actual, dir) == null);
     }
 
     /**
@@ -339,7 +320,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @return The specific {@link model.Edge Edge} if such edge exist,
      * otherwise return null.
      */
-    public Edge getEdge(Vertex source, Directions dir)
+    public Edge getEdgeByDir(Vertex source, Directions dir)
     {
         Vertex target = this.getVertexByDir(source, dir);
         if (target == null)
@@ -359,7 +340,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isOpenedDoor(Vertex actual, Directions dir)
     {
-        Edge edge = this.getEdge(actual, dir);
+        Edge edge = this.getEdgeByDir(actual, dir);
         return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
     }
 
@@ -374,7 +355,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isClosedDoor(Vertex actual, Directions dir)
     {
-        Edge edge = this.getEdge(actual, dir);
+        Edge edge = this.getEdgeByDir(actual, dir);
         return (edge != null && edge.getType() == Type.CLOSED_DOOR);
     }
 
@@ -541,25 +522,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = it.next();
         }
         return vertex;
-    }
-
-    /**
-     * Returns a set of the closed {@link model.Edge Edge} contained in this
-     * graph.
-     *
-     * @return The set of the closed {@link model.Edge Edge}.
-     */
-    public Set<Edge> allClosedDoor()
-    {
-        Set<Edge> listClosedEdge = new HashSet<Edge>();
-        for (Edge edge : this.edgeSet())
-        {
-            if (edge.getType() == Type.CLOSED_DOOR)
-            {
-                listClosedEdge.add(edge);
-            }
-        }
-        return listClosedEdge;
     }
 
 }

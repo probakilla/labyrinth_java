@@ -23,11 +23,6 @@ public class Enemy extends AbstractCharacter implements Runnable
     private final int _sleepTime = 1000;//Time in ms between each enemies' move.
     private static final String IMG_PATH = "/utils/bad.png";
 
-    // wat ?
-    private static final class Lock
-    {
-    }
-    private final Object lock = new Lock();
     CountDownLatch _restartSignal;
 
     /**
@@ -146,41 +141,23 @@ public class Enemy extends AbstractCharacter implements Runnable
      */
     public Directions getNextStep ()
     {
-        int x = 0;
-        int y = 0;
         int nb = 1000;
+        Vertex position = this.getPosition();
+        Vertex nextPosition;
         Graph graph = Graph.getInstance();
         Directions ret = Directions.NORTH;
         for (Directions dir : Directions.values())
         {
-            switch (dir)
+            if (!graph.doesntExist(position, dir))
             {
-                case NORTH:
-                    x = 0;
-                    y = -1;
-                    break;
-                case SOUTH:
-                    x = 0;
-                    y = 1;
-                    break;
-                case EAST:
-                    x = 1;
-                    y = 0;
-                    break;
-                case WEST:
-                    x = -1;
-                    y = 0;
-                    break;
-            }
-            if ((this.getPosition().getX() + x >= 0 && this.getPosition().getX() + x < Graph.getGRIDWIDTH()
-                && this.getPosition().getY() + y >= 0 && this.getPosition().getY() + y < Graph.getGRIDHEIGHT())
-                && !graph.doesntExist(graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y))
-                && nb >= graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr()
-                && graph.isOpenedDoor(this.getPosition(), dir)
-                && graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr() != 0)
-            {
-                nb = graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr();
-                ret = dir;
+	            nextPosition = graph.getVertexByDir(position, dir);
+	            if ((nextPosition.getX() >= 0 && nextPosition.getX() < Graph.getGRIDWIDTH()
+	                && nextPosition.getY() >= 0 && nextPosition.getY() < Graph.getGRIDHEIGHT())
+	                && nb >= nextPosition.getNbr() && graph.isOpenedDoor(position, dir) && nextPosition.getNbr() != 0)
+	            {
+	                nb = nextPosition.getNbr();
+	                ret = dir;
+	            }
             }
         }
         return ret;

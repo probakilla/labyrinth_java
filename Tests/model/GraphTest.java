@@ -126,7 +126,7 @@ public class GraphTest {
 	}
 
 	/**
-	 * Test method for {@link model.Graph#getEdge(model.Vertex, model.Model.Directions)}.
+	 * Test method for {@link model.Graph#getEdgeByDir(model.Vertex, model.Model.Directions)}.
 	 */
 	@Test
 	public void testGetEdgeVertexDirections() {

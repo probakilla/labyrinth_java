@@ -103,4 +103,27 @@ Dans la méthode start du Controller, nous avons une fonction handle qui sert à
 \subsection {Déplacement des ennemis}
 Contrairement au joueur, les ennemis ne sont pas des Singletons, nous avons donc dû instancier les ennemis dans le Controller pour la gestion de leur déplacements. Les ennemis sont créés lors de l'instanciation du Controller (qui est un Singleton), et leur emplacement est défini dans une boucle for du nombre d'ennemis dans la méthode init du Controller. Vu que les ennemis sont des threads, leur déplacement se fait automatiquement et de manière indépendante grâce à la méthode run implémentée dans la classe Enemy que nous avons détaillé. Il ne reste alors simplement qu'à appeler la fonction run ce qui est fait dans la méthode playGame. Cette méthode n'est utilisée que pour lancer les ennemis et est constituée d'un simple for du nombre d'ennemis qui appelle la fonction start sur chacun d'entre eux. Cette méthode playGame est alors appelée dans la méthode start du Controller qui elle est appelée dans le main, qui lance le jeu.
 
+
+
+
+
+
+
+%%%%%A mettre dans section graph %%%%%% 
+\subsection {Gestion des portes et des interrupteurs}
+Nous avons une classe Door qui contient cinq données membres :
+\begin {description}
+\item  [switchOn :]     Un vertex correspondant au sommet contenant l'interrupteur permettant d'ouvrir la porte.
+\item  [switchOff :]     Un vertex correspondant au sommet contenant l'interrupteur permettant de fermer la porte.
+\item  [door :] Un edge correspondant à l'arrête contenant la porte relié aux interrupteurs.
+\item  [SWITCH\_ON\_PATH :] Chaîne de caractère protégée qui contiendra le chemin vers l'image pour l'affichage de l'interrupteur d'ouverture de la porte.
+\item  [SWITCH\_OFF\_PATH :] Chaîne de caractère protégée qui contiendra le chemin vers l'image pour l'affichage de l'interrupteur de fermeture de la porte.
+\end   {description}
+Le constructeur instancie les données switchOn, switchOff et door. On a des getters sur chacune des données membres. Et on a implémenter la méthode correctSwitchPosition qui prend en paramètre la liste des portes et celle des bonbons du graph, ainsi que la porte de sortie et l'interrupteur que l'on souhaite posé afin de vérifier que l'interrupteurs ne se superposera pas avec un autre objet sur le graph.
+
+
+
+%%%Suite de la class graph
+On a implémenté la méthode doesntExist qui vérifie si le sommet, dans la direction donnée, éxiste. Ensuite, on a la méthode getVertex qui retourne le vertex à l'emplacement dans le tableau donnée et la méthode getVertexByDir qui retourne le vertex dans la direction donnée. On a également la méthode getEndPath qui retourne le sommet du graph le plus éloigné du premier sommet en 0.0, sachant que l'on met toujours le joueur en 0.0 cette méthode nous nous permettra de positioner la porte de sortie le plus loin possible du joueur. La méthode GraphToDot nous permet de créer un fichier graph.dot qui nous permet de visualiser le graph avec graphviz. La méthode isWall permet de savoir si, dans la direction donnée par rapport au vertex donnée, l'arrête n'éxiste pas, donc est un mur. La méthode getEdge nous retourne l'edge dans la direction donnée. Les méthodes isOpenedDoor et isCloseDoor permettent de savoir respectivement si l'arrête dans la direction donnée correspond à une porte ouverte ou a une porte fermée. Les méthodes setSwitchOn et setSwitchOff nous retourne le sommet pour placer correctement les interrupteurs correspondant à la porte passé en paramètre.
+Les méthodes closedDoorRandom et openDoorRandom nous permettent, respectivement, de fermer et d'ouvrir une porte aléatoirement. RadomEdge retourne un edge aléatoirement utilisé pour fermé une porte aléatoirement. Random vertex retourne un sommet du graph aléatoirment, utilisé pour ouvrir une porte aléatoirement.
 \end   {document}
