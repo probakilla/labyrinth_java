@@ -5,12 +5,9 @@ package model;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Edge.Type;
@@ -91,7 +88,7 @@ public class GraphTest
 	@Test
 	public void testDoesntExistVertex()
 	{
-		//assertTrue(_graph.doesntExist(_vertex, Directions.EAST));
+		assertTrue(_graph.doesntExist(_vertex, Directions.NORTH));
 		assertFalse(_graph.doesntExist(_vertex, Directions.EAST));
 	}
 
