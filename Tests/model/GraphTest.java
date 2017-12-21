@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author Java Group
  *
  */
-public class GraphTest {
+public class GraphTest extends TestCase{
 
 	/**
 	 * @throws java.lang.Exception
