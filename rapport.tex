@@ -103,4 +103,34 @@ Dans la méthode start du Controller, nous avons une fonction handle qui sert à
 \subsection {Déplacement des ennemis}
 Contrairement au joueur, les ennemis ne sont pas des Singletons, nous avons donc dû instancier les ennemis dans le Controller pour la gestion de leur déplacements. Les ennemis sont créés lors de l'instanciation du Controller (qui est un Singleton), et leur emplacement est défini dans une boucle for du nombre d'ennemis dans la méthode init du Controller. Vu que les ennemis sont des threads, leur déplacement se fait automatiquement et de manière indépendante grâce à la méthode run implémentée dans la classe Enemy que nous avons détaillé. Il ne reste alors simplement qu'à appeler la fonction run ce qui est fait dans la méthode playGame. Cette méthode n'est utilisée que pour lancer les ennemis et est constituée d'un simple for du nombre d'ennemis qui appelle la fonction start sur chacun d'entre eux. Cette méthode playGame est alors appelée dans la méthode start du Controller qui elle est appelée dans le main, qui lance le jeu.
 
+\section {Gestion du Graph}
+\subsection {Gestion des arrêtes}
+Notre classe Edge étend la classe DefaultEdge. Elle comporte une seule donnée membre qui est une énumération Type comportant 3 éléments définissant à quoi correspond l'arrête dans le Labyrinthe:
+\begin {description}
+\item  [OPENED_DOOR :]     L'arrête est donc une porte ouverte qui peut se fermer grâce à l'interrupteur correspondant.
+\item  [CLOSED_DOOR :]  L'arrête est donc une porte fermé, personne ne peut passer cette porte et le joueur doit appuyer sur l'interrupeur correspondant pour l'ouvrir.
+\item  [CORRIDOR :] L'arrête correspond au chemins du Labyrinthe donc tour le monde peut y passer.
+\end   {description}
+
+Cette classe, lors de son instanciation, appelle le constructeur de sa classe parente, puis initialise sont _type.
+La classe contient des acceseurs sur sa données _type et surcharge les getters sur les données Source et Target de DefaultEdge.
+
+\subsection {Gestion des sommets}
+Notre classe Vertex comporte trois données membres:
+\begin {description}
+\item  [x :]     Donnée correspondant à la position en abscisse du sommet.
+\item  [y :]  Donnée correspondant à la position en ordonné du sommet.
+\item  [nbr :] Donnée correspondant au numéro du sommet dans le graph, principalement utilisé pour l'agorithme de manhattan.
+\end   {description}
+La classe contient trois constructeur un permettant d'initialiser toutes les données membres et la deuxième qui initialise seulement les coordonnées du sommet et met le numéro a -1 et le troisième constructeur qui initialise les coordonnés à 0 et son numéro à -1. On a des accesseurs sur les données membres.
+On a surchargé la méthode equals afin de pouvoir savoir si deux Vertex sont égaux, utilisé pour, entre autre, vérifier que l'on ne met bien qu'une fois le même sommet dans le graph. On à également une méthode inBorder qui vérifient que le Vertex dans la direction voulut est bien dans le graph, utilisé pour savoir si on ne se déplace pas en dehors du labyrinthe. Enfin, nous avons implémenté la méthode copy qui permet de copier un autre Vertex.
+
+\subsection {Gestion du graphe}
+Notre classe Graph étend la classe SimpleGraph et comporte quatre données membres:
+\begin {description}
+\item  [INSTANCE :]     Donnée correspondant à l'instance du graph.
+\item  [GRID_WIDTH :]  Donnée correspondant à la largeur du graph.
+\item  [GRID_WIDTH :] Donnée correspondant à la longueur du graph.
+\item  [vertex :]  Donnée correspondant au tableau de sommet du graph.
+\end   {description}
 \end   {document}

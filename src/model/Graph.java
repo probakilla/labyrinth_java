@@ -22,9 +22,6 @@ import org.jgrapht.graph.SimpleGraph;
  */
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
-
-    private static final long serialVersionUID = 1L;
-
     private static Graph INSTANCE;
     private final static int GRID_WIDTH = 16;
     private final static int GRID_HEIGHT = 16;
@@ -51,6 +48,13 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
     }
 
+    /**
+     * Remove all the {@link model.Edge edges} of the {@link model.Graph graph}.
+     * 
+     * @param <Vertex> Class of vertices.
+     * @param <Edge> Class of edges.
+     * @param graph The {@link model.Graph graph} where to remove all {@link model.Edge edges}.
+     */
     public static <Vertex, Edge> void removeAllEdges(Graph graph)
     {
         LinkedList<model.Edge> copy = new LinkedList<>();
@@ -61,6 +65,13 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         graph.removeAllEdges(copy);
     }
 
+    /**
+     * Remove all the {@link model.Vertex vertices} of the {@link model.Graph graph}.
+     * 
+     * @param <Vertex> Class of vertices.
+     * @param <Edge> Class of edges.
+     * @param graph The {@link model.Graph graph} where to remove all {@link model.Vertex vertices}.
+     */
     public static <Vertex, Edge> void removeAllVertices(Graph graph)
     {
         LinkedList<model.Vertex> copy = new LinkedList<>();
@@ -71,6 +82,12 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         graph.removeAllVertices(copy);
     }  
 
+    /**
+     * Remove all {@link model.Vertex vertices} and {@link model.Edge edges} of the {@link model.Graph graph}.
+     * @param <Vertex> Class of vertices.
+     * @param <Edge> Class of edges.
+     * @param graph The {@link model.Graph graph} where to remove all {@link model.Vertex vertices} and {@link model.Edge edges}.
+     */
     public static <Vertex, Edge> void clearGraph(Graph graph)
     {
         removeAllEdges(graph);
