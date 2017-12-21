@@ -171,10 +171,10 @@ public class Vertex
     /**
      * Retrieves a String with coordinates.
      *
-     * Retrieves a {@link java.String String} with the coordinates of the 
+     * Retrieves a string with the coordinates of the 
      * {@link model.Vertex Vertex} with the format [x-y].
      *
-     * @return The {@link java.String String} with the coordinates of the 
+     * @return The string with the coordinates of the 
      * {@link model.Vertex Vertex}.
      */
     @Override

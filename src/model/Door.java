@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Class of the doors in the labyrinth, it also manage the switches.
+ * Class of doors from the labyrinth, it also manage the switches.
  *
  * @author Java Group
  */
@@ -43,7 +43,7 @@ public class Door
     }
 
     /**
-     * Retrieves a {@link java.String String} corresponding to the path of the
+     * Retrieves a string corresponding to the path of the
      * image for the switch used to open a door.
      *
      * @return The path to image of the switch.
@@ -54,7 +54,7 @@ public class Door
     }
 
     /**
-     * Retrieves a {@link java.String String} corresponding to the path of the
+     * Retrieves a string corresponding to the path of the
      * image for the switch used to close a door.
      *
      * @return The path to image of the switch.
@@ -93,9 +93,10 @@ public class Door
      * @param doorList The array containing all {@link model.Door closed door}.
      * @param candyList The array containing all {@link model.Candy Candies}.
      * @param actualSwitch The switch to be tested
+     * @param exitDoor The {@link model.Vertex vertex} of the exit door.
      * @return True, if there is nothing else, except {@link model.Enemy enemies}, at the same position, otherwise return false.
      */
-    public static boolean correctSwitchPosition (Door [] doorList, Vertex exitDoor, AbstractCandy[] candyList, Vertex actualSwitch)
+    public static boolean correctSwitchPosition (Door [] doorList, AbstractCandy[] candyList, Vertex actualSwitch, Vertex exitDoor)
     {
     	//Check if the actual Switch is on the player position or the exit position.
     	if (actualSwitch.equals(new Vertex (0, 0)) || actualSwitch.equals(exitDoor))

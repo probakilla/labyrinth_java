@@ -30,7 +30,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * The coordinates of the Enemy are set to [0,0]. The call of this
      * constructor should be followed by randomizePosition().
-     * @param restartSignal 
+     * @param restartSignal The {@link java.util.concurrent.CountDownLatch CountDownLatch} used to pause the thread.
      */
     public Enemy (CountDownLatch restartSignal)
     {

@@ -4,7 +4,7 @@ import java.util.Random;
 import model.Model.Directions;
 
 /**
- * Pattern used for all Characters and objects in the labyrinth.
+ * Abstract class used for all Characters in the labyrinth.
  *
  * @author Java Group
  */

@@ -47,13 +47,16 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
     }
     
+    /**
+     * Set the INSTANCE at null to delete it.
+     */
     public void removeGraph ()
     {
     	INSTANCE = null;
     }
 
     /**
-     * Remove all the {@link model.Edge edges} of the {@link model.Graph graph}.
+     * Remove all {@link model.Edge edges} from the {@link model.Graph graph}.
      * 
      * @param <Vertex> Class of vertices.
      * @param <Edge> Class of edges.
@@ -166,6 +169,12 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         return !this.containsVertex(new Vertex(xt, yt));
     }
   
+    /**
+     * Retrieve the {@link model.Vertex vertex} at a specific position in the grid.
+     * @param i The abscissa of the {@link model.Vertex vertex}
+     * @param j The ordinate of the {@link model.Vertex vertex}
+     * @return Return the {@link model.Vertex vertex} from the given position.
+     */
     public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];

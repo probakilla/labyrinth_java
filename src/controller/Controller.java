@@ -216,13 +216,13 @@ public class Controller
             //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
             for (j = 0; j < NB_GRAPH_VERTICES; ++j)
             {
-                if (AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+                if (AbstractCandy.correctCandyPosition(_candies, candy, _exitDoorPosition))
                 {
                     break;
                 }
                 candy = (AbstractCandy) CandyFactory.getCandy();
             }
-            if (!AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+            if (!AbstractCandy.correctCandyPosition(_candies, candy, _exitDoorPosition))
             {
                 NB_CANDIES = i;
                 break;
@@ -248,13 +248,13 @@ public class Controller
             // On essaye de placer l'interrupteur 300 fois, si on échoue on n'arrête.
             for (j = 0; j < 300; ++j)
             {
-                if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+                if (Door.correctSwitchPosition(_closedDoor, _candies, switchOn, _exitDoorPosition))
                 {
                     break;
                 }
                 switchOn = graph.setSwitchOn(door);
             }
-            if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+            if (!Door.correctSwitchPosition(_closedDoor, _candies, switchOn, _exitDoorPosition))
             {
                 //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
                 door.setType(Edge.Type.CORRIDOR);
@@ -266,13 +266,13 @@ public class Controller
                 // On essaye de placer l'interrupteur 300 fois, si on échoue on n'arrête.
                 for (j = 0; j < 300; ++j)
                 {
-                    if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                    if (Door.correctSwitchPosition(_closedDoor, _candies, switchOff, _exitDoorPosition))
                     {
                         break;
                     }
                     switchOff = graph.setSwitchOff(door);
                 }
-                if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                if (!Door.correctSwitchPosition(_closedDoor, _candies, switchOff, _exitDoorPosition))
                 {
                     //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
                     NB_CLOSED_DOOR = i;
@@ -310,13 +310,13 @@ public class Controller
             //On essaye de placer autant de fois qu'il y a de cases dans le graphe, si on échoue on n'arrête.
             for (j = 0; j < NB_GRAPH_VERTICES; ++j)
             {
-                if (AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+                if (AbstractCandy.correctCandyPosition(_candies, candy, _exitDoorPosition))
                 {
                     break;
                 }
                 candy = (AbstractCandy) CandyFactory.getCandy();
             }
-            if (!AbstractCandy.correctCandyPosition(_candies, _exitDoorPosition, candy))
+            if (!AbstractCandy.correctCandyPosition(_candies, candy, _exitDoorPosition))
             {
                 NB_CANDIES = i;
                 break;
@@ -347,13 +347,13 @@ public class Controller
             // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
             for (j = 0; j < 1000; ++j)
             {
-                if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+                if (Door.correctSwitchPosition(_closedDoor, _candies, switchOn, _exitDoorPosition))
                 {
                     break;
                 }
                 switchOn = graph.setSwitchOn(door);
             }
-            if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOn))
+            if (!Door.correctSwitchPosition(_closedDoor, _candies, switchOn, _exitDoorPosition))
             {
                 //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
                 door.setType(Edge.Type.CORRIDOR);
@@ -365,13 +365,13 @@ public class Controller
                 // On essaye de placer l'interrupteur 1000 fois, si on échoue on n'arrête.
                 for (j = 0; j < 1000; ++j)
                 {
-                    if (Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                    if (Door.correctSwitchPosition(_closedDoor, _candies, switchOff, _exitDoorPosition))
                     {
                         break;
                     }
                     switchOff = graph.setSwitchOff(door);
                 }
-                if (!Door.correctSwitchPosition(_closedDoor, _exitDoorPosition, _candies, switchOff))
+                if (!Door.correctSwitchPosition(_closedDoor, _candies, switchOff, _exitDoorPosition))
                 {
                     //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
                     NB_CLOSED_DOOR = i;

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Labyrinth.jnlp">
+  <information>
+    <title>Labyrinth</title>
+    <vendor>Guillaume</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Labyrinth.jar" size="43730" download="eager" />
+    <jar href="lib\jgrapht-core-1.0.1.jar" size="564795" download="eager" />
+    <jar href="lib\junit-4.12-sources.jar" size="200355" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Labyrinth" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="Labyrinth"  name="Labyrinth" />
+  <update check="always"/>
+</jnlp>

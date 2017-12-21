@@ -82,6 +82,7 @@ public class View
      *
      * @param stage Stage used for the graphical interface.
      * @param g the {@link model.Graph Graph} to display.
+     * @param playing Listener to launch the game.
      */
     public void start(Stage stage, Graph g, final OnPlayListener playing)
     {

@@ -61,7 +61,7 @@ public class PlayableCharacter extends AbstractCharacter
     }
 
     /**
-     * Retrieves the {@link java.String String} Corresponding to the path of the
+     * Retrieves the string Corresponding to the path of the
      * image used for the display of the Player.
      *
      * @return the path of the image of the character.
