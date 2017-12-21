@@ -7,7 +7,7 @@ import org.jgrapht.graph.DefaultEdge;
  *
  * @author Java Group
  */
-public class Edge extends DefaultEdge implements Comparable<Edge>
+public class Edge extends DefaultEdge
 {
     public static enum Type
     {
@@ -69,19 +69,5 @@ public class Edge extends DefaultEdge implements Comparable<Edge>
     public void setType(Type type)
     {
         _type = type;
-    }
-
-    @Override
-    public int compareTo(Edge o)
-    {
-        int source = this.getSource().compareTo((o).getSource());
-        if (source != 0)
-        {
-            return source;
-        }
-        else
-        {
-            return this.getTarget().compareTo((o).getTarget());
-        }
     }
 }

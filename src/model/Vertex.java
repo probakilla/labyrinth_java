@@ -113,19 +113,6 @@ public class Vertex
     }
 
     /**
-     * Compare two vertices according to their x, y and nbr.
-     *
-     * @param v The vertex to compare.
-     * @return 0 if they are equals, 1 in the other case.
-     */
-    public int compareTo(Vertex v)
-    {
-        if (v.getX() == _x && v.getY() == _y && _nbr == v.getNbr())
-            return 0;
-        return 1;
-    }
-
-    /**
      * Compare two Vertices coordinates.
      *
      * @param obj The object to compare with.

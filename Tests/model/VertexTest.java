@@ -6,10 +6,12 @@ package model;
 import static org.junit.Assert.*;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.sun.javafx.scene.traversal.Direction;
+
+import model.Model.Directions;
 
 /**
  * @author Java Group
@@ -17,144 +19,135 @@ import org.junit.Test;
  */
 public class VertexTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
+	Vertex _vertexEmpty;
+	Vertex _vertexNb;
+	Vertex _vertex;
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception 
+	{
+		_vertexEmpty = new Vertex();
+		_vertex = new Vertex (0, 0);
+		_vertexNb = new Vertex (0, 0, 0);
 	}
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception 
+	{
+		_vertexEmpty  = null;
+		_vertex = null;
+		_vertexNb = null;
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#Vertex()}.
 	 */
 	@Test
-	public void testVertex() {
-		fail("Not yet implemented"); // TODO
+	public void testVertex() 
+	{
+		assertNotNull(_vertexEmpty);
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#Vertex(int, int)}.
 	 */
 	@Test
-	public void testVertexIntInt() {
-		fail("Not yet implemented"); // TODO
+	public void testVertexIntInt()
+	{
+		assertNotNull(_vertex);
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#setX(int)}.
 	 */
 	@Test
-	public void testSetX() {
-		fail("Not yet implemented"); // TODO
+	public void testSetX() 
+	{
+		_vertexEmpty.setX(10);
+		assertEquals(10, _vertexEmpty.getX());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#setY(int)}.
 	 */
 	@Test
-	public void testSetY() {
-		fail("Not yet implemented"); // TODO
+	public void testSetY() 
+	{
+		_vertexEmpty.setY(100);
+		assertEquals(100, _vertexEmpty.getY());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#Vertex(int, int, int)}.
 	 */
 	@Test
-	public void testVertexIntIntInt() {
-		fail("Not yet implemented"); // TODO
+	public void testVertexIntIntInt() 
+	{
+		assertNotNull(_vertexNb);
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#getNbr()}.
 	 */
 	@Test
-	public void testGetNbr() {
-		fail("Not yet implemented"); // TODO
+	public void testGetNbr() 
+	{
+		assertEquals(0, _vertexNb.getNbr());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#setNbr(int)}.
 	 */
 	@Test
-	public void testSetNbr() {
-		fail("Not yet implemented"); // TODO
+	public void testSetNbr() 
+	{
+		_vertexNb.setNbr(42);
+		assertEquals(42, _vertexNb.getNbr());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#getX()}.
 	 */
 	@Test
-	public void testGetX() {
-		fail("Not yet implemented"); // TODO
+	public void testGetX() 
+	{
+		assertEquals(0, _vertex.getX());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#getY()}.
 	 */
 	@Test
-	public void testGetY() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link model.Vertex#compareTo(model.Vertex)}.
-	 */
-	@Test
-	public void testCompareTo() {
-		fail("Not yet implemented"); // TODO
+	public void testGetY() 
+	{
+		assertEquals(0, _vertex.getY());
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#equals(java.lang.Object)}.
 	 */
 	@Test
-	public void testEqualsObject() {
-		fail("Not yet implemented"); // TODO
+	public void testEqualsObject() 
+	{
+		_vertexEmpty.setX(69);
+		assertNotEquals(_vertex, _vertexEmpty);
+		_vertexEmpty.copy(_vertex);
+		assertEquals(_vertex, _vertexEmpty);
 	}
 
 	/**
 	 * Test method for {@link model.Vertex#inBorders(model.Model.Directions, int, int)}.
 	 */
 	@Test
-	public void testInBorders() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link model.Vertex#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link model.Vertex#copy(java.lang.Object)}.
-	 */
-	@Test
-	public void testCopy() {
-		fail("Not yet implemented"); // TODO
+	public void testInBorders() 
+	{
+		assertFalse(_vertex.inBorders(Directions.NORTH, 16, 16));
+		assertTrue(_vertex.inBorders(Directions.SOUTH, 16, 16));
 	}
 
 }

@@ -50,6 +50,11 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
+    
+    public void removeGraph ()
+    {
+    	INSTANCE = null;
+    }
 
     public static <Vertex, Edge> void removeAllEdges(Graph graph)
     {
@@ -200,15 +205,16 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public Vertex getEndPath()
     {
-        Vertex v = this.getVertex(0, 0);
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
         Set<Vertex> ListVertex = this.vertexSet();
         Vertex vertex;
-        for (Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
+        for ( Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
         {
             vertex = it.next();
             vertex.setNbr(0);
         }
+        Iterator<Vertex> it = ListVertex.iterator();
+        Vertex v = it.next ();
         v.setNbr(1);
         Vertex ret = v;
         fifo.add(v);
@@ -218,6 +224,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             for (Edge edge : this.edgesOf(actual))
             {
                 Vertex next = edge.getSource();
+               
                 if (next.equals(actual))
                 {
                     next = edge.getTarget();
@@ -233,11 +240,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                     fifo.add(next);
                 }
             }
-        }
-        // Si jamais la porte est sur le joueur on relance.
-        while (ret.equals(new Vertex(0, 0)))
-        {
-            ret = getEndPath();
         }
         return ret;
     }
@@ -418,7 +420,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = door.getTarget();
         }
         i = rand.nextInt((GRID_HEIGHT * GRID_WIDTH) - vertex.getNbr()) + vertex.getNbr();
-        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
+        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i && it.hasNext(); j++)
         {
             vertex = it.next();
         }
