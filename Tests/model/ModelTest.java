@@ -3,7 +3,15 @@
  */
 package model;
 
+import model.*;
+
 import static org.junit.Assert.*;
+
+
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,25 +25,20 @@ import org.junit.Test;
  */
 public class ModelTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+	private Model _model;
+	private Vertex _vertex, _target;
+	private Graph _graph;
+	
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		_model = Model.getInstance();
+		_graph = Graph.getInstance();
+		_vertex = new Vertex(0, 0, 0);
+		_target = new Vertex(15, 15, 0);
 	}
 
 	/**
@@ -43,6 +46,10 @@ public class ModelTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		_model = null;
+		_vertex = null;
+		_target = null;
+		_graph.removeGraph();
 	}
 
 	/**
@@ -50,7 +57,7 @@ public class ModelTest {
 	 */
 	@Test
 	public void testGetInstance() {
-		fail("Not yet implemented"); // TODO
+		assertNotNull(_model);
 	}
 
 	/**
@@ -58,7 +65,44 @@ public class ModelTest {
 	 */
 	@Test
 	public void testBuildRandomPath() {
-		fail("Not yet implemented"); // TODO
+		_model.buildRandomPath(_vertex);
+		Queue<Vertex> fifo = new ArrayDeque<Vertex>();
+        Set<Vertex> ListVertex = _graph.vertexSet();
+        Vertex vertex;
+        for ( Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
+        {
+            vertex = it.next();
+            vertex.setNbr(0);
+        }
+        Iterator<Vertex> it = ListVertex.iterator();
+        Vertex v = it.next();
+        v.setNbr(1);
+        fifo.add(v);
+        while (!fifo.isEmpty())
+        {
+            Vertex actual = fifo.remove();
+            for (Edge edge : _graph.edgesOf(actual))
+            {
+                Vertex next = edge.getSource();
+               
+                if (next.equals(actual))
+                {
+                    next = edge.getTarget();
+                }
+                if (next.getNbr() == 0)
+                {
+                    next.setNbr(1);
+                    fifo.add(next);
+                }
+            }
+        }
+        for(int i=0; i<_graph.getGRIDHEIGHT(); i++) {
+        	for (int j=0; j<_graph.getGRIDWIDTH(); j++) {
+        		if (i!=0 && j!=0) {
+        			assertNotEquals(0, _graph.getVertex(i, j).getNbr());
+        		}
+        	}
+        }
 	}
 
 	/**
@@ -66,15 +110,19 @@ public class ModelTest {
 	 */
 	@Test
 	public void testLaunchManhattan() {
-		fail("Not yet implemented"); // TODO
+		_model.buildRandomPath(_vertex);
+		
+		_target = _graph.getEndPath();
+		_model.launchManhattan(_vertex, _target);
+
+		for(int i=0; i<_graph.getGRIDHEIGHT(); i++) {
+        	for (int j=0; j<_graph.getGRIDWIDTH(); j++) { 
+        		assertNotEquals(0, _graph.getVertex(i, j).getNbr());
+        	}
+        }
+		assertEquals(1, _target.getNbr());
 	}
 
-	/**
-	 * Test method for {@link model.Model#getGraph()}.
-	 */
-	@Test
-	public void testGetGraph() {
-		fail("Not yet implemented"); // TODO
-	}
+
 
 }

@@ -91,7 +91,7 @@ public class GraphTest
 	@Test
 	public void testDoesntExistVertex()
 	{
-		assertTrue(_graph.doesntExist(_vertex, Directions.EAST));
+		//assertTrue(_graph.doesntExist(_vertex, Directions.EAST));
 		assertFalse(_graph.doesntExist(_vertex, Directions.EAST));
 	}
 
