@@ -43,6 +43,8 @@ public class Enemy extends AbstractCharacter implements Runnable
         _type = -1;
         _running = 0;
         _restartSignal = restartSignal;
+        _targetX = -1;
+        _targetY = -1;
     }
 
     /**
@@ -50,7 +52,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @return The abscissa of the target.
      */
-    public int get_targetX ()
+    public int getTargetX ()
     {
         return _targetX;
     }
@@ -60,7 +62,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @return The ordinate of the target.
      */
-    public int get_targetY ()
+    public int getTargetY ()
     {
         return _targetY;
     }
@@ -90,7 +92,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @param x The target abscissa.
      */
-    public void set_targetX (int x)
+    public void setTargetX (int x)
     {
         _targetX = x;
     }
@@ -101,7 +103,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @param y The target ordinate.
      */
-    public void set_targetY (int y)
+    public void setTargetY (int y)
     {
         _targetY = y;
     }
@@ -192,7 +194,7 @@ public class Enemy extends AbstractCharacter implements Runnable
         _running = 1;
         while (_running == 1)
         {
-            Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.get_targetX(), this.get_targetY()));
+            Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.getTargetX(), this.getTargetY()));
             switch (this.getNextStep())
             {
                 case NORTH:
