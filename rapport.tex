@@ -59,17 +59,8 @@ Contrairement au joueur, les ennemis ne sont pas des Singletons, nous avons donc
 
 
 %%%%%A mettre dans section graph %%%%%% 
-\subsection {Gestion des portes et des interrupteurs}
-Nous avons une classe Door qui contient cinq données membres :
-\begin {description}
-\item  [switchOn :]     Un vertex correspondant au sommet contenant l'interrupteur permettant d'ouvrir la porte.
-\item  [switchOff :]     Un vertex correspondant au sommet contenant l'interrupteur permettant de fermer la porte.
-\item  [door :] Un edge correspondant à l'arrête contenant la porte relié aux interrupteurs.
-\item  [SWITCH\_ON\_PATH :] Chaîne de caractère protégée qui contiendra le chemin vers l'image pour l'affichage de l'interrupteur d'ouverture de la porte.
-\item  [SWITCH\_OFF\_PATH :] Chaîne de caractère protégée qui contiendra le chemin vers l'image pour l'affichage de l'interrupteur de fermeture de la porte.
-\end   {description}
-Le constructeur instancie les données switchOn, switchOff et door. On a des getters sur chacune des données membres. Et on a implémenter la méthode correctSwitchPosition qui prend en paramètre la liste des portes et celle des bonbons du graph, ainsi que la porte de sortie et l'interrupteur que l'on souhaite posé afin de vérifier que l'interrupteur ne se superposera pas avec un autre objet sur le graph.
-
+\subsection {Gestion des portes et des interrupteurs: Door}
+Cette classe est la classe qui s'occupe de relier les interrupteurs à leur porte respective. La classe contient donc comme donnée membre l'arrête correspondant à la porte qui nous interresse ainsi que les sommet contenant les interrupteurs pour ouvrir et fermé la-dite porte. Elle contient également les données membres correspondant au chemin des images pour afficher les interrupteurs. Finalement, la classe contient la méthode correctSwitchPosition qui permet d'éviter de placer l'interrupteur sur le même emplacement qu'un autre objet dans le labyrinthe.
 
 
 %%%Suite de la class graph
