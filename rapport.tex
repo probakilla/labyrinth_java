@@ -5,7 +5,7 @@
 \usepackage [francais]{babel}
 
 \title {Rapport Labyrinthe}
-\author {Groupe 6}
+\author {CHUPIN Guillaume, PILLEUX Julien, SEUTIN Jeffrey, SOYTURK Okan}
 
 \begin {document}
 
@@ -16,78 +16,27 @@
 \newpage
 
 \section {Gestion des personnages}
-Nous avons décidé pour la gestion des personnages, d'utiliser une classe abstraite AbstractCharacter à partir de la quelle nous avons fait hériter une classe dédiée au personnage joueur PlayableCharacter et une autre classe pour la gestion des ennemis Enemy.
+Nous avons décidé pour la gestion des personnages, d'utiliser une classe abstraite AbstractCharacter à partir de laquelle nous avons fait hériter une classe dédiée au personnage joueur PlayableCharacter et une autre classe pour la gestion des ennemis, Enemy.
 
 \subsection {Partie commune : AbstractCharacter}
-Cette classe possède trois données membres :
+Cette classe est la classe qui s'occupe de la gestion du personnage que l'utilisateur contrôle ainsi que les ennemis qui rôdent dans le labyrinthe. Cette classe définit et implémente les méthodes que les ennemis ainsi que le personnage utiliserons. Le type est une donnée membre qui change en fonction de la classe qui en hérite, c'est grâce à lui que l'on sait si l'on a affaire à un personnage jouable ou à un ennemi, elle nous est utile lors de la gestion des collisions. La position du joueur, comme des ennemis, est définie par un Vertex possédant un champ x et un champ y, qui eux représentent respectivement l'abscisse et l'ordonnée du personnage en question dans le labyrinthe. Nous pouvons gérer la position de ces dernières, grâce à plusieurs méthodes :
 \begin {description}
-\item  [type :]             Une donnée entière protégée qui servira à différencier les deux classes qui héritent de celle-ci.
-\item  [position :]         Un Vertex protégé qui correspond à la position du personnage.
-\item  [onChangeListener :] onChangeListener protégé qui permettra la gestion des collisions avec les différents objets du labyrinthe.
-\end   {description} 
-
-La classe AbstractCharacter ne fait qu'initialiser sa position dans son constructeur, ce sera alors aux classes filles d'initialiser le reste. Cette classe contient aussi un getter sur le type, un setter et getter sur la position. C'est aussi cette classe qui gère les déplacements des personnages; Il existe alors un méthode pour chaque mouvement case par case (Une par direction), ces méthodes modifient alors la valeur d'une des deux valeurs du Vertex de 1 en fonction de la direction que l'on veut prendre, puis vérifie que le mouvement est valide grâce à une méthode implémentée dans cette même classe. C'est la méthode valideMove qui prend en entrée un Vertex et une Direction qui s'en occupe, elle peut alors savoir si un personnage placé à la position du Vectrex que l'on donne, peut se déplacer dans la Direction que l'on souhaite. Elle revoie alors un boolean correspondant à la réponse. Nous avons aussi implémenté une méthode permettant de placer un personnage à une position aléatoire qui nous a surtout été utile pour les ennemis. Les deux méthodes restantes sont alors utilisées pour la gestion des collisions avec les personnages.
-% Okan peut peut-être rajouter quelque chose sur les Listeners, je sais pas à quoi ça sert :3
+\item  [setPosition :]  Qui permet de décider où l'on souhaite placer le personnage en donnant les coordonnées auxquelles on veut le placer.
+\item  [randomizePosition :]   Qui permet de placer aléatoirement un personnage dans les limites du labyrinthe. 
+\item  [up\/down\/left\/right\/ :]  Qui permettent de déplacer le personnage dans la direction correspondante d'une case.
+\end   {description}
+Pour la gestion des collisions, nous faisons appel à un onChangeListener, qui enverra une notification lorsque le personnage rencontre un objet dans le labyrinthe.
 
 \subsection {Gestion du personnage jouable : PlayableCharacter}
-Cette classe hérite de la classe AbstractCharacter et suit le design pattern Singleton, elle possède quatre données membres :
-\begin {description}
-\item  [score :]     Donnée entière privée qui sert à la gestion du score du joueur.
-\item  [INSTANCE :]  Unique instance privée statique de la classe qui est utile dans le design pattern Singleton. 
-\item  [life :]      Donnée entière privée statique gérant le nombre de vies du joueur.
-\item  [IMG\_PATH :] Chaîne de caractères privée statique finale contenant le chemin vers l'image du personnage utilisée lors de l'affichage.
-\end   {description}
-
-
-Lors de son initialisation, la classe PlayableCharacter appelle le constructeur de sa classe parente avec les coordonnées (0, 0), puis initialise son type à 1 et son score à 0. Son initialisation se fait grâce à la méthode getInstance, qui créé une instance de PlayableCharacter si la donnée membre INSTANCE est nulle puis la renvoie. Cette méthode assure qu'il n'existera qu'une seule instance de cette classe à la fois. La classe implémente alors un getter pour chaque donnée membre et un setter pour la donnée score et la donnée life. Pour faciliter la gestion du score, nous avons aussi implémenté une fonction increaseScore qui prend en paramètre un bonbon et qui ajoute au joueur le score correspondant à celui-ci. Une méthode decrementLife est aussi utilisée pour enlever une vie au joueur lorsqu'il rencontre un ennemi. Pour finir, la classe possède une classe collision que vérifie si le joueur est au même endroit que l'objet donné en paramètre.
+Cette classe hérite donc de la classe AbstractCharacter détaillée au-dessus. Cette classe s'occupe elle de changer son type qui est différent de celui de la classe Enemy qui partage le même héritage. Elle possède en plus d'autres données permettant la gestion du score du joueur ainsi que son nombre de vies restantes avant de perdre la partie. Pour finir avec les données membres, cette classe possède une donnée membre statique contenant le chemin vers l'image qui lui est associée pour la gestion de son affichage dans le labyrinthe. La gestion de la vie du personnage se fait grâce à un simple getter et une autre méthode qui la décrémente lors de la collision avec un ennemi. Le score lui n'est pas bien différent, elle possède un setter, un getter puis une méthode increaseScore prenant en paramètre un bonbon permettant une gestion plus facile du score lors de la collision avec ce dernier.
 
 \subsection {Gestion des ennemis : Enemy}
-Cette classe étend la classe AbstractCharacter et implémente l'interface Runnable afin de pouvoir fonctionner avec les threads. Elle possède cinq données membres :
-\begin {description}
-\item  [running :]   Donnée entière privée qui permet de vérifier si les threads sont en marche ou non.
-  % Sérieux pourquoi ne pas utiliser la classe faite pour : Vertex plutôt que de faire deux données membres, ça me rend triste :( j'ai du me pignoler pour me consoler...
-\item  [targetX :]   Donnée entière privée contenant l'abscisse de la cible que l'ennemi devra poursuivre.
-\item  [targetY :]   Donnée entière privée contenant l'ordonnée de la cible que l'ennemi devra poursuivre.
-\item  [sleepTime :] Donnée entière privée finale indiquant à l'ennemi le temps qu'il devra attendre (en ms) entre chaque déplacement.
-\item  [IMG\_PATH :] Chaîne de caractères privée statique finale contenant le chemin vers l'image du personnage utilisée lors de l'affichage.
-  % J'ai aucune idée de ce que fait restartSignal donc je met rien à son sujet :p
-\end   {description}
-
-
-Cette classe, lors de son instanciation, appelle le constructeur de sa classe parente avec les coordonnées (0, 0), puis initialise son type à -1 et sa donnée membre running à 0. Cette classe possède des getters sur les coordonnées de la cible ainsi que sa donnée running et IMG\_PATH ainsi des setters sur les coordonnées de la cible. Deux méthodes sont utilisées pour gérer les threads :
-\begin {description}
-\item  [stopRunning :] Qui met la valeur de running à 0 pour arrêter les fantômes dans le labyrinthe.
-\item  [keepRunning :] Qui est utilisée dans la méthode qui lance les fantômes afin d'indiquer que le thread est en mouvement.
-\end   {description}
-
-
-Une méthode getNextStep est implémentée pour connaître le prochain mouvement des ennemis. Pour finir, la classe surcharge la méthode run de l'interface Runnable. Cette méthode est alors utilisée pour le déplacement automatique régulier des fantômes. Elle commence par mettre à jour la donnée membre running à 1 pour signifier que le fantôme en question est en déplacement, puis entre dans une boucle while qui va calculer la direction que le fantôme doit prendre pour atteindre le personnage joueur grâce à l'algorithme de manhattan, puis se déplacer en conséquences à l'aide d'une switch sur la direction renvoyée par manhattan. Après chaque déplacement, le fantôme attend le nombre de millisecondes indiquées par la donnée membre sleepTime.
-% Un truc avec le Signal que j'ai peur de mal expliquer.
+Cette classe, comme la classe PlayableCharacter, hérite de AbstractCharacter. Mais celle-ci implémente l'interface Runnable qui lui permet l'utilisation de la méthode run, la faisant agir comme un thread. La classe possède tout comme PlayableCharacter un type et une chaîne de caractère correspondant au chemin de son image qui lui sont propres, mais possède en plus les coordonnées de la cible que le fantôme devra suivre, une variable indiquant si le fantôme est en déplacement, ainsi qu'un nombre entier correspondant au temps qu'il attendra en millisecondes entre chaque déplacement. L'initialisation des coordonnées de la cible à suivre se fait grâce à l'algorithme de manhattan avec le Vectrex du personnage. Contrairement au personnage, les fantômes ne sont pas contrôlés par le joueur, mais doivent se déplacer tous indépendemment vers le joueur. Nous avons alors décidé d'utiliser un thread pour leur déplacement. Dans la méthode run, nous effectuons alors à chaque tour de boucle l'algorithme manhattan pour décider du prochain mouvement du fantôme en question, puis nous le faisons attendre une seconde (pour pas qu'il se retrouve instantanément sur le joueur).
 
 \section {Gestion des bonbons}
-Pour la gestion des bonbons, nous avons décidé de suivre une conception semblable à celle des personnages à l'exception de l'interface. Nous avons une interface Candy permettant de définir quelles méthodes les bonbons devrons implémenter, puis une classe abstraite AbstractCandy vient implémenter cette interface pour ensuite donner 5 autres classes de bonbons qui étendent cette classe abstraite. Enfin pour l'instanciation des bonbons, nous avons choisi d'utiliser le design patter factory, et avons implémenté une classe CandyFactory qui nous sert lors du placement des bonbons dans le labyrinthe.
-
-\subsection {Interface : Candy}
-L'interface utilisée pour les bonbons est très simple, elle ne contient seulement que deux méthodes :
-\begin {description}
-\item  [getType :]     Qui permettra de retourner la donnée entière correspondant au type de bonbon et qui servira à calculer le score que le bonbon offre au joueur.
-\item  [getPosition :] Qui permettra de retourner le Vertex correspondant à la position du bonbon dans le labyrinthe.
-\end   {description}
-
-
-\subsection {Classe abstraite : AbstractCandy}
-Le coeur de la gestion des bonbons est faite dans cette classe abstraite. Cette classe implémente donc l'interface Candy mentionnée au dessus et contient trois données membres :
-\begin {description}
-\item  [type :]     Donnée entière protégée qui définira le type du bonbon ainsi que le score apporté au joueur.
-\item  [imgPath :]  Chaîne de caractère protégée qui contiendra le chemin vers l'image du bonbon pour l'affichage.
-\item  [position :] Vectrex protégé final qui définira la position que le bonbon occupe dans le labyrinthe.
-\end   {description}
-
-
-La classe abstraite ne fait qu'initialiser la position dans son constructeur, ce sera aux classes filles d'initialiser le reste. La classe possède trois getters, un pour chaque donnée membre, puis une méthode correctCandyPosition qui vérifie si le positionnement du bonbon est correct, c'est à dire si il n'y a pas un autre objet à l'endroit donné par la donnée position.
-
-\subsection {Implémentation d'un bonbon}
-Pour des raisons de redondances, nous n'allons traiter qu'une seul type de bonbon. En effet il existe cinq classes de bonbons qui étendent tous la même classe abstraite détaillée au dessus, et qui par conséquent sont toutes identiques à deux valeur près. Chaque classe est alors très simple, elle ne sont constituées que d'un constructeur qui appelle le constructeur de la classe mère, puis initialise les données membres que la classe abstraite n'a pas traité. Chaque classe héritant de cette dernière, elles possèdent donc des données différentes. Le constructeur change alors la donnée imgPath pour indiquer le chemin correct pour chaque bonbon ainsi que son type, différent aussi entre les cinq classes.
+Pour la gestion des bonbons dans le labyrinthe, nous avons choisi de départager cela en une interface, qui est implémentée par une classe abstraite qui est étendue par quatre classes correspondant chacune à un bonbon.
+\subsection {Implémentation des bonbons}
+Dans l'interface ``Candy'' des bonbons, nous ne mettons que les prototypes des méthodes permettant l'accès du type et de la position, la majeure partie de la gestion des bonbons se fait alors dans la classe abstraite AbstractCandy. Tout comme les personnages du labyrinthe, nous avons affecté à chaque bonbon un type, présent dans la classe abstraite, ce type permettra alors de les différencier grâce à leur valeur unique à chaque classe. C'est aussi grâce à elle que nous attribuons un score lorsque le personnage en récupère un. Une fois de plus comme pour les personnages, nous avons un Vertex responsable de la position du bonbon dans le labyrinthe ainsi que d'une chaîne de caractères pour l'affichage, elle aussi unique à chaque classe. L'unique changement entre les différentes classes de bonbons est alors le constructeur qui définit pour chaque bonbon le type correspondant ainsi que le chemin vers l'image.
 
 \subsection {L'instanciation : design pattern factory}
 Pour la gestion de l'instanciation des bonbons, nous avons choisi de suivre le design pattern factory en créant une classe CandyFactory. Cette classe n'est constituée que d'une méthode et d'aucune donnée membre. La méthode getCandy sert alors à donner à l'utilisateur un bonbon aléatoire à des coordonnées elles aussi aléatoires. La méthode vérifie tout de même si le bonbon donné n'est pas sur un emplacement qui posera problème, comme par exemple la position du joueur, d'un ennemi, de la porte de sortie du labyrinthe, d'un interrupteur, ou bien d'un autre bonbon.
@@ -95,42 +44,38 @@ Pour la gestion de l'instanciation des bonbons, nous avons choisi de suivre le d
 
 
 \section {Gestion des déplacements}
-Grâce à notre impélementation suivant le design pattern MVC, notre gestion des déplacement se fait dans la classe Controller. Dans cette classe, nous avons l'instance de PlayableCharacter (Singleton) en donnée membre, puis une tableau d'ennemis dont la taille est définie par la constante NB\_ENEMIES.
+Grâce à notre impélementation suivant le design pattern MVC, notre gestion des déplacements se fait dans la classe Controller. Dans cette classe, nous avons l'instance de PlayableCharacter (Singleton) en donnée membre, puis un tableau d'ennemis dont la taille est définie par la constante NB\_ENEMIES.
 
 \subsection {Déplacement du personnage joueur}
-Dans la méthode start du Controller, nous avons une fonction handle qui sert à capturer un évènement du clavier. Nous avons alors mit un simple switch en fonction du code retourné par l'évènement clavier, puis nous déplaçons le personnage en fonction de la direction que l'utilisateur a décidé à l'aide des flèches directionnelles.
+Dans la méthode start du Controller, nous avons une fonction handle qui sert à capturer un évènement du clavier. Nous avons alors mis un simple switch en fonction du code retourné par l'évènement clavier, puis nous déplaçons le personnage en fonction de la direction que l'utilisateur a décidé à l'aide des flèches directionnelles
 
 \subsection {Déplacement des ennemis}
-Contrairement au joueur, les ennemis ne sont pas des Singletons, nous avons donc dû instancier les ennemis dans le Controller pour la gestion de leur déplacements. Les ennemis sont créés lors de l'instanciation du Controller (qui est un Singleton), et leur emplacement est défini dans une boucle for du nombre d'ennemis dans la méthode init du Controller. Vu que les ennemis sont des threads, leur déplacement se fait automatiquement et de manière indépendante grâce à la méthode run implémentée dans la classe Enemy que nous avons détaillé. Il ne reste alors simplement qu'à appeler la fonction run ce qui est fait dans la méthode playGame. Cette méthode n'est utilisée que pour lancer les ennemis et est constituée d'un simple for du nombre d'ennemis qui appelle la fonction start sur chacun d'entre eux. Cette méthode playGame est alors appelée dans la méthode start du Controller qui elle est appelée dans le main, qui lance le jeu.
+Contrairement au joueur, les ennemis ne sont pas des Singletons, nous avons donc dû instancier les ennemis dans le Controller pour la gestion de leurs déplacements. Les ennemis sont créés lors de l'instanciation du Controller (qui est un Singleton), et leur emplacement est défini dans une boucle for du nombre d'ennemis dans la méthode init du Controller. Vu que les ennemis sont des threads, leur déplacement se fait automatiquement et de manière indépendante grâce à la méthode run implémentée dans la classe Enemy que nous avons détaillé. Il ne reste alors simplement qu'à appeler la fonction run ce qui est fait dans la méthode playGame. Cette méthode n'est utilisée que pour lancer les ennemis et est constituée d'un simple for du nombre d'ennemis qui appellent la fonction start sur chacun d'entre eux. Cette méthode playGame est alors appelée dans la méthode start du Controller qui elle est appelée dans le main, qui lance le jeu.
+
+Les ennemis se déplacent vers le joueur : pour cela on calcule la distance entre un ennemi et le joueur avec l'algorithme de Manhattan. Chaque cellule du labyrinthe possèdent une valeur qui correspond à la distance la séparant du joueur, cette valeur se modifie lorsque le joueur se déplace. Cette valeur augmente au fur et à mesure que l'on s'éloigne du joueur. Les ennemis se déplacent donc en choisissant, si possible, la case adjacente du labyrinthe qui a la valeur la plus petite.
 
 \section {Gestion du Graph}
-\subsection {Gestion des arrêtes}
-Notre classe Edge étend la classe DefaultEdge. Elle comporte une seule donnée membre qui est une énumération Type comportant 3 éléments définissant à quoi correspond l'arrête dans le Labyrinthe:
-\begin {description}
-\item  [OPENED_DOOR :]     L'arrête est donc une porte ouverte qui peut se fermer grâce à l'interrupteur correspondant.
-\item  [CLOSED_DOOR :]  L'arrête est donc une porte fermé, personne ne peut passer cette porte et le joueur doit appuyer sur l'interrupeur correspondant pour l'ouvrir.
-\item  [CORRIDOR :] L'arrête correspond au chemins du Labyrinthe donc tour le monde peut y passer.
-\end   {description}
+\subsection {Gestion des arêtes: Edge}
+Notre classe Edge étend la classe DefaultEdge. Elle comporte une seule donnée membre qui est une énumération Type comportant trois éléments définissant à quoi correspond l'arête dans le Labyrinthe.
 
 Cette classe, lors de son instanciation, appelle le constructeur de sa classe parente, puis initialise sont _type.
-La classe contient des acceseurs sur sa données _type et surcharge les getters sur les données Source et Target de DefaultEdge.
 
-\subsection {Gestion des sommets}
-Notre classe Vertex comporte trois données membres:
-\begin {description}
-\item  [x :]     Donnée correspondant à la position en abscisse du sommet.
-\item  [y :]  Donnée correspondant à la position en ordonné du sommet.
-\item  [nbr :] Donnée correspondant au numéro du sommet dans le graph, principalement utilisé pour l'agorithme de manhattan.
-\end   {description}
-La classe contient trois constructeur un permettant d'initialiser toutes les données membres et la deuxième qui initialise seulement les coordonnées du sommet et met le numéro a -1 et le troisième constructeur qui initialise les coordonnés à 0 et son numéro à -1. On a des accesseurs sur les données membres.
-On a surchargé la méthode equals afin de pouvoir savoir si deux Vertex sont égaux, utilisé pour, entre autre, vérifier que l'on ne met bien qu'une fois le même sommet dans le graph. On à également une méthode inBorder qui vérifient que le Vertex dans la direction voulut est bien dans le graph, utilisé pour savoir si on ne se déplace pas en dehors du labyrinthe. Enfin, nous avons implémenté la méthode copy qui permet de copier un autre Vertex.
+La classe contient des accesseurs sur sa données _type et surcharge les getters sur les données Source et Target de DefaultEdge, qui permettent d'obtenir les sommets qui composent l'arête.
 
-\subsection {Gestion du graphe}
-Notre classe Graph étend la classe SimpleGraph et comporte quatre données membres:
-\begin {description}
-\item  [INSTANCE :]     Donnée correspondant à l'instance du graph.
-\item  [GRID_WIDTH :]  Donnée correspondant à la largeur du graph.
-\item  [GRID_WIDTH :] Donnée correspondant à la longueur du graph.
-\item  [vertex :]  Donnée correspondant au tableau de sommet du graph.
-\end   {description}
+\subsection {Gestion des sommets: Vertex}
+Notre classe Vertex comporte trois données membres qui représentent sont abscisse, son ordonnée et son numéro, utilisé notamment pour l'algorithme de Manhatan.
+
+On a des accesseurs sur chacune des données membres.
+
+On a surchargé la méthode equals afin de pouvoir savoir si deux Vertex sont égaux, utilisé, entre autre, pour vérifier que l'on ne met bien qu'une fois le même sommet dans le graphe. On a également une méthode inBorder qui vérifient que le Vertex dans la direction voulut est bien dans le graphe, utilisé pour savoir si on ne se déplace pas en dehors du labyrinthe. Enfin, nous avons implémenté la méthode copy qui permet de copier un autre Vertex.
+
+\subsection {Gestion du graphe: Graph}
+Pour le graphe nous avons décidé d'utiliser le design pattern singleton, donc le constructeur est privé et il y a une donnée membre contenant l'instance du graphe. Nous avons également des données membres pour la largeur et la longueur du labyrinthe qui ont été fixés à 16. Et la dernière données membre est un tableau à deux dimensions, comportant tous les sommets du graphe, indicé par les coordonnées des sommets.
+
+Ensuite, nous avons implémenté diverse méthode dont la méthode doesntExist qui vérifie si le sommet, dans la direction donnée, existe. Puis, nous avons la méthode getVertex qui retourne le vertex à l'emplacement dans le tableau donnée et la méthode getVertexByDir qui retourne le vertex dans la direction donnée. On a également la méthode getEndPath qui retourne le sommet du graphe le plus éloigné du premier sommet en 0.0, sachant que l'on met toujours le joueur en 0.0 cette méthode nous nous permettra de positionner la porte de sortie le plus loin possible du joueur. La méthode GraphToDot, nous permet de créer un fichier graph.dot qui nous permet de visualiser le graphe avec graphviz. La méthode isWall permet de savoir si, dans la direction donnée par rapport au vertex donnée, l'arête n'existe pas, donc est un mur. La méthode getEdge nous retourne l'arête dans la direction donnée. Les méthodes isOpenedDoor et isCloseDoor permettent de savoir respectivement si l'arête dans la direction donnée correspond à une porte ouverte ou à une porte fermée. Les méthodes setSwitchOn et setSwitchOff nous retourne le sommet pour placer correctement les interrupteurs correspondant à la porte passé en paramètre.
+
+Les méthodes closedDoorRandom et openDoorRandom nous permettent, respectivement, de fermer et d'ouvrir une porte aléatoirement. RadomEdge retourne un edge aléatoirement utilisé pour fermer une porte aléatoirement. Random vertex retourne un sommet du graphe aléatoirement, utilisé pour ouvrir une porte aléatoirement.
+
+\subsection {Gestion des portes et des interrupteurs: Door}
+Cette classe est la classe qui s'occupe de relier les interrupteurs à leur porte respective. Elle contient donc une arête correspondant à la porte qui nous intéresse ainsi que les sommets contenant les interrupteurs pour ouvrir et fermé la-dite porte. Elle contient également les données membres correspondant au chemin des images pour afficher les interrupteurs. Finalement, la classe contient la méthode correctSwitchPosition qui permet d'éviter de placer l'interrupteur sur le même emplacement qu'un autre objet dans le labyrinthe.
 \end   {document}

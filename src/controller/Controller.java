@@ -61,8 +61,8 @@ public class Controller
             }
             for (int i = 0; i < NB_ENEMIES; i++)
             {
-                _enemies[i].set_targetX(_player.getPosition().getX());
-                _enemies[i].set_targetY(_player.getPosition().getY());
+                _enemies[i].setTargetX(_player.getPosition().getX());
+                _enemies[i].setTargetY(_player.getPosition().getY());
                 if (_player.collision(_enemies[i].getPosition()))
                 {
                     int lf = _player.decrementLife();
@@ -202,8 +202,8 @@ public class Controller
         {
             _enemies[i].randomizePosition();
             _view.updateEnemyPosition(i, _enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-             _enemies[i].set_targetX(_player.getPosition().getX());
-            _enemies[i].set_targetY(_player.getPosition().getY());
+             _enemies[i].setTargetX(_player.getPosition().getX());
+            _enemies[i].setTargetY(_player.getPosition().getY());
             _enemies[i].stopRunning();
         }
 
@@ -329,8 +329,8 @@ public class Controller
         // Initialisation des Ennemies.
         for (int i = 0; i < NB_ENEMIES; i++)
         {
-            _enemies[i].set_targetX(_player.getPosition().getX());
-            _enemies[i].set_targetY(_player.getPosition().getY());
+            _enemies[i].setTargetX(_player.getPosition().getX());
+            _enemies[i].setTargetY(_player.getPosition().getY());
         }
 
         // Ouvre des murs.

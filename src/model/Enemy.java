@@ -23,11 +23,6 @@ public class Enemy extends AbstractCharacter implements Runnable
     private final int _sleepTime = 1000;//Time in ms between each enemies' move.
     private static final String IMG_PATH = "/utils/bad.png";
 
-    // wat ?
-    private static final class Lock
-    {
-    }
-    private final Object lock = new Lock();
     CountDownLatch _restartSignal;
 
     /**
@@ -43,6 +38,8 @@ public class Enemy extends AbstractCharacter implements Runnable
         _type = -1;
         _running = 0;
         _restartSignal = restartSignal;
+        _targetX = -1;
+        _targetY = -1;
     }
 
     /**
@@ -50,7 +47,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @return The abscissa of the target.
      */
-    public int get_targetX ()
+    public int getTargetX ()
     {
         return _targetX;
     }
@@ -60,7 +57,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @return The ordinate of the target.
      */
-    public int get_targetY ()
+    public int getTargetY ()
     {
         return _targetY;
     }
@@ -90,7 +87,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @param x The target abscissa.
      */
-    public void set_targetX (int x)
+    public void setTargetX (int x)
     {
         _targetX = x;
     }
@@ -101,7 +98,7 @@ public class Enemy extends AbstractCharacter implements Runnable
      *
      * @param y The target ordinate.
      */
-    public void set_targetY (int y)
+    public void setTargetY (int y)
     {
         _targetY = y;
     }
@@ -146,41 +143,23 @@ public class Enemy extends AbstractCharacter implements Runnable
      */
     public Directions getNextStep ()
     {
-        int x = 0;
-        int y = 0;
         int nb = 1000;
+        Vertex position = this.getPosition();
+        Vertex nextPosition;
         Graph graph = Graph.getInstance();
         Directions ret = Directions.NORTH;
         for (Directions dir : Directions.values())
         {
-            switch (dir)
+            if (!graph.doesntExist(position, dir))
             {
-                case NORTH:
-                    x = 0;
-                    y = -1;
-                    break;
-                case SOUTH:
-                    x = 0;
-                    y = 1;
-                    break;
-                case EAST:
-                    x = 1;
-                    y = 0;
-                    break;
-                case WEST:
-                    x = -1;
-                    y = 0;
-                    break;
-            }
-            if ((this.getPosition().getX() + x >= 0 && this.getPosition().getX() + x < Graph.getGRIDWIDTH()
-                && this.getPosition().getY() + y >= 0 && this.getPosition().getY() + y < Graph.getGRIDHEIGHT())
-                && !graph.doesntExist(graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y))
-                && nb >= graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr()
-                && graph.isOpenedDoor(this.getPosition(), dir)
-                && graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr() != 0)
-            {
-                nb = graph.getVertex(this.getPosition().getX() + x, this.getPosition().getY() + y).getNbr();
-                ret = dir;
+	            nextPosition = graph.getVertexByDir(position, dir);
+	            if ((nextPosition.getX() >= 0 && nextPosition.getX() < Graph.getGRIDWIDTH()
+	                && nextPosition.getY() >= 0 && nextPosition.getY() < Graph.getGRIDHEIGHT())
+	                && nb >= nextPosition.getNbr() && graph.isOpenedDoor(position, dir) && nextPosition.getNbr() != 0)
+	            {
+	                nb = nextPosition.getNbr();
+	                ret = dir;
+	            }
             }
         }
         return ret;
@@ -192,7 +171,7 @@ public class Enemy extends AbstractCharacter implements Runnable
         _running = 1;
         while (_running == 1)
         {
-            Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.get_targetX(), this.get_targetY()));
+            Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.getTargetX(), this.getTargetY()));
             switch (this.getNextStep())
             {
                 case NORTH:

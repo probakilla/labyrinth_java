@@ -47,6 +47,11 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             }
         }
     }
+    
+    public void removeGraph ()
+    {
+    	INSTANCE = null;
+    }
 
     /**
      * Remove all the {@link model.Edge edges} of the {@link model.Graph graph}.
@@ -161,26 +166,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
         }
         return !this.containsVertex(new Vertex(xt, yt));
     }
-
-    /**
-     * Retrieves a {@link java.boolean boolean} in function of the
-     * {@link model.Vertex Vertex}.
-     *
-     * @param v The {@link model.Vertex Vertex} we want to test.
-     * @return True if v doesn't exists, false in the other case.
-     */
-    public boolean doesntExist(Vertex v)
-    {
-        return !this.containsVertex(v);
-    }
-
-    /**
-     * Retrieves a {@link model.Vertex Vertex} locate in specific coordinates.
-     *
-     * @param i Abscissa of the wanted {@link model.Vertex Vertex}.
-     * @param j Ordinate of the wanted {@link model.Vertex Vertex}.
-     * @return The {@link model.Vertex Vertex} locate in i, j coordinates.
-     */
+  
     public Vertex getVertex(int i, int j)
     {
         return _vertex[i][j];
@@ -236,15 +222,16 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public Vertex getEndPath()
     {
-        Vertex v = this.getVertex(0, 0);
         Queue<Vertex> fifo = new ArrayDeque<Vertex>();
         Set<Vertex> ListVertex = this.vertexSet();
         Vertex vertex;
-        for (Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
+        for ( Iterator<Vertex> it = ListVertex.iterator(); it.hasNext();)
         {
             vertex = it.next();
             vertex.setNbr(0);
         }
+        Iterator<Vertex> it = ListVertex.iterator();
+        Vertex v = it.next ();
         v.setNbr(1);
         Vertex ret = v;
         fifo.add(v);
@@ -254,6 +241,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             for (Edge edge : this.edgesOf(actual))
             {
                 Vertex next = edge.getSource();
+               
                 if (next.equals(actual))
                 {
                     next = edge.getTarget();
@@ -269,11 +257,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
                     fifo.add(next);
                 }
             }
-        }
-        // Si jamais la porte est sur le joueur on relance.
-        while (ret.equals(new Vertex(0, 0)))
-        {
-            ret = getEndPath();
         }
         return ret;
     }
@@ -341,7 +324,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isWall(Vertex actual, Directions dir)
     {
-        return (this.getEdge(actual, dir) == null);
+        return (this.getEdgeByDir(actual, dir) == null);
     }
 
     /**
@@ -356,7 +339,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      * @return The specific {@link model.Edge Edge} if such edge exist,
      * otherwise return null.
      */
-    public Edge getEdge(Vertex source, Directions dir)
+    public Edge getEdgeByDir(Vertex source, Directions dir)
     {
         Vertex target = this.getVertexByDir(source, dir);
         if (target == null)
@@ -376,7 +359,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isOpenedDoor(Vertex actual, Directions dir)
     {
-        Edge edge = this.getEdge(actual, dir);
+        Edge edge = this.getEdgeByDir(actual, dir);
         return (edge != null && (edge.getType() == Type.OPENED_DOOR || edge.getType() == Type.CORRIDOR));
     }
 
@@ -391,7 +374,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
      */
     public boolean isClosedDoor(Vertex actual, Directions dir)
     {
-        Edge edge = this.getEdge(actual, dir);
+        Edge edge = this.getEdgeByDir(actual, dir);
         return (edge != null && edge.getType() == Type.CLOSED_DOOR);
     }
 
@@ -454,7 +437,7 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = door.getTarget();
         }
         i = rand.nextInt((GRID_HEIGHT * GRID_WIDTH) - vertex.getNbr()) + vertex.getNbr();
-        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i; j++)
+        for (Iterator<Vertex> it = listeVertex.iterator(); j <= i && it.hasNext(); j++)
         {
             vertex = it.next();
         }
@@ -558,25 +541,6 @@ public class Graph extends SimpleGraph<Vertex, Edge>
             vertex = it.next();
         }
         return vertex;
-    }
-
-    /**
-     * Returns a set of the closed {@link model.Edge Edge} contained in this
-     * graph.
-     *
-     * @return The set of the closed {@link model.Edge Edge}.
-     */
-    public Set<Edge> allClosedDoor()
-    {
-        Set<Edge> listClosedEdge = new HashSet<Edge>();
-        for (Edge edge : this.edgeSet())
-        {
-            if (edge.getType() == Type.CLOSED_DOOR)
-            {
-                listClosedEdge.add(edge);
-            }
-        }
-        return listClosedEdge;
     }
 
 }
