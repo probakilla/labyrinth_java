@@ -62,6 +62,8 @@ public class ModelTest {
 
 	/**
 	 * Test method for {@link model.Model#buildRandomPath(model.Vertex)}.
+	 * To test the function we deal with an in-depth search since the initial vertex, set all number of vertex at 1, 0 if no.
+	 *
 	 */
 	@Test
 	public void testBuildRandomPath() {
