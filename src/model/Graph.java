@@ -19,6 +19,7 @@ import org.jgrapht.graph.SimpleGraph;
  *
  * @author Java Group
  */
+@SuppressWarnings("serial")
 public class Graph extends SimpleGraph<Vertex, Edge>
 {
     private static Graph INSTANCE;

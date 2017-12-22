@@ -7,6 +7,7 @@ import org.jgrapht.graph.DefaultEdge;
  *
  * @author Java Group
  */
+@SuppressWarnings("serial")
 public class Edge extends DefaultEdge
 {
     public static enum Type

@@ -107,9 +107,7 @@ public class View
      */
     public void resetFrame()
     {
-        Edge e;
         int x, y;
-        Graph g = Graph.getInstance();
         for (x = 0; x < Graph.getGRIDWIDTH(); x++)
         {
             for (y = 0; y < Graph.getGRIDHEIGHT(); y++)
@@ -231,7 +229,11 @@ public class View
             _pane.getChildren().add(square);
         }
     }
-
+    
+    /**
+     * Draw the structure of the labyrinth according to the graph which is linked. Call several times drawWall.
+     * @param g The graph which describe the labyrinth.
+     */
     public void drawGraph(Graph g)
     {
         Edge e;
@@ -276,7 +278,12 @@ public class View
             }
         }
     }
-
+    
+    /**
+     * Create and add to the panel the sprite of an enemy in the labyrinth.
+     * @param x The Abscissa of the enemy.
+     * @param y The Ordinate of the enemy.
+     */
     public void createEnnemies(int x, int y)
     {
         Image im = new Image("file:" + System.getProperty("user.dir") + Enemy.getImgPath());
@@ -287,7 +294,13 @@ public class View
         iv.toFront();
         _iv_enemies.add(iv);
     }
-
+    
+    /**
+     * Create and add to the panel the sprite of a candy, which is different according to imgPath.
+     * @param x The Abscissa of the candy.
+     * @param y The Ordinate of the candy.
+     * @param imgPath The name of the path of the sprite of the candy.
+     */
     public void createCandy(int x, int y, String imgPath)
     {
         Image im = new Image("file:" + System.getProperty("user.dir") + imgPath);
@@ -296,7 +309,10 @@ public class View
         _pane.getChildren().add(iv);
         _iv_candies.add(iv);
     }
-
+    /**
+     * remove the sprite of an existing candy in the panel.
+     * @param idx The index on the set.
+     */
     public void removeCandy(int idx)
     {
         _pane.getChildren().remove(_iv_candies.get(idx));
@@ -376,12 +392,20 @@ public class View
         _pane.getChildren().remove(_door);
     }
 
+    /**
+     * Create a playable character.
+     */
     public void createPlayable()
     {
         _pane.getChildren().add(_player);
         setImageViewPosition(_player, 0, 0);
     }
 
+    /**
+     * Create and add the exit door in the panel.
+     * @param x The Abscissa of the door.
+     * @param y The Ordinate of the door.
+     */
     public void createDoor(int x, int y)
     {
         _pane.getChildren().add(_door);
@@ -399,17 +423,36 @@ public class View
         setImageViewPosition(_door, x, y);
     }
 
+    /**
+     * Change the position of the sprite of an enemy.
+     * 
+     * @param i The index on the enemies set.
+     * @param x The Abscissa of the enemy.
+     * @param y The Ordinate of the enemy.
+     */
     public void updateEnemyPosition(int i, int x, int y)
     {
         setImageViewPosition(_iv_enemies.get(i), x, y);
         _iv_enemies.get(i).toFront();
     }
 
+    /**
+     * Change the position of the sprite of the player.
+     * 
+     * @param x The Abscissa of the player.
+     * @param y The Ordinate of the player.
+     */
     public void updatePlayerPosition(int x, int y)
     {
         setImageViewPosition(_player, x, y);
     }
 
+    /**
+     * Create and add the sprite of an on-off switch (on) on the panel.
+     * 
+     * @param x The Abscissa of the on-off switch.
+     * @param y The Ordinate of the on-off switch.
+     */
     public void createSwitchOn(int x, int y)
     {
         Image im = new Image("file:" + System.getProperty("user.dir") + Door.getSwitchOnPath());
@@ -420,6 +463,12 @@ public class View
         _iv_switch_on.add(iv);
     }
 
+    /**
+     * Create and add the sprite of an on-off switch (off) on the panel.
+     * 
+     * @param x The Abscissa of the on-off switch.
+     * @param y The Ordinate of the on-off switch.
+     */
     public void createSwitchOff(int x, int y)
     {
         Image im = new Image("file:" + System.getProperty("user.dir") + Door.getSwitchOffPath());
@@ -430,22 +479,43 @@ public class View
         _iv_switch_off.add(iv);
     }
 
+    /**
+     * Change the position of a sprite.
+     * 
+     * @param iv The sprite.
+     * @param x The Abscissa of the sprite.
+     * @param y The Ordinate of the sprite.
+     */
     private void setImageViewPosition(ImageView iv, int x, int y)
     {
         iv.setX((int) ((WALL + x * (WALL + CELL)) * SPAN));
         iv.setY((int) ((WALL + y * (WALL + CELL)) * SPAN));
     }
 
+    /**
+     * Update the score view.
+     * 
+     * @param sc The player's score.
+     */
     public void setScore(int sc)
     {
         _score.setText("Votre score : " + sc + "pts");
     }
 
+    /**
+     * Update the life view.
+     * 
+     * @param lf The player's life.
+     */
     public void setLife(int lf)
     {
         _life.setText("Vie : " + lf);
     }
-
+    /**
+	 * Update the view when the player finishes the level.
+	 * 
+	 * @param win The status of the game at its end.
+	 */
     public void setEndGameText(boolean win)
     {
         Platform.runLater(() ->
@@ -459,7 +529,13 @@ public class View
             endgame.setVisible(true);
         });
     }
-
+    
+    /**
+     * Update the color of a door according to its type (closed or opened).
+     * 
+     * @param door The edge which is situated the door.
+     * @param status The status of the door (closed or opened).
+     */
     public void updateDoor(Edge door, Edge.Type status)
     {
         Vertex source = door.getSource();
@@ -482,6 +558,11 @@ public class View
         return _stage;
     }
 
+    /**
+     * 
+     * @author Ordi
+     *
+     */
     public interface OnPlayListener
     {
         void play();

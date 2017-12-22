@@ -56,7 +56,9 @@ public class MenuView
         _stage = stage;
         drawMenu();
     }
-
+    /**
+     * Draw the menu when we launch the game.
+     */
     private void drawMenu()
     {
         _scene = new Scene(_pane);
@@ -99,7 +101,9 @@ public class MenuView
 
         _stage.show();
     }
-
+    /**
+     * Set the menu listener before the game started.
+     */
     private void setListeners()
     {
         _play.setOnAction(event ->
