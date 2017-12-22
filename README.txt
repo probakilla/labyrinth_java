@@ -1,31 +1,5 @@
-ajouter au projet la bibliothÃ¨que de graphes : 
-    jgrapht-core-1.0.1.jar
-consulter l'API de jgrapht sur le web : 
-    (DirectedGraph, DefaultDirectedGraph, DefaultEdge, ...)
-    
-pour le graphe (dans le model)
--crÃ©er la classe Vertex ( 2 attributs x,y ... )
--Ã©tendre DefaultEdge (jgrapht)
--Graph <Vertex, Edge>
-faire le graphe de la grille sans mur
-affichage du graphe avec graphviz (creer un fichier .dot)
-
-http://www.objectaid.com
-plugin Eclipse pour construire automatiquement le diagramme UML de nos classes.
-
-Dans Graph :
-
-public void graphToDot()
-	throws IOException{
-	try { FileWriter = fstream = new Filewriter("./graph.dot, false);
-	BufferedWriter out = new BufferedWriter(fstream);
-	out.write ("Graph D{\n");
-	for (Vertex v: this.vertexSet()){
-	out.write(v.dotString());
-	}
-	for (Edge e: this.edgeSet()){
-	out.write(e.dotString());
-	}
-	out.write("}\n");
-	out.close();
-}
+L'exécutable Labyrinthe.jar doit se trouver dans le répertoire labyrinthe (c'est sont emplacement par défaut) pour pouvoir fonctionner correctement. 
+Le jeu se joue avec les flèches directionnelles et les ennemis attendent le premier mouvement du joueur avant de bouger.
+Le but du jeu est d'atteindre la fin du jeu avec le score le plus élevé possible, qui comporte 12 niveaux. Vous perdez si vous touchez 3 ennemis dans le niveau, les vies vous sont rendus quand vous passez au niveau suivant. Une fois le niveau finit vous gagnez un nombre de points en fonction de votre nombre de vie. Vous gagnez également des points en ramassant les bonbons qui sont dispersés dans le labyrinthe. 
+Le score est remis à 0 si vous perdez, mais vous le conservez si vous passez au niveau suivant.
+ Si jamais vous êtes bloqué dans un niveau vous pouvez appuyer sur la touche r pour relancer le niveau, vous conserverez vos points, mais vos vies vous sont rendus.
