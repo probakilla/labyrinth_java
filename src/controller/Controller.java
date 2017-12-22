@@ -24,7 +24,7 @@ public class Controller
     private static Controller INSTANCE;
     private final int NB_GRAPH_VERTICES = Graph.getGRIDWIDTH() * Graph.getGRIDHEIGHT();
     private int NB_ENEMIES = 2, NB_CANDIES = 10, NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
-    private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES / 4;
+    private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES / 4, MAX_LEVEL = 12;//MAX_LEVEL is the number of level before the end of the game
 
     private final Model _model;
     @FXML
@@ -103,7 +103,7 @@ public class Controller
                 _player.setScore(score);
                 _view.setScore(score);
                 //Check if we the player reached the end of the game.
-            	if (_difficulty == 12)
+            	if (_difficulty == MAX_LEVEL)
             	{
                     for (int i = 0; i < _enemies.size(); ++i)
                     {
