@@ -108,7 +108,13 @@ public class Model
             }
         }
     }
-
+    
+    /**
+     * Construct a path from source to target according to the Manhattan algorithm, and update the value of each vertex.
+     * 
+     * @param source the vertex which we launch the algorithm.
+     * @param target the vertex which we want to reach.
+     */
     private void calculateManhattanDistance(Vertex source, Vertex target)
     {
         Graph graph = Graph.getInstance();
