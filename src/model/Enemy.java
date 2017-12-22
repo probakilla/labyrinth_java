@@ -20,7 +20,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     private int _running;
     private int _targetX;
     private int _targetY;
-    private final int _sleepTime = 1000;//Time in ms between each enemies' move.
+    private static int _sleepTime = 1000;//Time in ms between each enemies' move.
     private static final String IMG_PATH = "/utils/bad.png";
 
     CountDownLatch _restartSignal;
@@ -36,7 +36,7 @@ public class Enemy extends AbstractCharacter implements Runnable
     {
         super(0, 0);
         _type = -1;
-        _running = 0;
+        _running = 1;
         _restartSignal = restartSignal;
         _targetX = -1;
         _targetY = -1;
@@ -102,6 +102,26 @@ public class Enemy extends AbstractCharacter implements Runnable
     {
         _targetY = y;
     }
+    
+    /**
+     * Increase enemies' movement speed.
+     * 
+     * Reduce the sleeping time between to enemies' moves.
+     */
+    public static void incrementSpeed ()
+    {
+    	_sleepTime -= 100;
+    }
+    
+    /**
+    * Reset enemies' movement speed.
+    * 
+    * Reset the sleeping time between to enemies' moves to one second.
+    */
+   public static void resetSpeed ()
+   {
+   	_sleepTime = 1000;
+   }
 
     /**
      * Set _running at 0.
@@ -168,7 +188,6 @@ public class Enemy extends AbstractCharacter implements Runnable
     @Override
     public void run ()
     {
-        _running = 1;
         while (_running == 1)
         {
             Model.getInstance().launchManhattan(this.getPosition(), Graph.getInstance().getVertex(this.getTargetX(), this.getTargetY()));
@@ -195,7 +214,7 @@ public class Enemy extends AbstractCharacter implements Runnable
             }
             catch (InterruptedException ex)
             {
-                Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         //We block enemies until the main thread deblock them. Used to wait until the player press any key, after a reset by the controller.
@@ -205,7 +224,9 @@ public class Enemy extends AbstractCharacter implements Runnable
         }
         catch (InterruptedException ex)
         {
-            Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+        	System.out.println("pd");
+        	Logger.getLogger(Enemy.class.getName()).log(Level.SEVERE, null, ex);
+        	return;
         }
         if (_running == 1)
         {

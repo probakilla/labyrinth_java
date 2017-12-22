@@ -155,10 +155,7 @@ public abstract class AbstractCharacter extends Thread
         int min = 5;
         int maxWidth = Graph.getGRIDWIDTH() - 1;
         int maxHeight = Graph.getGRIDHEIGHT() - 1;
-        /* 
-         * Formule trouvée sur internet pour générer des nombres entre min et
-         * max inclus.
-         */
+        //set at a random position in the graph.
         setPosition(rand.nextInt(maxWidth - min + 1) + min, rand.nextInt(maxHeight - min + 1) + min);
     }
 
@@ -171,6 +168,16 @@ public abstract class AbstractCharacter extends Thread
     public void setOnChangeListener(OnChangeListener onChangeListener)
     {
         this.onChangeListener = onChangeListener;
+    }
+    
+    /**
+     * Remove the listener link to the character
+     * 
+     * Used to delete properly the thread.
+     */
+    public void removeOnChangeListener()
+    {
+    	this.onChangeListener = null;
     }
 
     /**

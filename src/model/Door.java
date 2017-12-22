@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
  * Class of doors from the labyrinth, it also manage the switches.
  *
@@ -90,24 +92,22 @@ public class Door
      * Check if the position of the actual switch we want to put is
      * not already used by another Switch or {@link model.Candy Candy} or the exit door or the {@link model.PlayableCharacter player} himself.
      * 
-     * @param doorList The array containing all {@link model.Door closed door}.
+     * @param _closedDoor The array containing all {@link model.Door closed door}.
      * @param candyList The array containing all {@link model.Candy Candies}.
      * @param actualSwitch The switch to be tested
      * @param exitDoor The {@link model.Vertex vertex} of the exit door.
      * @return True, if there is nothing else, except {@link model.Enemy enemies}, at the same position, otherwise return false.
      */
-    public static boolean correctSwitchPosition (Door [] doorList, AbstractCandy[] candyList, Vertex actualSwitch, Vertex exitDoor)
+    public static boolean correctSwitchPosition (ArrayList<Door> _closedDoor, AbstractCandy[] candyList, Vertex actualSwitch, Vertex exitDoor)
     {
     	//Check if the actual Switch is on the player position or the exit position.
     	if (actualSwitch.equals(new Vertex (0, 0)) || actualSwitch.equals(exitDoor))
     		return false;
     	int i;
-    	int length = doorList.length;
+    	int length = _closedDoor.size();
     	 for (i = 0; i < length; i++)
          {
-    		 if (doorList[i] == null)
-    			 break;
-             if (actualSwitch.equals(doorList[i].getSwitchOn()) || actualSwitch.equals(doorList[i].getSwitchOff()))
+             if (actualSwitch.equals(_closedDoor.get(i).getSwitchOn()) || actualSwitch.equals(_closedDoor.get(i).getSwitchOff()))
                  return false;
          }
     	length = candyList.length;

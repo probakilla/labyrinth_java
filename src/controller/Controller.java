@@ -1,6 +1,7 @@
 package controller;
 
 
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import javafx.application.Platform;
@@ -23,29 +24,30 @@ public class Controller
     private static Controller INSTANCE;
     private final int NB_GRAPH_VERTICES = Graph.getGRIDWIDTH() * Graph.getGRIDHEIGHT();
     private int NB_ENEMIES = 2, NB_CANDIES = 10, NB_OPENED_DOOR = 10, NB_CLOSED_DOOR = 3;
-    private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES / 4, NB_MAX_CLOSED_DOOR = NB_GRAPH_VERTICES / 2;
+    private final int NB_MAX_CANDIES = NB_GRAPH_VERTICES / 4;
 
     private final Model _model;
     @FXML
     private final View _view;
     private final PlayableCharacter _player;
-    private final Enemy[] _enemies;
+    private final ArrayList<Enemy> _enemies;
     private final AbstractCandy[] _candies;
-    private final Door[] _closedDoor;
+    private final ArrayList<Door> _closedDoor;
     private Vertex _exitDoorPosition;
     private boolean _startEnemies = false, _reStartEnemies = false;
     private final int LIFE_NUMBER = 3;
     private final int WIN_SCORE = 50;
     CountDownLatch _restartSignal = new CountDownLatch(1);
+    private int _difficulty = 0;
     
     private Controller()
     {
         _model = Model.getInstance();
         _view = View.getInstance();
         _player = PlayableCharacter.getInstance();
-        _enemies = new Enemy[NB_ENEMIES];
+        _enemies = new ArrayList<Enemy>();
         _candies = new AbstractCandy[NB_CANDIES];
-        _closedDoor = new Door[NB_CLOSED_DOOR];
+        _closedDoor = new ArrayList<Door> ();
         _player.setOnChangeListener((int x, int y) ->
         {
             _view.updatePlayerPosition(x, y);
@@ -59,62 +61,70 @@ public class Controller
                     _candies[i] = null;
                 }
             }
-            for (int i = 0; i < NB_ENEMIES; i++)
+            for (int i = 0; i < _enemies.size(); i++)
             {
-                _enemies[i].setTargetX(_player.getPosition().getX());
-                _enemies[i].setTargetY(_player.getPosition().getY());
-                if (_player.collision(_enemies[i].getPosition()))
+                _enemies.get(i).setTargetX(_player.getPosition().getX());
+                _enemies.get(i).setTargetY(_player.getPosition().getY());
+                if (_player.collision(_enemies.get(i).getPosition()))
                 {
                     int lf = _player.decrementLife();
                     _view.setLife(lf);
                     if (lf == 0)
                     {
-                        //   _view.setEndGameText(false);
                         // Le joueur perds.
                         _player.setScore(0);
                         _view.setScore(0);
-                        reset();
+                        _difficulty = -1;
+                        reset(_difficulty);
                     }
                 }
             }
-            for (int i = 0; i < NB_CLOSED_DOOR && i <= NB_MAX_CLOSED_DOOR; i++)
+            for (int i = 0; i < _closedDoor.size(); i++)
             {
                 // On ouvre la porte associé.
-                if (_player.collision(_closedDoor[i].getSwitchOn()))
+                if (_player.collision(_closedDoor.get(i).getSwitchOn()))
                 {
-                    Edge door = _closedDoor[i].getDoor();
+                    Edge door = _closedDoor.get(i).getDoor();
                     door.setType(Edge.Type.OPENED_DOOR);
                     _view.updateDoor(door, Edge.Type.OPENED_DOOR);
                 }
-                else if (_player.collision(_closedDoor[i].getSwitchOff()))
+                else if (_player.collision(_closedDoor.get(i).getSwitchOff()))
                 {
-                    Edge door = _closedDoor[i].getDoor();
+                    Edge door = _closedDoor.get(i).getDoor();
                     door.setType(Edge.Type.CLOSED_DOOR);
                     _view.updateDoor(door, Edge.Type.CLOSED_DOOR);
                 }
             }
             if (_player.collision(_exitDoorPosition))
             {
-                for (int i = 0; i < NB_ENEMIES; i++)
-                {
-                    _enemies[i].stopRunning();
-                }
-                // Le joueur gagne.
-                //_view.setEndGameText(true);
-                int score = _player.getScore() + _player.getLife () * WIN_SCORE;//On gagne un nombre de point proportionel au nombre de vie restantes.
+            	for (int i = 0; i < _enemies.size(); ++i)
+            		_enemies.get(i).stopRunning();
+                int score = _player.getScore() + PlayableCharacter.getLife () * WIN_SCORE;//On gagne un nombre de point proportionel au nombre de vie restantes.
                 _player.setScore(score);
                 _view.setScore(score);
-                reset();
+                //Check if we the player reached the end of the game.
+            	if (_difficulty == 12)
+            	{
+                    for (int i = 0; i < _enemies.size(); ++i)
+                    {
+                    	_enemies.get(i).stopRunning();
+                    }
+                    _view.setEndGameText(true);
+                	_player.removeOnChangeListener();
+                	//Once at the end the player has to relaunch the program to replay a game.
+                	return;
+            	}
+                reset(_difficulty++);
             }
         });
 
         for (int i = 0; i < NB_ENEMIES; i++)
         {
-            _enemies[i] = new Enemy(_restartSignal);
-            _enemies[i].randomizePosition();
-            _view.createEnnemies(_enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
+            _enemies.add(new Enemy(_restartSignal));
+            _enemies.get(i).randomizePosition();
+            _view.createEnnemies(_enemies.get(i).getPosition().getX(), _enemies.get(i).getPosition().getY());
             final int idx = i;
-            _enemies[i].setOnChangeListener(new AbstractCharacter.OnChangeListener()
+            _enemies.get(idx).setOnChangeListener(new AbstractCharacter.OnChangeListener()
             {
                 @Override
                 public void changed(int x, int y)
@@ -123,7 +133,7 @@ public class Controller
                     {
                         _view.updateEnemyPosition(idx, x, y);
                     });
-                    if (_player.collision(_enemies[idx].getPosition()))
+                    if (_player.collision(_enemies.get(idx).getPosition()))
                     {
                         int lf = _player.decrementLife();
                         Platform.runLater(() ->
@@ -142,7 +152,8 @@ public class Controller
                             Platform.runLater(() ->
                             {
                                 _view.setScore(score);
-                                reset();
+                                _difficulty = 0;
+                                reset(_difficulty);
                             });
                         }
                     }
@@ -181,8 +192,86 @@ public class Controller
     /**
      * Reset the level.
      */
-    private void reset()
+    private void reset(int difficulty)
     {
+    	/*We have three parameters to increase the difficulty, so 
+    	 * we increase once at a time each parameters.
+    	*/
+    	if (difficulty >= 0)
+    		difficulty = (difficulty%3)+1;
+    	switch (difficulty)
+    	{
+    	//The player lose so we reset the difficulty.
+    	case -1:
+    		NB_CLOSED_DOOR = 3;
+    		Enemy.resetSpeed();
+    		NB_ENEMIES = 2;
+    		while (_enemies.size() > NB_ENEMIES)
+    		{
+    			_enemies.get(NB_ENEMIES).stopRunning();
+    			_enemies.get(NB_ENEMIES).removeOnChangeListener();
+    			_enemies.remove(NB_ENEMIES);
+    			_view.removeEnemy(NB_ENEMIES);
+    		}
+    		break;
+       //We increase the number of closed door.
+    	case 1:
+    		++NB_CLOSED_DOOR;
+    		break;
+        //We increase the movement speed.
+    	case 2: 
+    		Enemy.incrementSpeed();
+    		break;
+    	//We increase the number of enemies.
+    	case 3:
+    		++NB_ENEMIES;
+    		_enemies.add(new Enemy(_restartSignal));
+
+    		int i = _enemies.size() - 1;
+            _enemies.get(i).randomizePosition();
+            _view.createEnnemies(_enemies.get(i).getPosition().getX(), _enemies.get(i).getPosition().getY());
+    		_enemies.get(i).stopRunning();
+            _enemies.get(i).start();
+            final int idx = i;
+            _enemies.get(idx).setOnChangeListener(new AbstractCharacter.OnChangeListener()
+            {
+                @Override
+                public void changed(int x, int y)
+                {
+                    Platform.runLater(() ->
+                    {
+                        _view.updateEnemyPosition(idx, x, y);
+                    });
+                    if (_player.collision(_enemies.get(idx).getPosition()))
+                    {
+                        int lf = _player.decrementLife();
+                        Platform.runLater(() ->
+                        {
+                            /* 
+                             * Les threads ne peuvent pas modifier les aspects 
+                             * graphiques,
+                             */
+                            _view.setLife(lf);
+                        });
+                        if (lf == 0)
+                        {
+                            // Le joueur perds.
+                            int score = 0;
+                            _player.setScore(score);
+                            Platform.runLater(() ->
+                            {
+                                _view.setScore(score);
+                                _difficulty = -1;
+                                reset(_difficulty);
+                            });
+                        }
+                    }
+                }
+            });
+    		break;
+    	default:
+    		break;
+    	}
         int i, j; // cpt boucles.
 
         // Re-création du graph et de sa porte de sortie.      
@@ -198,13 +287,13 @@ public class Controller
         _view.setLife(LIFE_NUMBER);
         // Réinitialsation des ennemies.
         _reStartEnemies = true;
-        for (i = 0; i < NB_ENEMIES; ++i)
+        for (i = 0; i < _enemies.size(); ++i)
         {
-            _enemies[i].randomizePosition();
-            _view.updateEnemyPosition(i, _enemies[i].getPosition().getX(), _enemies[i].getPosition().getY());
-             _enemies[i].setTargetX(_player.getPosition().getX());
-            _enemies[i].setTargetY(_player.getPosition().getY());
-            _enemies[i].stopRunning();
+            _enemies.get(i).randomizePosition();
+            _view.updateEnemyPosition(i, _enemies.get(i).getPosition().getX(), _enemies.get(i).getPosition().getY());
+            _enemies.get(i).setTargetX(_player.getPosition().getX());
+            _enemies.get(i).setTargetY(_player.getPosition().getY());
+    		_enemies.get(i).stopRunning();
         }
 
         _view.removeAllCandies();
@@ -241,6 +330,11 @@ public class Controller
         // Reset les portes fermées.
         _view.removeAllSwitchOff();
         _view.removeAllSwitchOn();
+        int size = _closedDoor.size();
+        for (i = 0; i < size; ++i)
+        {
+        	_closedDoor.remove(0);
+        }
         for (i = 0; i < NB_CLOSED_DOOR; ++i)
         {
             Edge door = graph.closeDoorRandom();
@@ -282,10 +376,11 @@ public class Controller
                 {
                     _view.createSwitchOn(switchOn.getX(), switchOn.getY());
                     _view.createSwitchOff(switchOff.getX(), switchOff.getY());
-                    _closedDoor[i] = new Door(switchOn, switchOff, door);
+                    _closedDoor.add(new Door(switchOn, switchOff, door));
                 }
             }
         }
+        //Reset the view.
         _view.resetFrame();
         _view.drawGraph(graph);
     }
@@ -327,10 +422,10 @@ public class Controller
         }
 
         // Initialisation des Ennemies.
-        for (int i = 0; i < NB_ENEMIES; i++)
+        for (int i = 0; i < _enemies.size(); i++)
         {
-            _enemies[i].setTargetX(_player.getPosition().getX());
-            _enemies[i].setTargetY(_player.getPosition().getY());
+        	_enemies.get(i).setTargetX(_player.getPosition().getX());
+        	_enemies.get(i).setTargetY(_player.getPosition().getY());
         }
 
         // Ouvre des murs.
@@ -374,14 +469,14 @@ public class Controller
                 if (!Door.correctSwitchPosition(_closedDoor, _candies, switchOff, _exitDoorPosition))
                 {
                     //On a pas réussi à fermer toute les portes donc on remet l'arrête comme avant et on met à jour la variable NB_CLOSED_DOOR.
-                    NB_CLOSED_DOOR = i;
+                    //NB_CLOSED_DOOR = i;
                     door.setType(Edge.Type.CORRIDOR);
                 }
                 else
                 {
                     _view.createSwitchOn(switchOn.getX(), switchOn.getY());
                     _view.createSwitchOff(switchOff.getX(), switchOff.getY());
-                    _closedDoor[i] = new Door(switchOn, switchOff, door);
+                    _closedDoor.add(new Door(switchOn, switchOff, door));
                 }
             }
         }
@@ -396,10 +491,7 @@ public class Controller
     {
         init();
         Graph graph = Graph.getInstance();
-        _view.start(stage, graph, () ->
-        {
-            //playGame();
-        });
+        _view.start(stage, graph, () ->{});
 
         // Gestion du mouvement du joueur.
         EventHandler handler;
@@ -420,12 +512,8 @@ public class Controller
                         }
                         else if (_reStartEnemies)
                         {
-                            
-                            for (int i = 0; i < NB_ENEMIES; i++)
-                            {
-                                _enemies[i].keepRunning();
-                               //System.out.println(_enemies[i].getRunning ());     
-                            }
+                        	for (int i = 0; i < _enemies.size(); ++i)
+                        		_enemies.get(i).keepRunning();
                             _reStartEnemies = false;
                             rePlayGame ();
                         }
@@ -454,13 +542,13 @@ public class Controller
                             // Touches de test.
                             case S:
                                 System.out.println("Vous arrêtez les ennemis");
-                                for (int i = 0; i < NB_ENEMIES; i++)
-                                {
-                                    _enemies[i].stopRunning();
-                                }
+                                for (int i = 0; i < _enemies.size(); i++)
+									_enemies.get(i).stopRunning();
                                 break;
                             case R:
-                                reset();
+                            	//To go on the default case in reset, and keep the same difficulty.
+                                reset(-2);
+                                break;
                             default:
                                 break;
                         }
@@ -478,9 +566,9 @@ public class Controller
      */
     private void playGame()
     {
-        for (int i = 0; i < NB_ENEMIES; i++)
+        for (int i = 0; i < _enemies.size(); i++)
         {
-            _enemies[i].start();
+        	_enemies.get(i).start();
         }
     }
     /**
@@ -491,9 +579,9 @@ public class Controller
           _restartSignal.countDown();
           _restartSignal = new CountDownLatch(1); 
           
-          for (int i = 0; i < NB_ENEMIES; i++)
+          for (int i = 0; i < _enemies.size(); i++)
           {
-              _enemies[i].updateRestartSignal(_restartSignal);
+        	  _enemies.get(i).updateRestartSignal(_restartSignal);
           }
       }
 }

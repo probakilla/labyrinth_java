@@ -46,10 +46,10 @@ public class View
     private View()
     {
         _pane = new Pane();
-        _iv_enemies = new ArrayList<>();
-        _iv_candies = new ArrayList<>();
-        _iv_switch_on = new ArrayList<>();
-        _iv_switch_off = new ArrayList<>();
+        _iv_enemies = new ArrayList<ImageView>();
+        _iv_candies = new ArrayList<ImageView>();
+        _iv_switch_on = new ArrayList<ImageView>();
+        _iv_switch_off = new ArrayList<ImageView>();
 
         Image imD = new Image("file:" + System.getProperty("user.dir") + DOOR_PATH);
         _door = new ImageView(imD);
@@ -322,9 +322,20 @@ public class View
     {
         for (int i = 0; i < _iv_enemies.size(); i++)
         {
-            _pane.getChildren().remove(_iv_enemies.get(i));
+            removeEnemy(i);
         }
-        _iv_enemies.clear();
+    	_iv_enemies.clear();
+    }
+    
+    /**
+     * Remove the specific enemy in the array list.
+     * @param i The enemies' number in the array list.
+     */
+    public void removeEnemy (int i)
+    {
+
+    	_pane.getChildren().remove(_iv_enemies.get(i));
+    	_iv_enemies.remove(i);
     }
 
     /**
